@@ -1,0 +1,13 @@
+[workspace]
+
+[package]
+name = "tracecheck"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+competitive_net_sim = { path = "../..", default-features = false }
+serde_json = "1"
+
+[profile.release]
+opt-level = 3

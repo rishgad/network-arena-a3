@@ -1,0 +1,8 @@
+target/
+**/target/
+._*
+.DS_Store
+*.simlog
+results/tmp/
+*.team.tmp
+__pycache__/

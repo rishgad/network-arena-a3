@@ -1,0 +1,52 @@
+practice-check  broken_link.wasm + broken_link_detect.wasm  on the practice eggs
+
+egg 21, The broken link (Failure)
+
+ run  load   egg   said
+   1  1.00   no    no     ok
+   2  1.25   yes   yes    ok
+   3  1.25   no    no     ok
+   4  1.50   yes   yes    ok
+   5  1.00   no    no     ok
+   6  1.50   yes   yes    ok
+   7  1.00   yes   yes    ok
+   8  1.25   no    no     ok
+   9  1.00   no    no     ok
+  10  1.50   yes   yes    ok
+
+10 of 10 right.
+
+egg 22, The long pause (Customer)
+
+ run  load   egg   said
+   1  1.25   no    no     ok
+   2  1.00   yes   no     WRONG
+   3  1.50   yes   no     WRONG
+   4  1.00   no    no     ok
+   5  1.25   yes   no     WRONG
+   6  1.00   no    no     ok
+   7  1.25   no    no     ok
+   8  1.50   yes   no     WRONG
+   9  1.50   no    no     ok
+  10  1.00   yes   no     WRONG
+
+5 of 10 right.
+
+egg 23, The scanner (Traffic)
+
+ run  load   egg   said
+   1  1.25   no    no     ok
+   2  1.50   yes   no     WRONG
+   3  1.00   yes   no     WRONG
+   4  1.25   yes   no     WRONG
+   5  1.00   yes   no     WRONG
+   6  1.50   no    no     ok
+   7  1.00   no    no     ok
+   8  1.50   no    no     ok
+   9  1.25   yes   no     WRONG
+  10  1.00   no    no     ok
+
+5 of 10 right.
+
+Card:  Egg 21 · Failure · The broken link
+exit 1

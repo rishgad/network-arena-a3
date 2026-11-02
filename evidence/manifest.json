@@ -1,0 +1,29 @@
+{
+  "pairing": "Provisional pairing based on supplied filenames; run provenance, order, load and logger versions unverified.",
+  "files": [
+    {
+      "destination": "provided-01/team.log",
+      "source": "/Users/Rishi/Library/Messages/Attachments/03/03/17D07C12-1756-4038-ABCA-3834664F63B6/team.log",
+      "bytes": 62161,
+      "sha256": "8640f10b24a7ea862de62202166c3cf6d2cb50f27ca80234ff5d87b1557447b0"
+    },
+    {
+      "destination": "provided-01/customers.txt",
+      "source": "/Users/Rishi/Library/Messages/Attachments/dc/12/1A656E49-35EB-430F-AD2C-0D4E778CA639/customers (1).txt",
+      "bytes": 1460,
+      "sha256": "2472414a46cc4e1607ee33c7615d0a6207e46cf93b1a75569ba87d0c8e7a7585"
+    },
+    {
+      "destination": "provided-02/team.log",
+      "source": "/Users/Rishi/Library/Messages/Attachments/a5/05/575BC65B-DF5F-4976-9A3C-C4CA1E1CEE93/team 2.log",
+      "bytes": 51164,
+      "sha256": "c00729d71fdd08ea1baeec6a65a10eb331426ba1bd17debbda450788859e3140"
+    },
+    {
+      "destination": "provided-02/customers.txt",
+      "source": "/Users/Rishi/Library/Messages/Attachments/61/01/DE2166CE-0B4B-4245-BFB9-53DE0EFF1DC5/customers 2.txt",
+      "bytes": 1460,
+      "sha256": "2472414a46cc4e1607ee33c7615d0a6207e46cf93b1a75569ba87d0c8e7a7585"
+    }
+  ]
+}
