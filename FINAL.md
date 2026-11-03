@@ -27,7 +27,7 @@ Ready but NOT sent (all true on all three truth logs, no crashes):
 `claim-LIVE/` (~15-20%), `claim-SURGE1/` (~15%), `claim-FLOOD6/` (~35%, the
 user chose to stop on the flood).
 
-Unwon: Customer 2-6, Traffic 11-12, Link 17 (3 easy/medium... by points:
+Unwon: Customer 2-6, Traffic 11-12, Link 17 (by points:
 2 easy, 3 medium, 3 hard). Every anomaly in the five hidden-network logs is
 either won or one of the claims above; the rest needs measurements no
 logger took.
