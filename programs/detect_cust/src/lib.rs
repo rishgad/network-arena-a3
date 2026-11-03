@@ -23,6 +23,9 @@ pub struct Cust {
     pub small: u64,
     pub mid: u64,
     pub ttl4: u64,
+    /// New destinations this window (or distinct source hosts, in the
+    /// `SCOPE_SRC_HOSTS` log variant).
+    pub new: u64,
 }
 
 /// Every customer reading, keyed by (switch, customer index), in time order.
@@ -60,12 +63,12 @@ pub fn readings_multi_via(log: &[u8]) -> (HashMap<(u8, u8), Vec<Cust>>, HashMap<
                 let idx = r.u8()?;
                 let flags = r.u8()?;
                 let pkts = r.var()?;
-                let (small, mid, _new) = (r.var()?, r.var()?, r.var()?);
+                let (small, mid, new) = (r.var()?, r.var()?, r.var()?);
                 let dup = if flags & CF_DUP != 0 { r.var()? } else { 0 };
                 let lowttl = if flags & CF_LOWTTL != 0 { r.var()? } else { 0 };
                 let ttl4 = if flags & CF_LOWTTL != 0 && option_env!("TTL4").is_some() { r.var()? } else { 0 };
                 let udp = if flags & CF_UDP != 0 { r.var()? } else { 0 };
-                Some((idx, Cust { t: t as u32 * 10, pkts, dup, lowttl, udp, small, mid, ttl4 }))
+                Some((idx, Cust { t: t as u32 * 10, pkts, dup, lowttl, udp, small, mid, ttl4, new }))
             })();
             let Some((idx, c)) = row else { break };
             out.entry((sw, idx)).or_default().push(c);
@@ -404,6 +407,13 @@ pub fn udp_flood_robust(log: &[u8]) -> bool {
         }
         let (fp, fu) = rates[a..b].iter().fold((0, 0), |(p, u), r| (p + r.3, u + r.4));
         let (op, ou) = rates.iter().enumerate().filter(|(i, _)| *i < a || *i >= b).fold((0, 0), |(p, u), (_, r)| (p + r.3, u + r.4));
+        // `FLOOD_HOSTS`: outside the flood, many source hosts per window
+        // (Home users: 8 hosts in 9 samples; Prime 1, Login 3, Cloudflare 2-4).
+        let hosts_ok = !option_env!("FLOOD_HOSTS").is_some() || {
+            let mut h: Vec<u64> = v.iter().filter(|c| c.t < rates[a].0 || c.t > rates[b - 1].1).map(|c| c.new).collect();
+            h.sort_unstable();
+            !h.is_empty() && h[h.len() / 2] >= 10
+        };
         let small_ok = !option_env!("FLOOD_SMALL").is_some() || {
             // Home users' fingerprint: outside the flood, small TCP packets.
             let os: u64 = rates
@@ -414,7 +424,7 @@ pub fn udp_flood_robust(log: &[u8]) -> bool {
                 .sum();
             os * 10 >= op * 8
         };
-        fp > 0 && fu * 10 >= fp * 8 && op >= 50 && ou * 10 <= op * 2 && small_ok
+        fp > 0 && fu * 10 >= fp * 8 && op >= 50 && ou * 10 <= op * 2 && small_ok && hosts_ok
     })
 }
 

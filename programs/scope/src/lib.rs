@@ -196,7 +196,9 @@ fn program(sample_mask: u64) -> TinyProgram {
         .konst(30, R1_SAMPLE).add(30, 7, 30).rread(R1, 30, 31).konst(32, 1).add(31, 31, 32).rwrite(R1, 30, 31)
         .konst(33, 127).and(34, 31, 33).eq(35, 34, 4).storem(M_SAMPLE, 35)
         .konst(16, 7).and(17, 7, 16).shl(18, 17, 8)
-        .load(19, F::IpDst).konst(20, 255).and(21, 19, 20).add(18, 18, 21)
+        // `SCOPE_SRC_HOSTS`: count distinct source hosts instead of destinations.
+        .load(19, if option_env!("SCOPE_SRC_HOSTS").is_some() { F::IpSrc } else { F::IpDst })
+        .konst(20, 255).and(21, 19, 20).add(18, 18, 21)
         .rread(R1, 18, 22).loadm(23, M_EPOCH).eq(24, 22, 23).bif(24, "end")
         .rwrite(R1, 18, 23).konst(25, 1).storem(M_NEW, 25)
         .label("end");
