@@ -98,3 +98,5 @@ For a six-switch practice variant use SCOPE_LOGGER=0 with the other flags
 unchanged. Never replace the saved truth3 submission with that variant.
 The latest local crate target currently contains the LOGGER=0 practice
 variant; the saved submissions/truth3/switch.wasm remains LOGGER=10.
+
+> **Final:** see `FINAL.md`.

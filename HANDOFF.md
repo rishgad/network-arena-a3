@@ -161,3 +161,5 @@ User pasted claim 15 reply: egg 20 won. Total is 7 eggs / 72 points;
 15 claims remain. Truth3 remains the last unused truth run until confirmed.
 Only file to upload next: submissions/truth3/switch.wasm, to "A3 — Truth run".
 See submissions/truth3/README.md for the verified hash and analysis plan.
+
+> **Final:** see `FINAL.md` (120/200 pts, 12 eggs, 25/30 claims, all truth runs used).
