@@ -251,6 +251,11 @@ fn samples(log: &[u8]) -> Vec<(u32, u32, u32)> {
 
 /// The longest stretch at 10x a source's usual rate, as (start, end) ms.
 fn flood_stretch(v: &[Cust]) -> Option<(u32, u32)> {
+    flood_stretch_at(v, 10.0, 8_000)
+}
+
+/// The longest stretch at `k`x a source's usual rate lasting `min_ms`+.
+fn flood_stretch_at(v: &[Cust], k: f64, min_ms: u32) -> Option<(u32, u32)> {
     let rates: Vec<(u32, u32, f64)> = v
         .windows(2)
         .filter(|w| w[1].t > w[0].t && w[1].pkts >= w[0].pkts)
@@ -264,7 +269,7 @@ fn flood_stretch(v: &[Cust]) -> Option<(u32, u32)> {
     let usual = sorted[sorted.len() / 2].max(5.0);
     let (mut best, mut start) = (None::<(u32, u32)>, None::<u32>);
     for &(a, b, r) in &rates {
-        if r >= 10.0 * usual {
+        if r >= k * usual {
             let s = *start.get_or_insert(a);
             if best.is_none_or(|(x, y)| b - s > y - x) {
                 best = Some((s, b));
@@ -273,7 +278,7 @@ fn flood_stretch(v: &[Cust]) -> Option<(u32, u32)> {
             start = None;
         }
     }
-    best.filter(|(a, b)| b - a >= 8_000)
+    best.filter(|(a, b)| b - a >= min_ms)
 }
 
 /// Flood, v2 (a DDoS): a sender's flood (10x its usual rate, 8 s or more)
@@ -308,14 +313,16 @@ pub fn ladder(log: &[u8]) -> bool {
     })
 }
 
-/// Flood v3 (a UDP DDoS from a TCP customer): a sender runs at 10x its
-/// usual rate for 8 s or more, the flood is at least 80% UDP, and before
+/// Flood v3 (a UDP DDoS from a TCP customer): a sender runs at 5x its
+/// usual rate for 5 s or more, the flood is at least 80% UDP, and before
 /// it the sender was at most 20% UDP. Truth runs: Home users, normally
 /// 200 B TCP to Fastly, send ~30x in 64 B UDP from many hosts 16.7-30 s.
 /// A flash crowd (a TCP surge) is not this.
 pub fn udp_flood(log: &[u8]) -> bool {
     readings(log).values().any(|v| {
-        let Some((a, b)) = flood_stretch(v) else { return false };
+        // 5x for 5 s: the UDP switch, not the size of the surge, is what
+        // separates it from a flash crowd, so allow for weaker floods.
+        let Some((a, b)) = flood_stretch_at(v, 5.0, 5_000) else { return false };
         let at = |t: u32| v.iter().filter(|c| c.t <= t).max_by_key(|c| c.t).copied();
         let (Some(s0), Some(s1)) = (at(a), at(b)) else { return false };
         let first = v[0];

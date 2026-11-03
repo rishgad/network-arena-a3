@@ -36,9 +36,10 @@ def apply(text, egg, how):
         return text, {"on": flood(text, "Home users", 15000, 15000), "off": "",
                       "flashcrowd": flood(text, "Home users", 15000, 15000, proto="tcp"),
                       "short": flood(text, "Home users", 15000, 3000),
-                      "small": flood(text, "Home users", 15000, 15000, pps=150)}[how]
+                      "small": flood(text, "Home users", 15000, 15000, pps=150),
+                      "weaker": flood(text, "Home users", 15000, 7000, pps=700)}[how]
 
-CASES = {"DUP": ["on", "off", "other-cust"], "TTL": ["on", "off", "const8", "const4", "ladder-ping"], "FLOOD": ["on", "off", "flashcrowd", "short", "small"]}
+CASES = {"DUP": ["on", "off", "other-cust"], "TTL": ["on", "off", "const8", "const4", "ladder-ping"], "FLOOD": ["on", "off", "flashcrowd", "short", "small", "weaker"]}
 
 def world(target, how, seed):
     base = subprocess.run(["python3", "-I", str(ROOT / "worlds/local/gen_grid.py"), str(seed)], capture_output=True, text=True).stdout
@@ -61,12 +62,12 @@ def run(item):
     return p.stem, team.stat().st_size, {k: subprocess.run([SIM, "detect", d, team], capture_output=True, text=True).stdout.strip() for k, d in dets.items()}
 
 sw = sys.argv[1]; dets = dict(a.split("=", 1) for a in sys.argv[2:])
-items = [(t, h, s, l, sw, dets) for t in dets for h in CASES[t] for s in (31, 32) for l in (1.0, 1.5)]
+items = [(t, h, s, l, sw, dets) for t in dets for h in CASES[t] for s in (31, 32) for l in (1.0, 1.5, 2.0)]
 with cf.ThreadPoolExecutor(8) as ex: rows = list(ex.map(run, items))
 bad = 0
 for name, size, ans in rows:
     target, how = name.split("-")[0], name.split("-")[1]
-    want = {k: "true" if (k != target or how == "on") else "false" for k in dets}
+    want = {k: "true" if (k != target or how in ("on", "weaker")) else "false" for k in dets}
     if how == "other" or name.split("-")[1:3] == ["other", "cust"]:
         want[target] = "false"
     wrong = [k for k in dets if ans.get(k) != want[k]]
