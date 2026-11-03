@@ -26,6 +26,9 @@ pub const TAG_DELAY: u8 = 5;
 /// Ports that refused packets last window: `[sw u8][t_10ms u16][n u8]
 /// n x [nbr u8][drops varint][util_pct u8]`.
 pub const TAG_DROPS: u8 = 6;
+/// A sampled packet from a local host: `[sw u8][t_10ms u16][src u32]
+/// [dst u32][proto u8][size u16][ttl u8]`.
+pub const TAG_SAMPLE: u8 = 7;
 /// The customer ranges the switches were told at init, in their index order.
 pub const TAG_CUSTOMERS: u8 = 0xA4;
 

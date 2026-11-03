@@ -61,6 +61,7 @@ class Log:
     windows: list = field(default_factory=list)
     links: list = field(default_factory=list)
     pairs: list = field(default_factory=list)
+    samples: list = field(default_factory=list)
     errors: list = field(default_factory=list)
     trailing: int = 0
 
@@ -98,9 +99,15 @@ def parse(data: bytes) -> Log:
                     c["lowttl"] = r.var() if c["flags"] & CF_LOWTTL else 0
                     c["udp"] = r.var() if c["flags"] & CF_UDP else 0
                     w["cust"].append(c)
+                w["multi"] = [r.u8() for _ in range(r.u8())] if r.i < len(body) else []
                 L.windows.append(w)
             elif tag == TAG_LINK:
                 L.links.append(dict(arrive=arrive, sw=r.u8(), port=r.u8(), nbr=r.u8(), silent=r.u8(), t=r.u16() * 10, off=i))
+            elif tag == 7:
+                sw, t = r.u8(), r.u16() * 10
+                L.samples.append(dict(arrive=arrive, sw=sw, t=t, src=r.u32(), dst=r.u32(), proto=r.u8(), size=r.u16(), ttl=r.u8()))
+            elif tag in (5, 6):
+                pass
             elif tag == TAG_PAIRS:
                 p = dict(arrive=arrive, sw=r.u8(), t=r.u16() * 10, items=[], off=i)
                 for _ in range(r.u8()):
@@ -136,7 +143,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("log", type=Path)
     ap.add_argument("--customers", type=Path)
-    for f in ("links", "customers-table", "ports", "pairs", "budget", "all", "timeline"):
+    for f in ("samples", "multipath", "links", "customers-table", "ports", "pairs", "budget", "all", "timeline"):
         ap.add_argument(f"--{f}", action="store_true")
     a = ap.parse_args()
     L = parse(a.log.read_bytes())
@@ -169,6 +176,23 @@ def main() -> int:
         first = min((w["t"] for w in L.windows), default=0)
         last = max((w["t"] for w in L.windows), default=0)
         print(f"  coverage: windows from {first} ms to {last} ms")
+    if a.samples or every:
+        print("\n== sampled packets (src -> dst), one line per distinct customer pair")
+        seen = {}
+        for s in L.samples:
+            k = (cmap.label(s["src"]) if cmap else int_to_ip(s["src"]), cmap.label(s["dst"]) if cmap else int_to_ip(s["dst"]))
+            seen.setdefault(k, []).append(s)
+        for (a_, b_), v in sorted(seen.items(), key=lambda kv: kv[1][0]["t"]):
+            s = v[0]
+            print(f"  {len(v):>3}x first t {s['t']:>6} sw {s['sw']:>2}  {a_} -> {b_}  proto {s['proto']} size {s['size']} ttl {s['ttl']}")
+    if a.multipath or every:
+        print("\n== sources arriving on 2+ ports of a switch (windows)")
+        mp = collections.Counter()
+        for w in L.windows:
+            for i in w.get("multi", []):
+                mp[(w["sw"], i)] += 1
+        for (sw, i), n in sorted(mp.items()):
+            print(f"  sw {sw:>2} {name(i):<45} {n} windows")
     if a.links or every:
         print("\n== link events (switch:port <- neighbour), t = last keepalive before silence / first after")
         for e in sorted(L.links, key=lambda e: (e["t"], e["sw"])):

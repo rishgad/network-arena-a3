@@ -89,7 +89,9 @@ const EPOCH_ENTRY: u64 = 1;
 
 // R1 layout: [(src & 7) * 256 + (dst & 255)] epoch stamps, then [2048 + src] last seq.
 const R1_SEQ: u64 = 2048;
-const R1_SIZE: u32 = 2112;
+const R1_SAMPLE: u64 = 2112; // [2112 + src] packets seen, for 1-in-128 samples
+const R1_SIZE: u32 = 2176;
+const M_SAMPLE: u32 = 7;
 // C1 layout.
 const C1_PKTS: usize = 0; // [pidx*64 + src]: pidx = port & 3 for switch ports, 4 = local hosts
 const LOCAL: usize = 4;
@@ -150,6 +152,10 @@ pub struct Scope {
     /// At the logger: reports already written, so a copy sent two ways is
     /// written once. Bounded: cleared when it grows past 4096.
     written: std::collections::HashSet<Vec<u8>>,
+    /// Sampled packets waiting to be reported, and (src /24, dst /24) pairs
+    /// already reported: novel pairs go first.
+    samples: VecDeque<[u8; 12]>,
+    sampled_pairs: std::collections::HashSet<(u32, u32)>,
 }
 
 fn entry(id: u64, key: u64, plen: u8, action: TableActionW) -> TableEntryW {
@@ -184,12 +190,15 @@ fn program(sample_mask: u64) -> TinyProgram {
         .eq(11, 9, 10).eq(12, 10, 4).konst(6, 1).xor(12, 12, 6).and(11, 11, 12).storem(M_DUP, 11)
         .load(13, F::IngressPort).konst(14, 100).lt(15, 13, 14).konst(6, 1).xor(15, 15, 6).storem(M_LOCAL, 15)
         .bifnot(15, "end")
+        // Every 128th packet of each local source is sampled.
+        .konst(30, R1_SAMPLE).add(30, 7, 30).rread(R1, 30, 31).konst(32, 1).add(31, 31, 32).rwrite(R1, 30, 31)
+        .konst(33, 127).and(34, 31, 33).eq(35, 34, 4).storem(M_SAMPLE, 35)
         .konst(16, 7).and(17, 7, 16).shl(18, 17, 8)
         .load(19, F::IpDst).konst(20, 255).and(21, 19, 20).add(18, 18, 21)
         .rread(R1, 18, 22).loadm(23, M_EPOCH).eq(24, 22, 23).bif(24, "end")
         .rwrite(R1, 18, 23).konst(25, 1).storem(M_NEW, 25)
         .label("end");
-    stages.push(s.build(64, 4));
+    stages.push(s.build(64, 6));
     // 5. packets by (source, ingress port class); keepalives by port.
     let mut s = Stage::new();
     skip_ours(&mut s);
@@ -240,6 +249,9 @@ fn program(sample_mask: u64) -> TinyProgram {
     stages.push(s.build(24, 1));
     // 8. sample keepalives.
     let mut s = Stage::new();
+    if option_env!("SCOPE_SAMPLES").is_some() {
+        s.loadm(8, M_SAMPLE).bifnot(8, "nosample").punt(4).label("nosample");
+    }
     s.load(0, F::Kind).konst(1, KIND_KEEPALIVE).eq(2, 0, 1).bifnot(2, "end")
         .load(3, F::Seq).konst(4, sample_mask).and(5, 3, 4).konst(6, 0).eq(7, 5, 6).bifnot(7, "end")
         .punt(1)
@@ -417,6 +429,15 @@ impl Scope {
                 put_varint(&mut b, udp);
             }
         }
+        // Sources that came in on two or more switch ports this window.
+        let multi: Vec<u8> = (1..64)
+            .filter(|s| {
+                (0..4).filter(|p| at(c1, C1_PKTS + p * 64 + s) > at(&self.prev, C1_PKTS + p * 64 + s)).count() >= 2
+            })
+            .map(|s| s as u8)
+            .collect();
+        b.push(multi.len() as u8);
+        b.extend_from_slice(&multi);
         b.truncate(250); // DESIGN.md sizes the worst case well below this
         self.prev = c1.to_vec();
         self.emit(now, TAG_WINDOW, b, out);
@@ -507,6 +528,8 @@ impl SwitchProgram for Scope {
             customers,
             prev: Vec::new(),
             written: std::collections::HashSet::new(),
+            samples: VecDeque::new(),
+            sampled_pairs: std::collections::HashSet::new(),
         };
         (me, setup)
     }
@@ -562,6 +585,22 @@ impl SwitchProgram for Scope {
                     .min_by_key(|&i| self.alt_hops[i])
                     .map_or(self.alts[0], |i| self.alts[i]);
                 self.set_parent(pick, &mut out);
+            }
+            _ if matches!(ev.reason, PuntReason::Custom(4)) => {
+                let key = (ev.ip_src >> 8, ev.ip_dst >> 8);
+                let novel = self.sampled_pairs.insert(key);
+                let mut rec = [0u8; 12];
+                rec[0..4].copy_from_slice(&ev.ip_src.to_le_bytes());
+                rec[4..8].copy_from_slice(&ev.ip_dst.to_le_bytes());
+                rec[8] = ev.ip_proto;
+                rec[9..11].copy_from_slice(&(ev.packet_size.min(65535) as u16).to_le_bytes());
+                rec[11] = ev.ip_ttl;
+                if novel {
+                    self.samples.push_front(rec);
+                } else if self.samples.len() < 4 {
+                    self.samples.push_back(rec);
+                }
+                self.samples.truncate(8);
             }
             _ => {
                 if let Some(k) = keepalive(&ev.payload) {
@@ -695,6 +734,13 @@ impl SwitchProgram for Scope {
                 self.window(now, &c1, &mut out);
             }
             self.bump_epoch(&mut out);
+            for _ in 0..2 {
+                let Some(rec) = self.samples.pop_front() else { break };
+                let mut b = vec![self.me as u8, 0, 0];
+                b[1..3].copy_from_slice(&Self::now10(now).to_le_bytes());
+                b.extend_from_slice(&rec);
+                self.emit(now, TAG_SAMPLE, b, &mut out);
+            }
             let w = self.tick / WINDOW_TICKS;
             if !LINKS_ONLY && option_env!("SCOPE_CUST_ONLY").is_none() && w % PAIR_EVERY == (self.me as u64) % PAIR_EVERY && !c2.is_empty() {
                 self.pairs(now, &c2, &mut out);
