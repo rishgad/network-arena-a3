@@ -22,6 +22,7 @@ pub struct Cust {
     pub udp: u64,
     pub small: u64,
     pub mid: u64,
+    pub ttl4: u64,
 }
 
 /// Every customer reading, keyed by (switch, customer index), in time order.
@@ -62,8 +63,9 @@ pub fn readings_multi_via(log: &[u8]) -> (HashMap<(u8, u8), Vec<Cust>>, HashMap<
                 let (small, mid, _new) = (r.var()?, r.var()?, r.var()?);
                 let dup = if flags & CF_DUP != 0 { r.var()? } else { 0 };
                 let lowttl = if flags & CF_LOWTTL != 0 { r.var()? } else { 0 };
+                let ttl4 = if flags & CF_LOWTTL != 0 && option_env!("TTL4").is_some() { r.var()? } else { 0 };
                 let udp = if flags & CF_UDP != 0 { r.var()? } else { 0 };
-                Some((idx, Cust { t: t as u32 * 10, pkts, dup, lowttl, udp, small, mid }))
+                Some((idx, Cust { t: t as u32 * 10, pkts, dup, lowttl, udp, small, mid, ttl4 }))
             })();
             let Some((idx, c)) = row else { break };
             out.entry((sw, idx)).or_default().push(c);
@@ -292,6 +294,20 @@ pub fn flood_elsewhere(log: &[u8]) -> bool {
     })
 }
 
+/// Traceroute (a TTL ladder): most of a sender's packets start with a low
+/// TTL, and the TTLs climb: both TTL < 4 and 4 <= TTL < 8 are common (each
+/// 20% or more). Truth run 3: Mapper delivers 62.6% = 5/8, a ladder 1..8 on
+/// a 3-hop path. A constant low TTL fills only one band.
+pub fn ladder(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let c = last(v);
+        let p = c.pkts.max(1);
+        let lo = c.ttl4;
+        let mid = c.lowttl.saturating_sub(c.ttl4);
+        c.lowttl >= 100 && c.lowttl * 2 >= p && lo * 5 >= p && mid * 5 >= p
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -301,6 +317,7 @@ fn detect(log: &[u8]) -> bool {
         Some("LAG") => lag(log),
         Some("SHUFFLE2") => shuffle_reorder(log),
         Some("FLOOD2") => flood_elsewhere(log),
+        Some("LADDER") => ladder(log),
         _ => false,
     }
 }

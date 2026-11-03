@@ -1,0 +1,22 @@
+TTL-on-s31-l1.0             15587B TTL=true  ok
+TTL-on-s31-l1.5             15734B TTL=true  ok
+TTL-on-s32-l1.0             15587B TTL=true  ok
+TTL-on-s32-l1.5             15734B TTL=true  ok
+TTL-off-s31-l1.0            15449B TTL=false  ok
+TTL-off-s31-l1.5            15590B TTL=false  ok
+TTL-off-s32-l1.0            15449B TTL=false  ok
+TTL-off-s32-l1.5            15590B TTL=false  ok
+TTL-const8-s31-l1.0         15560B TTL=false  ok
+TTL-const8-s31-l1.5         15703B TTL=false  ok
+TTL-const8-s32-l1.0         15560B TTL=false  ok
+TTL-const8-s32-l1.5         15703B TTL=false  ok
+TTL-const4-s31-l1.0         15593B TTL=false  ok
+TTL-const4-s31-l1.5         15738B TTL=false  ok
+TTL-const4-s32-l1.0         15593B TTL=false  ok
+TTL-const4-s32-l1.5         15738B TTL=false  ok
+TTL-ladder-ping-s31-l1.0    15587B TTL=true  WRONG TTL
+TTL-ladder-ping-s31-l1.5    15734B TTL=true  WRONG TTL
+TTL-ladder-ping-s32-l1.0    15587B TTL=true  WRONG TTL
+TTL-ladder-ping-s32-l1.5    15734B TTL=true  WRONG TTL
+
+16/20 right

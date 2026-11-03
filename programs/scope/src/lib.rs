@@ -104,7 +104,8 @@ const C1_MID: usize = 640; // size < 640
 const C1_KA: usize = 704; // [port & 7]
 const C1_OUT: usize = 712; // bytes the harness sends out of switch port [p & 7]
 const C1_DELIV: usize = 720; // [720 + src] packets handed to a local host here
-const C1_SIZE: u32 = 784;
+const C1_TTL4: usize = 784; // [784 + src] TTL < 4 (ingress switch only)
+const C1_SIZE: u32 = 848;
 /// A port whose way out ran above this share of its capacity last window
 /// is busy: reports queue behind customers there and may never leave.
 const BUSY_PCT: u64 = 85;
@@ -233,6 +234,8 @@ fn program(sample_mask: u64) -> TinyProgram {
         .label("nodup")
         .load(10, F::IpTtl).konst(6, 8).lt(11, 10, 6).bifnot(11, "nolow")
         .konst(6, C1_LOWTTL as u64).add(9, 1, 6).counter(C1, 9, 14)
+        .konst(6, 4).lt(11, 10, 6).bifnot(11, "nolow")
+        .konst(6, C1_TTL4 as u64).add(9, 1, 6).counter(C1, 9, 14)
         .label("nolow")
         .load(12, F::IpProto).konst(6, 17).eq(13, 12, 6).bifnot(13, "noudp")
         .konst(6, C1_UDP as u64).add(9, 1, 6).counter(C1, 9, 14)
@@ -243,7 +246,7 @@ fn program(sample_mask: u64) -> TinyProgram {
         .konst(6, 640).lt(16, 15, 6).bifnot(16, "end")
         .konst(6, C1_MID as u64).add(9, 1, 6).counter(C1, 9, 14)
         .label("end");
-    stages.push(s.build(64, 6));
+    stages.push(s.build(64, 7));
     // 7. (source & 15) x destination, ingress switch only, data packets.
     let mut s = Stage::new();
     s.loadm(0, M_LOCAL).bifnot(0, "end")
@@ -414,6 +417,7 @@ impl Scope {
             if low > 0 {
                 flags |= CF_LOWTTL;
             }
+            let ttl4 = at(c1, C1_TTL4 + s);
             if udp > 0 {
                 flags |= CF_UDP;
             }
@@ -428,6 +432,9 @@ impl Scope {
             }
             if flags & CF_LOWTTL != 0 {
                 put_varint(&mut b, low);
+                if option_env!("SCOPE_TTL4").is_some() {
+                    put_varint(&mut b, ttl4);
+                }
             }
             if flags & CF_UDP != 0 {
                 put_varint(&mut b, udp);
