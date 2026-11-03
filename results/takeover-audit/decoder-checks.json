@@ -1,0 +1,32 @@
+[
+  {
+    "log": "truth1",
+    "decode_exit": 0,
+    "negative_missing_count": false,
+    "delivery_view_present": true
+  },
+  {
+    "log": "truth2",
+    "decode_exit": 0,
+    "negative_missing_count": false,
+    "delivery_view_present": true
+  },
+  {
+    "log": "truth3-L0-a",
+    "decode_exit": 0,
+    "negative_missing_count": false,
+    "delivery_view_present": true
+  },
+  {
+    "log": "truth3-L0-b",
+    "decode_exit": 0,
+    "negative_missing_count": false,
+    "delivery_view_present": true
+  },
+  {
+    "log": "truth3-L0-c",
+    "decode_exit": 0,
+    "negative_missing_count": false,
+    "delivery_view_present": true
+  }
+]

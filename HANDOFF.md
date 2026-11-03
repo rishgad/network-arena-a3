@@ -9,7 +9,7 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 
 - Eggs won (6, 56 pts): 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
   slow link · 18 flapping link · 19 SRLG.
-- Claims used: 14 of 30 (15th = R4 if uploaded). Truth runs used: 2 of 3.
+- Claims used: 15 of 30; user confirms #15 R4 is pending. Truth runs used: 2 of 3.
 - Known to exist (another team won it): 20 · Failure · The rebooting switch.
 
 | # | Claim dir | Result | Rule |
@@ -29,7 +29,7 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 | 13 | claim-FLAP | **won 18** | any link, both ends silent overlapping, ≥3 recovered |
 | 14 | claim-R2 | miss | any switch, all-but-one nbrs, overlapping ≥1 s, recovered |
 | — | claim-R3 | NOT SENT | fires on "2 of 3 links" near miss — rejected |
-| 15? | claim-R4 | pending | every link of a 3+-link switch down together (≥300 ms), back; ≤1 link known only by its recovery |
+| 15 | claim-R4 | pending (user confirmed) | every link of a 3+-link switch down together (≥300 ms), back; ≤1 link known only by its recovery |
 
 **Lesson from the wins:** each winner was (a) generic or tied to a measured
 fingerprint, and (b) explicitly rejected the most plausible near miss
@@ -121,3 +121,30 @@ detect.wasm differs from every earlier claim's, matrix with near misses.
    victim, multiple sources), TTL (constant TTL 8 vs a traceroute ladder),
    shallow queue (maybe normal config, or defined per link).
 4. Unclaimed anomalies above — decide which are normal behaviour.
+
+
+## Takeover audit (2026-11-02; R4 still pending)
+
+PROGRESS.md has been refreshed; its former zero-attempt ledger was stale.
+No new upload or reply is inferred. Six eggs / 56 points remain confirmed.
+
+- R4 rechecked true on both real truth logs, false on empty; no duplicate
+  detector hash. Existing matrix remains 38/44 with six missed positives.
+- Practice map has switches 0-5. Saved R4 (logger 7) and truth3 (logger 10)
+  produce empty practice logs despite completing without stops. Use a
+  practice-only logger-0 build to test instrumentation, and the saved
+  logger-10 artifact on the 15-switch proxy. Do not swap upload binaries.
+- Truth3 build reproduced byte-for-byte with SCOPE_LOGGER=10
+  SCOPE_DELIVERED=1 SCOPE_NO_PAIRS=1 SCOPE_SAMPLES=1 (touch before build).
+- Logger-0 truth3 variant passes all three practice truth loads with real
+  logs and delivery sections. Saved truth3 passes four calm-grid checks
+  at 48.8-49.8 KB, with all 15 switches reporting and no decode errors.
+- `scopelog.py --delivery` now displays ingress/host-egress counts and
+  times. Host-egress occurs before the final host queue/link, so interpret
+  deficits as leads rather than proof of application loss. Original truth
+  logs lack the new delivery section. Budget missing counts now use
+  sequence span; first/last report loss still needs coverage inspection.
+- See analysis/scope/NEXT_STEPS.md for ranked investigations and a truth3
+  decision plan. No new claim is recommended for upload yet.
+- Latest programs/scope/target build is the logger-0 practice variant;
+  submissions/truth3/switch.wasm is unchanged and still logger 10.

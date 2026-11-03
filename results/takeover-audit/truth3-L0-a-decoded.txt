@@ -1,0 +1,52 @@
+log /private/tmp/a3-takeover-jagnzyvu/truth3-L0-a.team: 16422 B, 428 frames, trailing 0 B, errors 0
+header {'version': 1, 'logger': 0, 'window_ms': 1000, 'tick_ms': 100, 'ncust': 6}  customers 6
+
+== budget by tag (bytes, frames)
+  tag 0x01:  12765 B    235 frames
+  tag 0x02:     20 B      2 frames
+  tag 0x07:   3591 B    189 frames
+  tag 0xa3:     11 B      1 frames
+  tag 0xa4:     35 B      1 frames
+  windows per switch: received / expected-from-seq-span, lost, latency ms (median/max), latest obs t
+   sw  0:  39/39  missing  0  lat    0/    0  last t 39780
+   sw  1:  39/39  missing  0  lat    0/   10  last t 39470
+   sw  2:  39/39  missing  0  lat   10/  640  last t 39160
+   sw  3:  40/40  missing  0  lat    0/   20  last t 39880
+   sw  4:  39/39  missing  0  lat    0/   20  last t 39570
+   sw  5:  39/39  missing  0  lat    0/   10  last t 39270
+  coverage: windows from 100 ms to 39880 ms
+
+== source ingress and host-egress counters (cumulative, per reporting switch)
+  Counts have different observation times; do not subtract unaligned endpoints.
+  Host-egress means routed toward a local host, before its final queue/link.
+  unknown
+    host-egress sw  0:      5799 packets at t=39780 ms
+    host-egress sw  2:         1 packets at t=39160 ms
+    host-egress sw  3:     49823 packets at t=39880 ms
+    host-egress sw  4:      2358 packets at t=39570 ms
+    host-egress sw  5:         1 packets at t=39270 ms
+  #1 [10.9.14.0/24]
+    ingress     sw  2:      9059 packets at t=39160 ms
+    host-egress sw  0:      9199 packets at t=39780 ms
+    host-egress sw  2:         1 packets at t=39160 ms
+  #2 [10.10.196.0/24]
+    ingress     sw  0:      8952 packets at t=39780 ms
+    host-egress sw  0:         1 packets at t=39780 ms
+    host-egress sw  2:      8813 packets at t=39160 ms
+  #3 [10.10.248.0/24]
+    ingress     sw  3:     49853 packets at t=39880 ms
+    host-egress sw  3:         1 packets at t=39880 ms
+    host-egress sw  4:     49442 packets at t=39570 ms
+  #4 [10.11.150.0/24]
+    ingress     sw  2:      2449 packets at t=39160 ms
+    host-egress sw  2:         1 packets at t=39160 ms
+    host-egress sw  3:      2493 packets at t=39880 ms
+  #5 [10.44.73.0/24]
+    ingress     sw  4:      2409 packets at t=39570 ms
+    host-egress sw  2:      2317 packets at t=39160 ms
+    host-egress sw  4:         1 packets at t=39570 ms
+    host-egress sw  5:        50 packets at t=39270 ms
+  #6 [10.61.4.0/24]
+    ingress     sw  0:      5801 packets at t=39780 ms
+    host-egress sw  0:         1 packets at t=39780 ms
+    host-egress sw  5:      5693 packets at t=39270 ms

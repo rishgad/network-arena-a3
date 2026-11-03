@@ -1,115 +1,95 @@
-# A3 progress (team working notes)
+# A3 progress (current team state)
 
 Last updated 2026-11-02. Deadline: end of Tue 2026-11-03, Central.
+User uploads to Canvas, one file set at a time. No agent submissions.
 
-## Official attempts
+## Official attempts and score
 
-| | Used | Left | Notes |
+| Item | Used | Left | State |
 |---|---|---|---|
-| Truth runs | 0 | 3 | A run counts only when a log comes back; first 2 error runs free |
-| Claims | **unknown** (not established) | ≤30 | one egg per claim; duplicates/non-installs don't count |
+| Truth runs | 2 of 3 | 1 | `submissions/truth3/switch.wasm` built, unused |
+| Claims | 15 of 30 | 15 | User confirms #15 R4 is pending; no reply yet |
+| Score | 6 eggs / 56 points | 14 eggs unwon | Eggs 8, 10, 13, 14, 18, 19 |
 
-Nothing has been submitted. Every submission waits for an explicit go-ahead.
+The earlier zero-attempt progress notes were stale. Current user state
+supersedes them. Do not infer an upload from a directory existing.
+See HANDOFF.md for the full claim ledger. Do not replace a pending upload.
 
-## Confirmed rules (SUBMITTING.md sha256 712c3fdb…, handout, kit source)
+## Confirmed constraints
 
-- Canvas: "A3 — Truth run" (switch.wasm) → team.log + customers.txt;
-  "A3 — Claim" (switch.wasm + detect.wasm). One upload at a time.
-- Caps: truth 64 KB (65,536 B); claim 24 KB (24,576 B); practice 16 KB.
-- Map: 3×5 grid, switches 0–14, links 0-1 0-5 1-2 1-6 2-3 2-7 3-4 3-8 4-9
-  5-6 5-10 6-7 6-11 7-8 7-12 8-9 8-13 9-14 10-11 11-12 12-13 13-14.
-- 20 eggs: 4 easy ×4, 9 medium ×8, 7 hard ×16; 150 = 100%.
-- Per switch: 80 punts/s (backlog 64), export 16 kB/s burst 8 kB (practice
-  values; the real network's are told at init), report queue 4 packets,
-  report ≤ packet size, 4 M fuel/call, ≤8 TinyVM stages, ≤64 instrs/stage,
-  one memory resource per stage.
-- **Undocumented, found in `src/wasm.rs::call_export`:** every event into
-  the program (timer events with their counter snapshots included) must
-  encode to ≤4,096 B or the switch program dies. Keep total counter slots
-  ≈ <2,000.
-- Harness: only explicit punts reach the controller (no NoRoute punts);
-  switch ports are 0..n, app ports ≥100; reports go by our own tables;
-  reports wait behind customer packets (strict priority), so a saturated
-  link starves them; keepalives share the customer queue, so congestion
-  alone can make keepalives vanish (a false "link down").
-- Plant vocabulary in this kit (`src/sim/plant.rs`): side_flow, link_delay,
-  wire_loss, link_capacity, fail, pause, scan; plus harness keepalive_gap,
-  route via/backup/split, shallow queue; app echo, ttl_ladder/ttl_start,
-  proto; switch failure. The `ping` preset is documented as "used by the
-  eggs that need a light sender of their own on a quiet link". The hidden
-  eggs may use mechanisms beyond these.
-- In practice truth runs the plant times are identical across A/B/C; only
-  seed and load change. Claim runs move the egg in time and reshuffle ranges.
+- Official log caps: truth 65,536 B, claim 24,576 B. Practice claim 16,384 B.
+- Fixed 15-switch, 22-link grid; customer ranges reshuffled in claims.
+- Detector reads only the team log. Customer maps are offline analysis aids.
+- Do not change evidence/ or kit sources src/, switch_program_sdk/,
+  switch_program_types/, examples/, worlds/practice/.
+- Build switches use option_env!: touch the crate's src/lib.rs before each
+  build; pass variables inline. Never use `env $1` in zsh.
+- Incoming WASM event encodings must fit 4,096 B (including counter snapshots).
+- Reports can be starved by customers. The proxy is more congested than
+  real truth runs; proxy loss is not evidence of equivalent hidden loss.
 
-## Evidence (evidence/, untouched, checksums re-verified)
+## Takeover verification
 
-See `analysis/evidence/SCHEMA.md`: framing verified for both logs; field
-meanings inferred with H/M/L confidence; 14 leads. The inferred topology
-from tag 5 matches the official map exactly (supports the tag-5 reading).
-Strongest leads (both logs, same times): link 1–6 flapping ~0.6 s ×4;
-links 0–1 + 10–11 down 22.95–30.1 s; all of switch 5 silent 31.9–36.1 s;
-asymmetric delay 2→1 ≈30 ms; 13↔14 ≈25 ms; 12→13 variable to 80 ms;
-6→11 +0.3 ms; Sync silent until ~20 s; Fortnite player /32 periodic quiet.
+- Read HANDOFF, SUBMITTING, logging API, limits, and previous progress in order.
+- No official reply or new submission received during takeover.
+- R4 saved detector: true on both official truth logs, false on empty log,
+  SHA256 differs from every other saved claim detector.
+- Existing R4 matrix: 38/44, six false negatives, no false positives. This
+  is a limitation, not a fully passing validation. Do not resubmit R4.
+- Saved R4 and truth3 switches complete practice truth A/B/C at
+  1.0/1.25/1.5 without stops, but logs are EMPTY: their logging switches
+  (7 and 10) do not exist on the six-switch practice map. This checks
+  runtime survival only, not report delivery or detector operation.
+- Rebuilt truth3 with explicit flags and reproduced its saved SHA256:
+  ac231c6b197e8d295e18caf03b8289d4d19844c5a12a2d102632aa7557efe34d.
+- Practice-only truth3 variant with logger 0: 16,422 / 16,535 / 16,510 B;
+  no stops, decode errors, or trailing bytes; 196 windows with nonzero
+  host-egress counters per world. These are truth worlds with a 64 KB cap.
+- Unmodified saved truth3 on calm 15-switch grids, seeds 11/12 and loads
+  1.0/1.5: 48,757 / 49,710 / 48,915 / 49,823 B, no stops or decode errors,
+  all 15 switches represented, observations through 39,980 ms. These
+  checks are local proxies, not a bound on hidden-network log size.
+- Machine-readable summaries: results/takeover-audit/.
 
-## Instruments
+## Analysis changes
 
-- `programs/scope/` — broad logger, format v1 (`programs/common/format.rs`,
-  decoder `analysis/scope/scopelog.py`). 8-stage data plane counts every
-  packet (no packet punts): per (source customer × ingress port class),
-  local-sender extras (new destinations per window via an epoch-stamped
-  register bitmap, repeated seq, TTL<8, UDP, size classes), (src&15)×dst
-  pairs, keepalives per port, outbound bytes per port. Controller: 100 ms
-  tick, staggered 1 s windows of cumulative counters + delay min/max +
-  drops + outbound utilisation; immediate link silence/recovery events;
-  reports routed by data-plane entries along a hop-count beacon tree.
-- `tools/tracecheck/` — ground truth from a full simlog (report fate,
-  link events, per-customer ingress per 100 ms). Local only.
-- `worlds/local/gen_grid.py` — 15-switch grid proxy (budget/load proxy, not
-  a replica).
+`analysis/scope/scopelog.py --delivery` now prints cumulative source ingress
+and host-egress counters with each observation time. It does not compute
+misleading loss ratios across asynchronous snapshots. The budget report
+now uses observed sequence span rather than a fixed 39-window expectation,
+which previously produced negative missing counts for 40-window switches.
+Sequence span detects internal gaps only, not lost first/last reports.
 
-## Validation so far
+Host-egress counters are incremented when the harness selects an app port,
+before the final queue/link; they are NOT confirmed application delivery.
+Announcements and unknown-source traffic can appear. Report loss and
+unequal snapshot times must be accounted for before diagnosing data loss.
 
-| Run | Log size | Windows delivered | Eggs visible |
-|---|---|---|---|
-| practice truth A/B/C (1.0/1.25/1.5), logger 1 | 11.3 KB | all (after util fix) | link 1–2 both ends; Spotify 12 s pause; scan 9–14 new dst/s |
-| grid proxy s1, logger 7, load 1.0 / 1.5 | 25.3 KB | **2,3,4,8 stop ≈11.6 s; 9 loses ~50%** | — |
+## Next actions
 
-Baseline: kit broken_link wins egg 21 10/10 (`results/baseline/`).
+1. Wait for the user's claim #15 R4 reply. Keep 56 points until confirmed.
+2. Work from the ranked investigations in analysis/scope/NEXT_STEPS.md;
+   no new claim is upload-ready. Reproduce each predicate with off and
+   near-miss cases before creating another submission package.
+3. Hold truth3 for now. After R4, consider spending it to measure
+   source-ingress versus host-egress deficits and where they occur.
+   It will not directly establish a reboot or a TTL ladder.
 
-## Open problem (blocks the first truth run)
+## Reproduce truth3 build and analysis
 
-Report delivery from the top-right of the grid fails under load: reports
-are refused at full report queues on saturated links into the logger
-(trace: refused at 2,3,4,8,9; customer drops S2:0, S7:1, S7:2). Options,
-in order: (1) logger placement away from saturated links (the supplied
-logs also had a blind spot at switch 2 with logger 7); (2) let a busy
-switch route via an equal-hop neighbour (loop-safe tie-break by id);
-(3) fewer, larger reports aggregated at relays; (4) proxy-world realism
-check — my Steam/Backup placements may over-saturate.
-
-## Hypotheses
-
-Not started beyond the leads table; detectors start after the first truth run.
-
-## Reproduce
+From repository root:
 
 ```sh
-cargo build --release                                   # simulator
-(cd tools/tracecheck && cargo build --release)
-(cd programs/scope && SCOPE_LOGGER=7 cargo build --release --target wasm32-unknown-unknown)
-python3 -I analysis/evidence/tlv.py evidence/provided-01/team.log
-python3 -I analysis/evidence/decode.py evidence/provided-01/team.log evidence/provided-01/customers.txt --tag 5
-python3 -I worlds/local/gen_grid.py 1 > worlds/local/grid-s1.toml
-./target/release/competitive_net_sim run-world worlds/local/grid-s1.toml --load-scale 1.5 \
-  --program programs/scope/target/wasm32-unknown-unknown/release/scope.wasm --team-log g.team --log g.simlog
-python3 -I analysis/scope/scopelog.py g.team --budget --links
-tools/tracecheck/target/release/tracecheck g.simlog
+(cd programs/scope && touch src/lib.rs && SCOPE_LOGGER=10 SCOPE_DELIVERED=1 SCOPE_NO_PAIRS=1 SCOPE_SAMPLES=1 cargo build -q --release --target wasm32-unknown-unknown)
+python3 -I analysis/scope/scopelog.py submissions/truth2/team.log --customers submissions/truth2/customers.txt --budget --links --samples --customers-table --delivery
 ```
 
-Current scope build (logger 7, NOT truth-run ready):
-`results/scope-v1/scope-L7.wasm` sha256 1fa7def3…f066.
+For a future truth3 response, use the same decoder with its returned
+team.log and customers.txt. First inspect parse errors and per-switch
+coverage, then compare counters at matched observation intervals. Old
+truth logs do not contain the new delivery section.
 
-## Next most useful action
-
-Fix report delivery on the grid proxy (above), re-validate on the three
-practice truth worlds at 1.0/1.25/1.5, then present the truth-run package.
+For a six-switch practice variant use SCOPE_LOGGER=0 with the other flags
+unchanged. Never replace the saved truth3 submission with that variant.
+The latest local crate target currently contains the LOGGER=0 practice
+variant; the saved submissions/truth3/switch.wasm remains LOGGER=10.

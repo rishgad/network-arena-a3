@@ -2,7 +2,7 @@
 """Decode and summarise a scope v1 team log (programs/scope/FORMAT.md).
 
     python3 -I analysis/scope/scopelog.py LOG [--customers customers.txt]
-        [--links] [--customers-table] [--ports] [--pairs] [--budget] [--all]
+        [--links] [--customers-table] [--ports] [--pairs] [--budget] [--delivery] [--all]
 
 With --customers (a truth run's customers.txt), each customer index is
 named by matching the ranges the log's header carries; without it the
@@ -165,10 +165,10 @@ def main() -> int:
         per_sw = collections.Counter()
         seqs = collections.defaultdict(list)
         lat = collections.defaultdict(list)
-        for w in L.windows:
+        for w in sorted(L.windows, key=lambda w: w["t"]):
             seqs[w["sw"]].append(w["seq"])
             lat[w["sw"]].append(w["arrive"] - w["t"])
-        print("  windows per switch: received / expected-from-seq-span, lost, latency ms (median/max), last obs t")
+        print("  windows per switch: received / expected-from-seq-span, lost, latency ms (median/max), latest obs t")
         for sw in sorted(seqs):
             s = seqs[sw]
             span = (s[-1] - s[0]) % 256 + 1 if s else 0
@@ -177,7 +177,7 @@ def main() -> int:
             # Internal gaps only: staggered timers can produce 39 or 40
             # windows. The sequence span cannot reveal missing first/last reports.
             expect = span
-            print(f"   sw {sw:>2}: {len(s):>3}/{expect:<3} missing {expect - len(set(s)):>2}  lat {lt[len(lt)//2]:>4}/{lt[-1]:>5}  last t {ws[-1]['t']}")
+            print(f"   sw {sw:>2}: {len(s):>3}/{expect:<3} missing {expect - len(set(s)):>2}  lat {lt[len(lt)//2]:>4}/{lt[-1]:>5}  last t {max(w['t'] for w in ws)}")
         first = min((w["t"] for w in L.windows), default=0)
         last = max((w["t"] for w in L.windows), default=0)
         print(f"  coverage: windows from {first} ms to {last} ms")

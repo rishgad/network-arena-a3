@@ -1,0 +1,56 @@
+[
+  {
+    "world": "a",
+    "load": 1.0,
+    "returncode": 0,
+    "stopped": false,
+    "bytes": 16422,
+    "errors": [],
+    "trailing": 0,
+    "header": {
+      "version": 1,
+      "logger": 0,
+      "window_ms": 1000,
+      "tick_ms": 100,
+      "ncust": 6
+    },
+    "delivery_windows": 196,
+    "decoder_exit": 0
+  },
+  {
+    "world": "b",
+    "load": 1.25,
+    "returncode": 0,
+    "stopped": false,
+    "bytes": 16535,
+    "errors": [],
+    "trailing": 0,
+    "header": {
+      "version": 1,
+      "logger": 0,
+      "window_ms": 1000,
+      "tick_ms": 100,
+      "ncust": 6
+    },
+    "delivery_windows": 196,
+    "decoder_exit": 0
+  },
+  {
+    "world": "c",
+    "load": 1.5,
+    "returncode": 0,
+    "stopped": false,
+    "bytes": 16510,
+    "errors": [],
+    "trailing": 0,
+    "header": {
+      "version": 1,
+      "logger": 0,
+      "window_ms": 1000,
+      "tick_ms": 100,
+      "ncust": 6
+    },
+    "delivery_windows": 196,
+    "decoder_exit": 0
+  }
+]

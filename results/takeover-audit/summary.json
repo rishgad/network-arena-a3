@@ -1,0 +1,95 @@
+{
+  "r4_checks": {
+    "empty": {
+      "answer": "false",
+      "returncode": 0,
+      "stderr": ""
+    },
+    "truth1": {
+      "answer": "true",
+      "returncode": 0,
+      "stderr": ""
+    },
+    "truth2": {
+      "answer": "true",
+      "returncode": 0,
+      "stderr": ""
+    },
+    "sha256": "95c75e41fbbbf59e5e719c7454e6d1b00290dfc7d3ba772ec32cde3934b0aebc",
+    "identical_other_detectors": []
+  },
+  "practice": [
+    {
+      "artifact": "R4",
+      "world": "a",
+      "load": 1.0,
+      "returncode": 0,
+      "stopped": false,
+      "bytes": 0,
+      "parser_errors": [],
+      "trailing": 0,
+      "header": {},
+      "delivery_windows": 0
+    },
+    {
+      "artifact": "R4",
+      "world": "b",
+      "load": 1.25,
+      "returncode": 0,
+      "stopped": false,
+      "bytes": 0,
+      "parser_errors": [],
+      "trailing": 0,
+      "header": {},
+      "delivery_windows": 0
+    },
+    {
+      "artifact": "R4",
+      "world": "c",
+      "load": 1.5,
+      "returncode": 0,
+      "stopped": false,
+      "bytes": 0,
+      "parser_errors": [],
+      "trailing": 0,
+      "header": {},
+      "delivery_windows": 0
+    },
+    {
+      "artifact": "truth3",
+      "world": "a",
+      "load": 1.0,
+      "returncode": 0,
+      "stopped": false,
+      "bytes": 0,
+      "parser_errors": [],
+      "trailing": 0,
+      "header": {},
+      "delivery_windows": 0
+    },
+    {
+      "artifact": "truth3",
+      "world": "b",
+      "load": 1.25,
+      "returncode": 0,
+      "stopped": false,
+      "bytes": 0,
+      "parser_errors": [],
+      "trailing": 0,
+      "header": {},
+      "delivery_windows": 0
+    },
+    {
+      "artifact": "truth3",
+      "world": "c",
+      "load": 1.5,
+      "returncode": 0,
+      "stopped": false,
+      "bytes": 0,
+      "parser_errors": [],
+      "trailing": 0,
+      "header": {},
+      "delivery_windows": 0
+    }
+  ]
+}

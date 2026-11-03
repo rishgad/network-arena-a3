@@ -1,0 +1,142 @@
+[
+  {
+    "seed": 11,
+    "load": 1.0,
+    "returncode": 0,
+    "stopped": false,
+    "bytes": 48757,
+    "errors": [],
+    "trailing": 0,
+    "header": {
+      "version": 1,
+      "logger": 10,
+      "window_ms": 1000,
+      "tick_ms": 100,
+      "ncust": 26
+    },
+    "last_observation_ms": 39980,
+    "delivery_windows": 588,
+    "reporting_switches": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  {
+    "seed": 11,
+    "load": 1.5,
+    "returncode": 0,
+    "stopped": false,
+    "bytes": 49710,
+    "errors": [],
+    "trailing": 0,
+    "header": {
+      "version": 1,
+      "logger": 10,
+      "window_ms": 1000,
+      "tick_ms": 100,
+      "ncust": 26
+    },
+    "last_observation_ms": 39980,
+    "delivery_windows": 588,
+    "reporting_switches": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  {
+    "seed": 12,
+    "load": 1.0,
+    "returncode": 0,
+    "stopped": false,
+    "bytes": 48915,
+    "errors": [],
+    "trailing": 0,
+    "header": {
+      "version": 1,
+      "logger": 10,
+      "window_ms": 1000,
+      "tick_ms": 100,
+      "ncust": 26
+    },
+    "last_observation_ms": 39980,
+    "delivery_windows": 549,
+    "reporting_switches": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  {
+    "seed": 12,
+    "load": 1.5,
+    "returncode": 0,
+    "stopped": false,
+    "bytes": 49823,
+    "errors": [],
+    "trailing": 0,
+    "header": {
+      "version": 1,
+      "logger": 10,
+      "window_ms": 1000,
+      "tick_ms": 100,
+      "ncust": 26
+    },
+    "last_observation_ms": 39980,
+    "delivery_windows": 549,
+    "reporting_switches": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  }
+]
