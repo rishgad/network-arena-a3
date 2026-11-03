@@ -226,6 +226,28 @@ pub fn shallow_queue(log: &[u8]) -> bool {
     hits.values().any(|&n| n >= 5)
 }
 
+/// Flapping link, any link: some link of the published map has at least
+/// three outages of `MIN_MS` or more that each came back.
+pub fn any_flap(log: &[u8]) -> bool {
+    let os = outages(log);
+    // Both ends silent at once: a link down. Congestion starves one
+    // direction's keepalives at a time, never both.
+    LINKS.iter().any(|&(a, b)| {
+        let ab: Vec<&Outage> = os.iter().filter(|o| o.sw == a && o.nbr == b && o.end.is_some()).collect();
+        let ba: Vec<&Outage> = os.iter().filter(|o| o.sw == b && o.nbr == a && o.end.is_some()).collect();
+        ab.iter()
+            .filter(|x| ba.iter().any(|y| x.start < y.end.unwrap() && y.start < x.end.unwrap()))
+            .count()
+            >= 3
+    })
+}
+
+/// The published map's links (SUBMITTING.md).
+const LINKS: [(u8, u8); 22] = [
+    (0, 1), (0, 5), (1, 2), (1, 6), (2, 3), (2, 7), (3, 4), (3, 8), (4, 9), (5, 6), (5, 10),
+    (6, 7), (6, 11), (7, 8), (7, 12), (8, 9), (8, 13), (9, 14), (10, 11), (11, 12), (12, 13), (13, 14),
+];
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -234,6 +256,7 @@ fn detect(log: &[u8]) -> bool {
         Some("E14") => slow_one_way(log),
         Some("R") => any_reboot(log),
         Some("Q") => shallow_queue(log),
+        Some("FLAP") => any_flap(log),
         _ => false,
     }
 }
