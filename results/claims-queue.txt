@@ -1,0 +1,18 @@
+on-6-7-s41-l1.0       332B said false  want true  WRONG
+on-6-7-s41-l1.5       486B said true   want true  ok
+on-6-7-s42-l1.0       596B said true   want true  ok
+on-6-7-s42-l1.5       597B said true   want true  ok
+on-1-2-s41-l1.0       585B said true   want true  ok
+on-1-2-s41-l1.5       608B said true   want true  ok
+on-1-2-s42-l1.0       530B said true   want true  ok
+on-1-2-s42-l1.5       585B said true   want true  ok
+off-s41-l1.0          156B said false  want false  ok
+off-s41-l1.5          200B said false  want false  ok
+off-s42-l1.0          156B said false  want false  ok
+off-s42-l1.5          156B said false  want false  ok
+deep-s41-l1.0         156B said false  want false  ok
+deep-s41-l1.5         200B said false  want false  ok
+deep-s42-l1.0         156B said false  want false  ok
+deep-s42-l1.5         156B said false  want false  ok
+
+15/16 right

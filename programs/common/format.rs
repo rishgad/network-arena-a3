@@ -23,6 +23,9 @@ pub const TAG_LOST: u8 = 4;
 /// `[sw u8][t_10ms u16][n u8] n x [nbr u8][dmin_10us varint]` (0 = no
 /// sample). The time keeps two equal readings from looking like one copy.
 pub const TAG_DELAY: u8 = 5;
+/// Ports that refused packets last window: `[sw u8][t_10ms u16][n u8]
+/// n x [nbr u8][drops varint][util_pct u8]`.
+pub const TAG_DROPS: u8 = 6;
 /// The customer ranges the switches were told at init, in their index order.
 pub const TAG_CUSTOMERS: u8 = 0xA4;
 

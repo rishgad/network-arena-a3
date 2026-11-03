@@ -674,6 +674,23 @@ impl SwitchProgram for Scope {
                 self.parent = parent;
                 self.logger = logger;
                 self.held.clear();
+                // `SCOPE_DROPS`: every port that refused packets this window.
+                if option_env!("SCOPE_DROPS").is_some() {
+                    let mut b = vec![self.me as u8, 0, 0, 0];
+                    b[1..3].copy_from_slice(&Self::now10(now).to_le_bytes());
+                    for p in self.ports.clone() {
+                        let st = &self.port[&p];
+                        if st.last_drops > 0 {
+                            b.push(st.nbr.map_or(255, |n| n as u8));
+                            put_varint(&mut b, st.last_drops);
+                            b.push(st.util_pct.min(255) as u8);
+                            b[3] += 1;
+                        }
+                    }
+                    if b[3] > 0 {
+                        self.emit(now, TAG_DROPS, b, &mut out);
+                    }
+                }
             } else {
                 self.window(now, &c1, &mut out);
             }

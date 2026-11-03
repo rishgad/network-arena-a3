@@ -206,6 +206,26 @@ pub fn any_reboot(log: &[u8]) -> bool {
 /// Links per switch on the published map (SUBMITTING.md): a 3x5 grid.
 const DEGREE: [usize; 15] = [2, 3, 3, 3, 2, 3, 4, 4, 4, 3, 2, 3, 3, 3, 2];
 
+/// Shallow queue: some switch port refuses at least 5 packets a window,
+/// in at least 5 windows, while running at no more than half its capacity
+/// (ordinary congestion drops come with a full link).
+pub fn shallow_queue(log: &[u8]) -> bool {
+    let mut hits: std::collections::HashMap<(u8, u8), u32> = std::collections::HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_DROPS || f.body.len() < 4 {
+            continue;
+        }
+        let mut r = Reader::new(&f.body[4..]);
+        for _ in 0..f.body[3] {
+            let (Some(nbr), Some(d), Some(u)) = (r.u8(), r.var(), r.u8()) else { break };
+            if d >= 5 && u <= 50 && nbr != 255 {
+                *hits.entry((f.body[0], nbr)).or_default() += 1;
+            }
+        }
+    }
+    hits.values().any(|&n| n >= 5)
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -213,6 +233,7 @@ fn detect(log: &[u8]) -> bool {
         Some("F3") => f3(log),
         Some("E14") => slow_one_way(log),
         Some("R") => any_reboot(log),
+        Some("Q") => shallow_queue(log),
         _ => false,
     }
 }
