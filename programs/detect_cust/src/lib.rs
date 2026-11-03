@@ -362,6 +362,52 @@ pub fn pair_pause(log: &[u8]) -> bool {
     })
 }
 
+/// Flood v4: as v3 (a TCP customer's UDP flood) but robust to long floods
+/// and floods at the start of the run. "Usual" is the 20th-percentile rate,
+/// not the median (a flood longer than half the run made the median the
+/// flood itself); the UDP share is checked outside the flood, before or
+/// after it.
+pub fn udp_flood_robust(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let rates: Vec<(u32, u32, f64, u64, u64)> = v
+            .windows(2)
+            .filter(|w| w[1].t > w[0].t && w[1].pkts >= w[0].pkts && w[1].t - w[0].t <= 1_500)
+            .map(|w| {
+                let dt = (w[1].t - w[0].t) as f64;
+                (w[0].t, w[1].t, (w[1].pkts - w[0].pkts) as f64 * 1000.0 / dt, w[1].pkts - w[0].pkts, w[1].udp.saturating_sub(w[0].udp))
+            })
+            .collect();
+        if rates.len() < 10 {
+            return false;
+        }
+        let mut sorted: Vec<f64> = rates.iter().map(|r| r.2).filter(|r| *r > 0.0).collect();
+        if sorted.len() < 5 {
+            return false;
+        }
+        sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let usual = sorted[sorted.len() / 5].max(5.0);
+        // Longest run of consecutive windows at 5x usual.
+        let (mut best, mut cur) = ((0usize, 0usize), None::<usize>);
+        for (i, r) in rates.iter().enumerate() {
+            if r.2 >= 5.0 * usual {
+                let s = *cur.get_or_insert(i);
+                if i + 1 - s > best.1 - best.0 {
+                    best = (s, i + 1);
+                }
+            } else {
+                cur = None;
+            }
+        }
+        let (a, b) = best;
+        if b <= a || rates[b - 1].1 - rates[a].0 < 5_000 {
+            return false;
+        }
+        let (fp, fu) = rates[a..b].iter().fold((0, 0), |(p, u), r| (p + r.3, u + r.4));
+        let (op, ou) = rates.iter().enumerate().filter(|(i, _)| *i < a || *i >= b).fold((0, 0), |(p, u), (_, r)| (p + r.3, u + r.4));
+        fp > 0 && fu * 10 >= fp * 8 && op >= 50 && ou * 10 <= op * 2
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -374,6 +420,7 @@ fn detect(log: &[u8]) -> bool {
         Some("LADDER") => ladder(log),
         Some("FLOOD3") => udp_flood(log),
         Some("PAUSE2") => pair_pause(log),
+        Some("FLOOD4") => udp_flood_robust(log),
         _ => false,
     }
 }
