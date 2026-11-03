@@ -1,0 +1,22 @@
+on-s71-l1.0                 698B said true   want true  ok
+on-s71-l1.5                 791B said true   want true  ok
+on-s72-l1.0                 758B said true   want true  ok
+on-s72-l1.5                 802B said true   want true  ok
+off-s71-l1.0                584B said false  want false  ok
+off-s71-l1.5                704B said false  want false  ok
+off-s72-l1.0                564B said false  want false  ok
+off-s72-l1.5                608B said false  want false  ok
+one-cut-s71-l1.0            666B said false  want false  ok
+one-cut-s71-l1.5            825B said false  want false  ok
+one-cut-s72-l1.0            585B said false  want false  ok
+one-cut-s72-l1.5            629B said false  want false  ok
+always-slow-s71-l1.0        739B said false  want false  ok
+always-slow-s71-l1.5        958B said false  want false  ok
+always-slow-s72-l1.0        996B said false  want false  ok
+always-slow-s72-l1.5       1040B said false  want false  ok
+shallow-queue-s71-l1.0      635B said false  want false  ok
+shallow-queue-s71-l1.5      715B said false  want false  ok
+shallow-queue-s72-l1.0      675B said false  want false  ok
+shallow-queue-s72-l1.5      719B said false  want false  ok
+
+20/20 right

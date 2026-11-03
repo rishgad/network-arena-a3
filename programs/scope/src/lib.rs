@@ -750,7 +750,9 @@ impl SwitchProgram for Scope {
                     b[1..3].copy_from_slice(&Self::now10(now).to_le_bytes());
                     for p in self.ports.clone() {
                         let st = &self.port[&p];
-                        if st.last_drops > 0 {
+                        // `SCOPE_UTIL_HI`: busy ports too, so a link's
+                        // fast spells show between its dropping ones.
+                        if st.last_drops > 0 || (option_env!("SCOPE_UTIL_HI").is_some() && st.util_pct >= 80) {
                             b.push(st.nbr.map_or(255, |n| n as u8));
                             put_varint(&mut b, st.last_drops);
                             b.push(st.util_pct.min(255) as u8);

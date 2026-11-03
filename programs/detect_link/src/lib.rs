@@ -372,6 +372,47 @@ pub fn shallow_queue2(log: &[u8]) -> bool {
     })
 }
 
+/// Capacity schedule: a link's capacity is cut and restored, repeatedly.
+/// In a cut it is full at a fraction of its speed: 20+ drops a window at
+/// <= 60% of nominal utilisation. Between cuts it runs at >= 80%. Two or
+/// more cuts that each end in a fast spell. (Truth runs: 12->13 capped at
+/// ~4 Mb/s for 4 s in every 8.) A shallow queue never runs fast; ordinary
+/// congestion drops only near full speed; a single permanent cut never
+/// recovers.
+pub fn capacity_steps(log: &[u8]) -> bool {
+    let mut per: std::collections::HashMap<(u8, u8), Vec<(u32, u64, u8)>> = std::collections::HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_DROPS || f.body.len() < 4 {
+            continue;
+        }
+        let t = (f.body[1] as u32 | (f.body[2] as u32) << 8) * 10;
+        let mut r = Reader::new(&f.body[4..]);
+        for _ in 0..f.body[3] {
+            let (Some(nbr), Some(d), Some(u)) = (r.u8(), r.var(), r.u8()) else { break };
+            if nbr != 255 {
+                per.entry((f.body[0], nbr)).or_default().push((t, d, u));
+            }
+        }
+    }
+    per.values_mut().any(|v| {
+        v.sort_by_key(|x| x.0);
+        v.dedup_by_key(|x| x.0);
+        let (mut cuts, mut in_cut, mut low) = (0, false, 0);
+        for &(_, d, u) in v.iter() {
+            if d >= 20 && u <= 60 {
+                in_cut = true;
+                low += 1;
+            } else if u >= 80 {
+                if in_cut {
+                    cuts += 1;
+                }
+                in_cut = false;
+            }
+        }
+        cuts >= 2 && low >= 4
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -385,6 +426,7 @@ fn detect(log: &[u8]) -> bool {
         Some("R3") => reboot_short(log),
         Some("R4") => reboot_all_links(log),
         Some("Q2") => shallow_queue2(log),
+        Some("CAP") => capacity_steps(log),
         _ => false,
     }
 }
