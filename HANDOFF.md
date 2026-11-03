@@ -9,7 +9,7 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 
 ## Score and budgets
 
-- Eggs won (10, 100 pts; + hard 15 breathing link (claim 19, CAP); easy 7, medium 8 9 10 14 18 19, hard 13 20): 9 microburst (claim 17, Q2) · 7 traceroute (claim 16, LADDER) · 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
+- Eggs won (11, 104 pts; + easy 1 Netflix side channel (claim 22, SIDE); + hard 15 breathing link (claim 19, CAP); easy 7, medium 8 9 10 14 18 19, hard 13 20): 9 microburst (claim 17, Q2) · 7 traceroute (claim 16, LADDER) · 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
   slow link · 18 flapping link · 19 SRLG · **20 rebooting switch (claim 15, R4)**.
 - Claims used: 16 of 30 (#15 R4 won 20, #16 LADDER won 7). Truth runs: 3 of 3 used.
 - Truth run 3 delivery: Mapper 62.6% (TTL ladder 1..8 on 3 hops), Cam-A/B 61.3%

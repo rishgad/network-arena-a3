@@ -404,8 +404,24 @@ pub fn udp_flood_robust(log: &[u8]) -> bool {
         }
         let (fp, fu) = rates[a..b].iter().fold((0, 0), |(p, u), r| (p + r.3, u + r.4));
         let (op, ou) = rates.iter().enumerate().filter(|(i, _)| *i < a || *i >= b).fold((0, 0), |(p, u), (_, r)| (p + r.3, u + r.4));
-        fp > 0 && fu * 10 >= fp * 8 && op >= 50 && ou * 10 <= op * 2
+        let small_ok = !option_env!("FLOOD_SMALL").is_some() || {
+            // Home users' fingerprint: outside the flood, small TCP packets.
+            let os: u64 = rates
+                .iter()
+                .enumerate()
+                .filter(|(i, _)| *i < a || *i >= b)
+                .map(|(_, r)| small_between(v, r.0, r.1))
+                .sum();
+            os * 10 >= op * 8
+        };
+        fp > 0 && fu * 10 >= fp * 8 && op >= 50 && ou * 10 <= op * 2 && small_ok
     })
+}
+
+/// Small packets a source sent between two of its readings.
+fn small_between(v: &[Cust], t0: u32, t1: u32) -> u64 {
+    let at = |t: u32| v.iter().find(|c| c.t == t).map_or(0, |c| c.small);
+    at(t1).saturating_sub(at(t0))
 }
 
 /// Side stream: a large-packet sender (80%+ of its packets 640 B or more)
