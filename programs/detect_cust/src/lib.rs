@@ -26,6 +26,13 @@ pub struct Cust {
 
 /// Every customer reading, keyed by (switch, customer index), in time order.
 pub fn readings(log: &[u8]) -> HashMap<(u8, u8), Vec<Cust>> {
+    readings_and_multi(log).0
+}
+
+/// Customer readings, and for each (switch, source) the windows in which
+/// that source came in on two or more of the switch's links.
+pub fn readings_and_multi(log: &[u8]) -> (HashMap<(u8, u8), Vec<Cust>>, HashMap<(u8, u8), Vec<u32>>) {
+    let mut multi: HashMap<(u8, u8), Vec<u32>> = HashMap::new();
     let mut out: HashMap<(u8, u8), Vec<Cust>> = HashMap::new();
     for f in frames(log) {
         if f.tag != TAG_WINDOW {
@@ -53,12 +60,29 @@ pub fn readings(log: &[u8]) -> HashMap<(u8, u8), Vec<Cust>> {
             let Some((idx, c)) = row else { break };
             out.entry((sw, idx)).or_default().push(c);
         }
+        if let Some(m) = r.u8() {
+            for _ in 0..m {
+                let Some(i) = r.u8() else { break };
+                multi.entry((sw, i)).or_default().push(t as u32 * 10);
+            }
+        }
     }
     for v in out.values_mut() {
         v.sort_by_key(|c| c.t);
         v.dedup_by_key(|c| c.t);
     }
-    out
+    for v in multi.values_mut() {
+        v.sort_unstable();
+        v.dedup();
+    }
+    (out, multi)
+}
+
+/// The shuffle (egg 10): a source keeps arriving at one switch over two
+/// or more links (a split route), in at least 20 windows. Reroutes around
+/// a failure lasted at most 8 windows in both truth runs.
+pub fn shuffle(log: &[u8]) -> bool {
+    readings_and_multi(log).1.values().any(|w| w.len() >= 20)
 }
 
 fn last(v: &[Cust]) -> Cust {
@@ -114,6 +138,7 @@ fn detect(log: &[u8]) -> bool {
         Some("DUP") => dup(log),
         Some("TTL") => ttl(log),
         Some("FLOOD") => flood(log),
+        Some("SHUFFLE") => shuffle(log),
         _ => false,
     }
 }

@@ -1,0 +1,26 @@
+on-ledger-s51-l1.0      15588B said true   want true  ok
+on-ledger-s51-l1.5      15850B said true   want true  ok
+on-ledger-s52-l1.0      15592B said true   want true  ok
+on-ledger-s52-l1.5      15802B said true   want true  ok
+on-ledger-s53-l1.0      15477B said true   want true  ok
+on-ledger-s53-l1.5      15607B said true   want true  ok
+on-zoom-s51-l1.0        15566B said false  want true  WRONG
+on-zoom-s51-l1.5        15925B said false  want true  WRONG
+on-zoom-s52-l1.0        15574B said false  want true  WRONG
+on-zoom-s52-l1.5        15757B said false  want true  WRONG
+on-zoom-s53-l1.0        15438B said false  want true  WRONG
+on-zoom-s53-l1.5        15568B said false  want true  WRONG
+off-s51-l1.0            15527B said false  want false  ok
+off-s51-l1.5            15832B said false  want false  ok
+off-s52-l1.0            15565B said false  want false  ok
+off-s52-l1.5            15743B said false  want false  ok
+off-s53-l1.0            15438B said false  want false  ok
+off-s53-l1.5            15568B said false  want false  ok
+reroute-s51-l1.0        15698B said false  want false  ok
+reroute-s51-l1.5        15846B said false  want false  ok
+reroute-s52-l1.0        15689B said false  want false  ok
+reroute-s52-l1.5        15823B said false  want false  ok
+reroute-s53-l1.0        15540B said false  want false  ok
+reroute-s53-l1.5        15670B said false  want false  ok
+
+18/24 right
