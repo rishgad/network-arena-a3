@@ -647,10 +647,10 @@ log_cap_bytes = 65536
 
 [[plant]]
 kind = "link_delay"
-a = 13
-b = 14
-a_to_b_us = 25000
-b_to_a_us = 25000
+a = 1
+b = 2
+a_to_b_us = 2000
+b_to_a_us = 30000
 [[plant]]
 kind = "link_delay"
 a = 6

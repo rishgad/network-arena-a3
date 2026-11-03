@@ -413,6 +413,34 @@ pub fn capacity_steps(log: &[u8]) -> bool {
     })
 }
 
+/// Slow link, both ways: some link's delay floor is steady at 5 ms or more
+/// in both directions, the two within 25% of each other. (Truth runs:
+/// 13<->14 at 25.05 ms each way; 2->1 30 ms vs 1->2 2 ms is the one-way
+/// egg, not this.) Congestion wobbles; a planted delay is steady.
+pub fn slow_both_ways(log: &[u8]) -> bool {
+    let mut lo: std::collections::HashMap<(u8, u8), Vec<u32>> = std::collections::HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_DELAY || f.body.len() < 4 {
+            continue;
+        }
+        let mut r = Reader::new(&f.body[4..]);
+        for _ in 0..f.body[3] {
+            let (Some(nbr), Some(d)) = (r.u8(), r.var()) else { break };
+            if d > 0 {
+                lo.entry((f.body[0], nbr)).or_default().push(d as u32 * 10);
+            }
+        }
+    }
+    let steady_floor = |v: &Vec<u32>| {
+        let mn = *v.iter().min().unwrap();
+        (v.iter().filter(|&&x| (x - mn) * 100 <= mn * 3).count() >= 3).then_some(mn)
+    };
+    lo.iter().any(|(&(a, b), ab)| {
+        let (Some(x), Some(y)) = (steady_floor(ab), lo.get(&(b, a)).and_then(steady_floor)) else { return false };
+        x >= 5_000 && y >= 5_000 && x.abs_diff(y) * 4 <= x.max(y)
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -427,6 +455,7 @@ fn detect(log: &[u8]) -> bool {
         Some("R4") => reboot_all_links(log),
         Some("Q2") => shallow_queue2(log),
         Some("CAP") => capacity_steps(log),
+        Some("SLOW2") => slow_both_ways(log),
         _ => false,
     }
 }
