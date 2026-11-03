@@ -32,6 +32,14 @@ pub fn readings(log: &[u8]) -> HashMap<(u8, u8), Vec<Cust>> {
 /// Customer readings, and for each (switch, source) the windows in which
 /// that source came in on two or more of the switch's links.
 pub fn readings_and_multi(log: &[u8]) -> (HashMap<(u8, u8), Vec<Cust>>, HashMap<(u8, u8), Vec<u32>>) {
+    let (a, b, _) = readings_multi_via(log);
+    (a, b)
+}
+
+/// As `readings_and_multi`, plus the neighbour pairs each multi-path source
+/// came in from (only with the `MULTI_NBRS` log variant).
+pub fn readings_multi_via(log: &[u8]) -> (HashMap<(u8, u8), Vec<Cust>>, HashMap<(u8, u8), Vec<u32>>, HashMap<(u8, u8), Vec<(u8, u8)>>) {
+    let mut via: HashMap<(u8, u8), Vec<(u8, u8)>> = HashMap::new();
     let mut multi: HashMap<(u8, u8), Vec<u32>> = HashMap::new();
     let mut out: HashMap<(u8, u8), Vec<Cust>> = HashMap::new();
     for f in frames(log) {
@@ -63,6 +71,11 @@ pub fn readings_and_multi(log: &[u8]) -> (HashMap<(u8, u8), Vec<Cust>>, HashMap<
         if let Some(m) = r.u8() {
             for _ in 0..m {
                 let Some(i) = r.u8() else { break };
+                if option_env!("MULTI_NBRS").is_some() {
+                    let (Some(a), Some(b)) = (r.u8(), r.u8()) else { break };
+                    // Keyed by (switch, source); the neighbours pair is kept per window.
+                    via.entry((sw, i)).or_default().push((a.min(b), a.max(b)));
+                }
                 multi.entry((sw, i)).or_default().push(t as u32 * 10);
             }
         }
@@ -75,7 +88,47 @@ pub fn readings_and_multi(log: &[u8]) -> (HashMap<(u8, u8), Vec<Cust>>, HashMap<
         v.sort_unstable();
         v.dedup();
     }
-    (out, multi)
+    (out, multi, via)
+}
+
+/// Lowest one-way delay per (switch, neighbour) from TAG_DELAY records, us.
+fn delay_floors(log: &[u8]) -> HashMap<(u8, u8), u32> {
+    let mut lo: HashMap<(u8, u8), u32> = HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_DELAY || f.body.len() < 4 {
+            continue;
+        }
+        let mut r = Reader::new(&f.body[4..]);
+        for _ in 0..f.body[3] {
+            let (Some(nbr), Some(d)) = (r.u8(), r.var()) else { break };
+            if d > 0 {
+                let e = lo.entry((f.body[0], nbr)).or_insert(u32::MAX);
+                *e = (*e).min(d as u32 * 10);
+            }
+        }
+    }
+    lo
+}
+
+/// The shuffle, v2: a split route over two paths of different speed, so
+/// the source's packets arrive out of order. A source reaches one switch
+/// from two neighbours in 20+ windows, and the last links in from those
+/// two neighbours differ in delay floor by 5 ms or more.
+pub fn shuffle_reorder(log: &[u8]) -> bool {
+    let (_, multi, via) = readings_multi_via(log);
+    let lo = delay_floors(log);
+    multi.iter().any(|(&(sw, src), w)| {
+        if w.len() < 20 {
+            return false;
+        }
+        let mut pairs = via.get(&(sw, src)).cloned().unwrap_or_default();
+        pairs.sort_unstable();
+        pairs.dedup();
+        pairs.iter().any(|&(a, b)| match (lo.get(&(sw, a)), lo.get(&(sw, b))) {
+            (Some(&x), Some(&y)) => x.abs_diff(y) >= 5_000,
+            _ => false,
+        })
+    })
 }
 
 /// The shuffle (egg 10): a source keeps arriving at one switch over two
@@ -133,12 +186,43 @@ pub fn flood(log: &[u8]) -> bool {
     })
 }
 
+/// Lag switch: a sender holds its packets back and then lets them all go:
+/// a window at no more than 60% of its usual rate, the next at 140% or
+/// more, the two together close to twice the usual (nothing lost). Four
+/// such pairs or more. Rates are per second over each reading's interval,
+/// so a lost report cannot fake a dip.
+pub fn lag(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let rates: Vec<f64> = v
+            .windows(2)
+            .filter(|w| w[1].t > w[0].t && w[1].pkts >= w[0].pkts && w[1].t - w[0].t <= 1_500)
+            .map(|w| (w[1].pkts - w[0].pkts) as f64 * 1000.0 / (w[1].t - w[0].t) as f64)
+            .collect();
+        if rates.len() < 10 {
+            return false;
+        }
+        let mut sorted = rates.clone();
+        sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let usual = sorted[sorted.len() / 2];
+        if usual < 10.0 {
+            return false;
+        }
+        let pairs = rates
+            .windows(2)
+            .filter(|w| w[0] <= 0.6 * usual && w[1] >= 1.4 * usual && ((w[0] + w[1]) / (2.0 * usual) - 1.0).abs() <= 0.15)
+            .count();
+        pairs >= 4
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
         Some("TTL") => ttl(log),
         Some("FLOOD") => flood(log),
         Some("SHUFFLE") => shuffle(log),
+        Some("LAG") => lag(log),
+        Some("SHUFFLE2") => shuffle_reorder(log),
         _ => false,
     }
 }

@@ -1,0 +1,22 @@
+on-s61-l1.0                     17136B said true   want true  ok
+on-s61-l1.5                     17276B said true   want true  ok
+on-s62-l1.0                     17241B said true   want true  ok
+on-s62-l1.5                     17368B said true   want true  ok
+on-slow-other-branch-s61-l1.0   17136B said true   want true  ok
+on-slow-other-branch-s61-l1.5   17276B said true   want true  ok
+on-slow-other-branch-s62-l1.0   17241B said true   want true  ok
+on-slow-other-branch-s62-l1.5   17368B said true   want true  ok
+split-equal-s61-l1.0            17121B said false  want false  ok
+split-equal-s61-l1.5            17261B said false  want false  ok
+split-equal-s62-l1.0            17226B said false  want false  ok
+split-equal-s62-l1.5            17353B said false  want false  ok
+slow-no-split-s61-l1.0          17016B said false  want false  ok
+slow-no-split-s61-l1.5          17156B said false  want false  ok
+slow-no-split-s62-l1.0          17121B said false  want false  ok
+slow-no-split-s62-l1.5          17248B said false  want false  ok
+off-s61-l1.0                    17001B said false  want false  ok
+off-s61-l1.5                    17141B said false  want false  ok
+off-s62-l1.0                    17106B said false  want false  ok
+off-s62-l1.5                    17233B said false  want false  ok
+
+20/20 right

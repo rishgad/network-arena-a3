@@ -430,14 +430,23 @@ impl Scope {
             }
         }
         // Sources that came in on two or more switch ports this window.
-        let multi: Vec<u8> = (1..64)
-            .filter(|s| {
-                (0..4).filter(|p| at(c1, C1_PKTS + p * 64 + s) > at(&self.prev, C1_PKTS + p * 64 + s)).count() >= 2
-            })
-            .map(|s| s as u8)
+        // With `SCOPE_MULTI_NBRS`, each entry also names the first two
+        // neighbours it came from: `[src][nbr a][nbr b]`.
+        let nbr_of = |pidx: usize| {
+            self.ports.iter().find(|p| (**p & 3) as usize == pidx).and_then(|p| self.port.get(p)).and_then(|s| s.nbr).map_or(255, |n| n as u8)
+        };
+        let multi: Vec<(u8, Vec<usize>)> = (1..64)
+            .map(|s| (s as u8, (0..4).filter(|p| at(c1, C1_PKTS + p * 64 + s) > at(&self.prev, C1_PKTS + p * 64 + s)).collect::<Vec<_>>()))
+            .filter(|(_, ps)| ps.len() >= 2)
             .collect();
         b.push(multi.len() as u8);
-        b.extend_from_slice(&multi);
+        for (s, ps) in &multi {
+            b.push(*s);
+            if option_env!("SCOPE_MULTI_NBRS").is_some() {
+                b.push(nbr_of(ps[0]));
+                b.push(nbr_of(ps[1]));
+            }
+        }
         b.truncate(250); // DESIGN.md sizes the worst case well below this
         self.prev = c1.to_vec();
         self.emit(now, TAG_WINDOW, b, out);
