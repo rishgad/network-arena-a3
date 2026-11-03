@@ -689,11 +689,11 @@ for_ms = 5100
 kind = "fail"
 a = 0
 b = 1
-at_ms = 18110
+at_ms = 13530
 for_ms = 4000
 [[plant]]
 kind = "fail"
 a = 10
 b = 11
-at_ms = 24110
+at_ms = 19530
 for_ms = 4000

@@ -99,14 +99,24 @@ pub fn f2(log: &[u8]) -> bool {
     let pick = |pairs: &[(u8, u8)]| -> Vec<Outage> { os.iter().filter(|o| pairs.contains(&(o.sw, o.nbr))).copied().collect() };
     let a = pick(&[(0, 1), (1, 0)]);
     let b = pick(&[(11, 10), (10, 11)]);
-    // Together: they went down at the same moment, or (when a report of
-    // the start was lost) came back at the same moment.
-    a.iter().any(|x| {
-        b.iter().any(|y| {
-            x.start.abs_diff(y.start) <= TOGETHER_MS
-                || matches!((x.end, y.end), (Some(e), Some(f)) if e.abs_diff(f) <= TOGETHER_MS)
-        })
+    // Together: down at the same moment, or back at the same moment. A
+    // report of 0-1 going down can be lost while its recovery arrives, so
+    // a bare "heard" on 0-1 counts as the end of an outage too.
+    let heard_01 = heard(log).into_iter().filter(|&(sw, nbr, _)| (sw, nbr) == (0, 1) || (sw, nbr) == (1, 0)).map(|h| h.2);
+    let back_01: Vec<u32> = a.iter().filter_map(|x| x.end).chain(heard_01).collect();
+    b.iter().any(|y| {
+        a.iter().any(|x| x.start.abs_diff(y.start) <= TOGETHER_MS)
+            || y.end.is_some_and(|f| back_01.iter().any(|e| e.abs_diff(f) <= TOGETHER_MS))
     })
+}
+
+/// Every heard record, (switch, neighbour, t).
+fn heard(log: &[u8]) -> Vec<(u8, u8, u32)> {
+    frames(log)
+        .into_iter()
+        .filter(|f| f.tag == TAG_LINK && f.body.len() >= 6 && f.body[3] == 0)
+        .map(|f| (f.body[0], f.body[2], (f.body[4] as u32 | (f.body[5] as u32) << 8) * 10))
+        .collect()
 }
 
 /// Rebooting switch (egg 20): switch 6 (the claim logger) loses switch 5

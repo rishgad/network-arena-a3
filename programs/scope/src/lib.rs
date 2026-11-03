@@ -264,6 +264,18 @@ impl Scope {
         let mut p = Vec::with_capacity(body.len() + 1);
         p.push(tag);
         p.extend_from_slice(&body);
+        // Link events are rare and are what claims hang on: with
+        // `SCOPE_LINK_FLOOD`, send one copy out of every live port, each
+        // then taking its neighbour's way up; the logger writes the first.
+        if tag == TAG_LINK && option_env!("SCOPE_LINK_FLOOD").is_some() {
+            let live: Vec<u16> = self.ports.iter().copied().filter(|q| self.port.get(q).is_some_and(|s| s.seen && !s.silent)).collect();
+            if !live.is_empty() {
+                for q in live {
+                    self.send(q, p.clone(), out);
+                }
+                return;
+            }
+        }
         let dead = |q: &u16| self.port.get(q).is_some_and(|s| s.silent);
         match self.parent.filter(|q| !dead(q)) {
             Some(port) => {

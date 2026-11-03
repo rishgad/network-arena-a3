@@ -1,26 +1,26 @@
-F2-s11-l1.0-on                       416B  F2=false   WRONG F2
-F2-s11-l1.0-off                      376B  F2=false   ok
+F2-s11-l1.0-on                       426B  F2=true   ok
+F2-s11-l1.0-off                      396B  F2=false   ok
 F2-s11-l1.0-only-0-1                 396B  F2=false   ok
 F2-s11-l1.0-apart                    396B  F2=false   ok
-F2-s11-l1.0-other-pair               546B  F2=false   ok
-F2-s11-l1.5-on                       336B  F2=false   WRONG F2
+F2-s11-l1.0-other-pair               556B  F2=false   ok
+F2-s11-l1.5-on                       366B  F2=false   WRONG F2
 F2-s11-l1.5-off                      376B  F2=false   ok
-F2-s11-l1.5-only-0-1                 396B  F2=false   ok
-F2-s11-l1.5-apart                    356B  F2=false   ok
-F2-s11-l1.5-other-pair               446B  F2=false   ok
-F2-s12-l1.0-on                      1056B  F2=true   ok
-F2-s12-l1.0-off                     1016B  F2=false   ok
-F2-s12-l1.5-on                       746B  F2=true   ok
+F2-s11-l1.5-only-0-1                 376B  F2=false   ok
+F2-s11-l1.5-apart                    376B  F2=false   ok
+F2-s11-l1.5-other-pair               436B  F2=false   ok
+F2-s12-l1.0-on                      1076B  F2=true   ok
+F2-s12-l1.0-off                     1006B  F2=false   ok
+F2-s12-l1.5-on                       766B  F2=true   ok
 F2-s12-l1.5-off                      616B  F2=false   ok
-F2-s12-l1.5-only-0-1                 686B  F2=false   ok
-F2-s12-l1.5-apart                    696B  F2=false   ok
-F2-s12-l1.5-other-pair               556B  F2=false   ok
-F2-s13-l1.0-on                       936B  F2=true   ok
-F2-s13-l1.0-off                      946B  F2=false   ok
-F2-s13-l1.5-on                       516B  F2=true   ok
-F2-s13-l1.5-off                      476B  F2=false   ok
-F2-s13-l1.5-only-0-1                 506B  F2=false   ok
-F2-s13-l1.5-apart                    616B  F2=false   ok
-F2-s13-l1.5-other-pair               616B  F2=false   ok
+F2-s12-l1.5-only-0-1                 736B  F2=false   ok
+F2-s12-l1.5-apart                    726B  F2=false   ok
+F2-s12-l1.5-other-pair               576B  F2=false   ok
+F2-s13-l1.0-on                       986B  F2=true   ok
+F2-s13-l1.0-off                      976B  F2=false   ok
+F2-s13-l1.5-on                       596B  F2=true   ok
+F2-s13-l1.5-off                      496B  F2=false   ok
+F2-s13-l1.5-only-0-1                 616B  F2=false   ok
+F2-s13-l1.5-apart                    606B  F2=false   ok
+F2-s13-l1.5-other-pair               606B  F2=false   ok
 
-22/24 worlds fully right
+23/24 worlds fully right
