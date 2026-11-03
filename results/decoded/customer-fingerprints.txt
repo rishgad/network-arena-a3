@@ -1,0 +1,32 @@
+Truth run 2 customer fingerprints (customers.txt names are offline-only; detectors must use behaviour)
+customer                                     sw pkt/s med   min   max size   udp% dup% ttl<8% newdst/w  sampled destinations
+Akamai users [10.44.205.0/24]                 2         5     5     6 mid       0    0      0        3  {'Akamai(ttl63,299B,p6)': 1}
+Amazon (Prime member) [10.29.156.200/32]      7        47    46    47 small     0    0      0        1  {"Amazon (Prime member)'s peer(ttl63,200B,p6)": 9}
+Amazon (shoppers) [10.29.156.0/24]            7       159     0   160 large     0    0      0        1  {"Amazon (shoppers)'s peer(ttl63,1000B,p6)": 18}
+Amazon (shoppers) [10.34.207.0/24]            7        70     0   121 large     0    0      0        1  {"Amazon (shoppers)'s peer(ttl63,1000B,p6)": 14}
+Backup [10.8.134.0/24]                       12       775   410  1159 large     0    0      0      1.0  {"Backup's peer(ttl63,1000B,p6)": 39}
+Cam-A [10.31.27.0/24]                         6       161   161   247 large     0    0      0      1.0  {"Cam-A's peer(ttl63,1000B,p6)": 39}
+Cam-B [10.19.251.0/24]                        6       150   150   236 large     0    0      0      1.0  {"Cam-B's peer(ttl63,1000B,p6)": 39}
+Cloudflare users [10.28.6.0/24]               2       437   437   438 small     0    0      0        8  {'Cloudflare(ttl63,100B,p6)': 21}
+Dropbox [10.30.171.0/24]                     11         0     0   401 large     0    0      0      0.0  {"Dropbox's peer(ttl63,1000B,p6)": 19}
+Dropbox [10.6.79.0/24]                       11         0     0   501 large     0    0      0      0.0  {"Dropbox's peer(ttl63,1000B,p6)": 19}
+Dropbox-2 [10.5.178.0/24]                    12         0     0   167 large     0    0      0      0.0  {"Dropbox-2's peer(ttl63,1000B,p6)": 2}
+Fortnite [10.31.43.0/24]                      4       289   288   289 small   100    0      0        1  {'Fortnite(ttl63,200B,p17)': 37}
+Fortnite [10.42.152.0/24]                     2       274   273   274 small   100    0      0        1  {'Fortnite(ttl63,200B,p17)': 16}
+Fortnite player [10.42.152.200/32]            2        47     0    98 small   100    0      0      1.0  {'Fortnite(ttl63,200B,p17)': 1}
+Home users [10.46.84.0/24]                    2        86    85  2586 small    92    0      0        1  {'Fastly(ttl63,64B,p17)': 21, 'Fastly(ttl63,200B,p6)': 2}
+Jane Street [10.3.164.0/24]                   2        86    85    86 small   100    0      0        1  {"Jane Street's peer(ttl63,200B,p17)": 5}
+Ledger [10.37.18.0/24]                        9       131   130   131 large     0    0      0        1  {"Ledger's peer(ttl63,1000B,p6)": 38}
+Login [10.22.59.0/24]                         7        31    30    31 small     0    0      0        1  {'Login(ttl63,100B,p6)': 9}
+Mapper [10.20.220.0/24]                       4        25    24    25 small   100    0    100        1  {"Mapper's target(ttl7,64B,p17)": 4}
+Netflix [10.17.72.0/24]                       3       414   413   415 large     0    0      0        1  {"Netflix's peer(ttl63,1000B,p6)": 37, "Netflix's peer(ttl63,200B,p6)": 1}
+Netflix live [10.17.72.200/32]                3       144     0   293 large     0    0      0       12  {"Netflix live's viewers(ttl63,1000B,p6)": 13}
+Offsite [10.62.116.0/24]                      1       303   303   304 large     0    0      0      1.0  {"Offsite's peer(ttl63,1000B,p6)": 35}
+Ping [10.11.81.0/24]                          1        25    24    25 small   100    0      0      1.0  {"Ping's peer(ttl63,64B,p17)": 4}
+Ping's peer [10.53.189.0/24]                  2        25    24    25 small   100    0      0        1  {'Ping(ttl63,64B,p17)': 1}
+Steam [10.28.235.0/24]                        7        78    77  1250 large     0    0      0        1  {"Steam's peer(ttl63,1000B,p6)": 21}
+Sync [10.23.92.0/24]                          1         0     0    51 large     0    0      0      0.0  {"Sync's peer(ttl63,1000B,p6)": 1}
+Sync [10.45.163.0/24]                         1         0     0    48 large     0    0      0      0.0  {"Sync's peer(ttl63,1000B,p6)": 2}
+Vault [10.27.60.0/24]                         3       131   129   131 mid       0   50      0        1  {"Vault's peer(ttl63,500B,p6)": 14}
+Zoom [10.13.43.0/24]                         10       140   140   141 small   100    0      0        1  {'Zoom(ttl63,200B,p17)': 43}
+Zoom [10.22.154.0/24]                         0       140   140   141 small   100    0      0        1  {'Zoom(ttl63,200B,p17)': 39}

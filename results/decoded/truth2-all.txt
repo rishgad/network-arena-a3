@@ -1,0 +1,511 @@
+log submissions/truth2/team.log: 46839 B, 1302 frames, trailing 0 B, errors 0
+header {'version': 1, 'logger': 10, 'window_ms': 1000, 'tick_ms': 100, 'ncust': 30}  customers 30
+
+== budget by tag (bytes, frames)
+  tag 0x01:  32706 B    576 frames
+  tag 0x02:    560 B     56 frames
+  tag 0x03:   2691 B    104 frames
+  tag 0x07:  10716 B    564 frames
+  tag 0xa3:     11 B      1 frames
+  tag 0xa4:    155 B      1 frames
+  windows per switch: received / expected-from-seq-span, lost, latency ms (median/max), last obs t
+   sw  0:  39/39  missing  0  lat    0/ 1040  last t 39780
+   sw  1:  36/39  missing  3  lat   30/   50  last t 39470
+   sw  2:  37/39  missing  2  lat   50/   70  last t 39160
+   sw  3:  39/39  missing  0  lat   10/ 1620  last t 39880
+   sw  4:  37/39  missing  2  lat   20/   50  last t 39570
+   sw  5:  38/39  missing  1  lat    0/ 4670  last t 39270
+   sw  6:  40/39  missing -1  lat    0/   10  last t 39980
+   sw  7:  39/39  missing  0  lat   10/   30  last t 39670
+   sw  8:  38/39  missing  1  lat    0/   10  last t 39370
+   sw  9:  39/39  missing  0  lat   10/   70  last t 39060
+   sw 10:  39/39  missing  0  lat    0/    0  last t 39780
+   sw 11:  38/39  missing  1  lat    0/   30  last t 39470
+   sw 12:  38/39  missing  1  lat   10/   20  last t 39160
+   sw 13:  40/39  missing -1  lat    0/ 3340  last t 39880
+   sw 14:  39/39  missing  0  lat   10/   90  last t 39570
+  coverage: windows from 100 ms to 39980 ms
+
+== sampled packets (src -> dst), one line per distinct customer pair
+   39x first t    200 sw  6  Cam-A [10.31.27.0/24] -> Cam-A's peer [10.59.113.0/24]  proto 6 size 1000 ttl 63
+   39x first t    200 sw  6  Cam-B [10.19.251.0/24] -> Cam-B's peer [10.17.224.0/24]  proto 6 size 1000 ttl 63
+   39x first t    400 sw 12  Backup [10.8.134.0/24] -> Backup's peer [10.31.218.0/24]  proto 6 size 1000 ttl 63
+   21x first t    400 sw  2  Cloudflare users [10.28.6.0/24] -> Cloudflare [10.28.45.0/24]  proto 6 size 100 ttl 63
+   35x first t    710 sw  1  Offsite [10.62.116.0/24] -> Offsite's peer [10.36.62.0/24]  proto 6 size 1000 ttl 63
+   37x first t    810 sw  4  Fortnite [10.31.43.0/24] -> Fortnite [10.42.152.0/24]  proto 17 size 200 ttl 63
+   18x first t    910 sw  7  Amazon (shoppers) [10.29.156.0/24] -> Amazon (shoppers)'s peer [10.36.149.0/24]  proto 6 size 1000 ttl 63
+   43x first t   1020 sw 10  Zoom [10.13.43.0/24] -> Zoom [10.22.154.0/24]  proto 17 size 200 ttl 63
+   39x first t   1020 sw  0  Zoom [10.22.154.0/24] -> Zoom [10.13.43.0/24]  proto 17 size 200 ttl 63
+   14x first t   1120 sw  3  Vault [10.27.60.0/24] -> Vault's peer [10.26.92.0/24]  proto 6 size 500 ttl 63
+   38x first t   1320 sw  9  Ledger [10.37.18.0/24] -> Ledger's peer [10.62.186.0/24]  proto 6 size 1000 ttl 63
+   16x first t   1420 sw  2  Fortnite [10.42.152.0/24] -> Fortnite [10.31.43.0/24]  proto 17 size 200 ttl 63
+   19x first t   1730 sw 11  Dropbox [10.30.171.0/24] -> Dropbox's peer [10.1.81.0/24]  proto 6 size 1000 ttl 63
+   19x first t   1730 sw 11  Dropbox [10.6.79.0/24] -> Dropbox's peer [10.62.20.0/24]  proto 6 size 1000 ttl 63
+   21x first t   1930 sw  7  Steam [10.28.235.0/24] -> Steam's peer [10.40.113.0/24]  proto 6 size 1000 ttl 63
+   38x first t   2140 sw  3  Netflix [10.17.72.0/24] -> Netflix's peer [10.27.61.0/24]  proto 6 size 1000 ttl 63
+    5x first t   2440 sw  2  Jane Street [10.3.164.0/24] -> Jane Street's peer [10.56.26.0/24]  proto 17 size 200 ttl 63
+    9x first t   2950 sw  7  Amazon (Prime member) [10.29.156.200/32] -> Amazon (Prime member)'s peer [10.11.144.0/24]  proto 6 size 200 ttl 63
+   13x first t   3160 sw  3  Netflix live [10.17.72.200/32] -> Netflix live's viewers [10.26.254.0/24]  proto 6 size 1000 ttl 63
+    2x first t   3460 sw 12  Dropbox-2 [10.5.178.0/24] -> Dropbox-2's peer [10.47.124.0/24]  proto 6 size 1000 ttl 63
+    9x first t   4990 sw  7  Login [10.22.59.0/24] -> Login [10.11.92.0/24]  proto 6 size 100 ttl 63
+    1x first t   5500 sw  2  Ping's peer [10.53.189.0/24] -> Ping [10.11.81.0/24]  proto 17 size 64 ttl 63
+    4x first t   5810 sw  1  Ping [10.11.81.0/24] -> Ping's peer [10.53.189.0/24]  proto 17 size 64 ttl 63
+    4x first t   5910 sw  4  Mapper [10.20.220.0/24] -> Mapper's target [10.23.169.0/24]  proto 17 size 64 ttl 7
+   14x first t   6010 sw  7  Amazon (shoppers) [10.34.207.0/24] -> Amazon (shoppers)'s peer [10.27.6.0/24]  proto 6 size 1000 ttl 63
+   23x first t  16720 sw  2  Home users [10.46.84.0/24] -> Fastly [10.50.151.0/24]  proto 6 size 200 ttl 63
+    1x first t  24880 sw  2  Akamai users [10.44.205.0/24] -> Akamai [10.41.47.0/24]  proto 6 size 299 ttl 63
+    1x first t  28250 sw  1  Sync [10.23.92.0/24] -> Sync's peer [10.42.31.0/24]  proto 6 size 1000 ttl 63
+    2x first t  29270 sw  1  Sync [10.45.163.0/24] -> Sync's peer [10.53.116.0/24]  proto 6 size 1000 ttl 63
+    1x first t  38140 sw  2  Fortnite player [10.42.152.200/32] -> Fortnite [10.31.43.0/24]  proto 17 size 200 ttl 63
+
+== sources arriving on 2+ ports of a switch (windows)
+  sw  0 Zoom [10.13.43.0/24]                          2 windows
+  sw 10 Zoom [10.22.154.0/24]                         2 windows
+  sw 11 Offsite [10.62.116.0/24]                      8 windows
+  sw 13 Ledger [10.37.18.0/24]                        40 windows
+
+== link events (switch:port <- neighbour), t = last keepalive before silence / first after
+  t   4080  sw 13 port 1 nbr  12  SILENT  (logged 4390)
+  t   4790  sw 13 port 1 nbr  12  heard  (logged 4840)
+  t   5910  sw  1 port 2 nbr   6  SILENT  (logged 6230)
+  t   5910  sw  6 port 0 nbr   1  SILENT  (logged 6220)
+  t   6630  sw 13 port 1 nbr  12  SILENT  (logged 6940)
+  t   7140  sw 13 port 1 nbr  12  heard  (logged 7160)
+  t   7540  sw  1 port 2 nbr   6  heard  (logged 7600)
+  t   7540  sw  6 port 0 nbr   1  heard  (logged 7550)
+  t   9990  sw  1 port 2 nbr   6  SILENT  (logged 10380)
+  t   9990  sw  6 port 0 nbr   1  SILENT  (logged 10320)
+  t  11220  sw 13 port 1 nbr  12  SILENT  (logged 12280)
+  t  11520  sw  1 port 2 nbr   6  heard  (logged 11540)
+  t  11520  sw  6 port 0 nbr   1  heard  (logged 11520)
+  t  11830  sw 13 port 1 nbr  12  heard  (logged 11830)
+  t  13560  sw 13 port 1 nbr  12  SILENT  (logged 13880)
+  t  13970  sw  1 port 2 nbr   6  SILENT  (logged 14320)
+  t  13970  sw  6 port 0 nbr   1  SILENT  (logged 14280)
+  t  14170  sw 13 port 1 nbr  12  heard  (logged 14210)
+  t  15500  sw  1 port 2 nbr   6  heard  (logged 15550)
+  t  15500  sw  6 port 0 nbr   1  heard  (logged 15500)
+  t  17950  sw  1 port 2 nbr   6  SILENT  (logged 18270)
+  t  17950  sw  6 port 0 nbr   1  SILENT  (logged 18260)
+  t  19070  sw 13 port 1 nbr  12  SILENT  (logged 20440)
+  t  19580  sw  1 port 2 nbr   6  heard  (logged 19630)
+  t  19580  sw  6 port 0 nbr   1  heard  (logged 19580)
+  t  19780  sw 13 port 1 nbr  12  heard  (logged 19810)
+  t  21930  sw  0 port 0 nbr   1  SILENT  (logged 22230)
+  t  21930  sw  1 port 0 nbr   0  SILENT  (logged 22250)
+  t  21930  sw 10 port 1 nbr  11  SILENT  (logged 22230)
+  t  21930  sw 11 port 1 nbr  10  SILENT  (logged 22480)
+  t  22130  sw 13 port 1 nbr  12  SILENT  (logged 22460)
+  t  22540  sw 13 port 1 nbr  12  heard  (logged 22540)
+  t  27030  sw 13 port 1 nbr  12  SILENT  (logged 27340)
+  t  27740  sw 13 port 1 nbr  12  heard  (logged 27780)
+  t  28150  sw 13 port 1 nbr  12  SILENT  (logged 28510)
+  t  28860  sw 13 port 1 nbr  12  heard  (logged 28870)
+  t  30090  sw  0 port 0 nbr   1  heard  (logged 30100)
+  t  30090  sw  1 port 0 nbr   0  heard  (logged 30130)
+  t  30090  sw 10 port 1 nbr  11  heard  (logged 30090)
+  t  30090  sw 11 port 1 nbr  10  heard  (logged 30110)
+  t  30900  sw  0 port 1 nbr   5  SILENT  (logged 32650)
+  t  30900  sw  5 port 0 nbr   0  SILENT  (logged 36730)
+  t  30900  sw  5 port 1 nbr   6  SILENT  (logged 36760)
+  t  30900  sw  5 port 2 nbr  10  SILENT  (logged 36780)
+  t  30900  sw  6 port 1 nbr   5  SILENT  (logged 31210)
+  t  30900  sw 10 port 0 nbr   5  SILENT  (logged 31210)
+  t  35080  sw 13 port 1 nbr  12  SILENT  (logged 35440)
+  t  35700  sw 13 port 1 nbr  12  heard  (logged 35700)
+  t  36000  sw  0 port 1 nbr   5  heard  (logged 36050)
+  t  36000  sw  5 port 0 nbr   0  heard  (logged 36000)
+  t  36000  sw  5 port 1 nbr   6  heard  (logged 36020)
+  t  36000  sw  5 port 2 nbr  10  heard  (logged 36030)
+  t  36000  sw  6 port 1 nbr   5  heard  (logged 36040)
+  t  36000  sw 10 port 0 nbr   5  heard  (logged 36000)
+  t  38760  sw 13 port 1 nbr  12  SILENT  (logged 39070)
+  t  39160  sw 13 port 1 nbr  12  heard  (logged 39250)
+
+== per port: keepalive delay min/max us, drops, packets in (per window)
+  sw  0 port 0 <-   1: delay 550..1200 us  drops 0
+     pkts in/win 0 0 0 0 0 36 309 110 0 61 309 85 0 84 310 61 0 109 309 37 0 0 0 0 0 0 0 0 0 0 87 143 144 143 143 43 0 0 0
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 2 2 2 2 0 0 0 0
+  sw  0 port 1 <-   5: delay 550..690 us  drops 0
+     pkts in/win 144 143 144 143 143 180 452 253 143 203 453 228 144 227 453 204 144 251 453 180 143 144 143 144 143 144 143 144 143 143 57 0 0 0 0 101 143 144 143
+     util out %  2 2 2 2 2 5 27 11 2 7 27 9 2 9 27 7 2 11 27 5 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 1 2 2 2
+  sw  1 port 0 <-   0: delay 550..550 us  drops 0
+     pkts in/win 0 0 0 0 0 0 252 202 0 0 276 178 0 0 300 154 0 15 309 130 0 0 0 0 0 0 0 0 0 144 143 144 85 0 0 0
+     util out %  0 0 0 0 0 0 20 16 0 0 22 14 0 0 24 12 0 1 24 10 0 0 0 0 0 0 0 0 0 2 2 2 1 0 0 0
+  sw  1 port 1 <-   2: delay 30050..30050 us  drops 0
+     pkts in/win 17 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 24
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  1 port 2 <-   6: delay 550..550 us  drops 0
+     pkts in/win 215 309 309 309 310 309 56 108 309 310 32 132 309 309 8 157 309 293 0 191 411 309 328 402 310 309 338 392 309 527 452 452 442 375 309 309
+     util out %  17 24 24 24 24 24 4 8 24 24 2 10 24 24 0 12 24 23 0 15 32 24 26 32 24 24 27 31 24 33 27 27 29 30 24 24
+  sw  2 port 0 <-   1: delay 2050..2050 us  drops 0
+     pkts in/win 10 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  2 port 1 <-   3: delay 550..580 us  drops 0
+     pkts in/win 179 448 448 447 448 448 447 447 448 447 447 446 448 448 448 447 446 448 448 448 447 448 447 448 447 447 448 446 448 447 448 447 447 448 447 448 448
+     util out %  2 7 7 7 7 6 7 7 7 7 6 7 7 7 7 6 7 7 7 7 6 7 7 7 7 6 7 7 7 7 7 7 7 6 7 7 7
+  sw  2 port 2 <-   7: delay 550..550 us  drops 0
+     pkts in/win 485 1212 1213 1213 1212 1212 1213 1213 1210 1212 1213 1213 1212 1212 1212 1214 1212 1210 1215 1213 1210 1214 1213 1211 1212 1212 1211 1215 1212 1210 1210 1214 1213 1211 1214 1213 1210
+     util out %  4 10 10 10 10 10 10 10 10 10 10 10 10 10 10 19 23 23 23 23 23 23 23 23 23 23 23 23 23 23 10 10 10 10 10 10 10
+  sw  3 port 0 <-   2: delay 550..550 us  drops 0
+     pkts in/win 501 601 549 548 538 556 549 548 549 534 562 549 549 530 548 567 547 549 549 524 572 547 548 549 520 576 549 548 548 516 548 549 548 511 586 547 548 548
+     util out %  10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
+  sw  3 port 0 <- 255: delay 0..0 us  drops 0
+     pkts in/win 51
+     util out %  1
+  sw  3 port 1 <-   4: delay 550..610 us  drops 0
+     pkts in/win 316 317 317 317 316 316 317 316 317 317 317 317 317 317 315 316 317 317 317 317 316 317 316 317 317 316 316 317 317 317 316 317 316 317 316 317 317 317
+     util out %  5 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 6 6 6 6 7 6 6 6 6 6 6 6 6 7 6 6 6
+  sw  3 port 1 <- 255: delay 0..0 us  drops 0
+     pkts in/win 33
+     util out %  0
+  sw  3 port 2 <-   8: delay 550..570 us  drops 0
+     pkts in/win 714 674 416 468 714 651 416 492 714 627 416 515 714 416 604 538 714 581 416 562 714 556 416 585 714 534 416 609 714 510 632 714 487 416 655 714 464 416
+     util out %  57 53 33 37 57 52 33 39 57 50 33 41 57 33 48 43 57 46 33 45 57 44 33 46 57 42 33 48 57 40 50 57 38 33 52 57 37 33
+  sw  3 port 2 <- 255: delay 0..0 us  drops 0
+     pkts in/win 69
+     util out %  5
+  sw  4 port 0 <-   3: delay 550..690 us  drops 0
+     pkts in/win 293 453 415 414 415 372 457 413 415 414 367 463 413 415 411 366 467 414 413 406 424 414 415 414 400 429 415 414 414 396 414 414 392 437 415 415 414
+     util out %  3 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
+  sw  4 port 1 <-   9: delay 550..550 us  drops 0
+     pkts in/win 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  5 port 0 <-   0: delay 550..850 us  drops 0
+     pkts in/win 72 143 144 143 144 143 334 408 144 143 358 384 143 144 382 360 143 143 407 335 144 143 144 143 144 143 143 144 143 144 29 0 0 0 0 144 143 144
+     util out %  1 2 2 2 2 2 2 3 2 2 2 3 2 2 3 2 2 2 3 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 2 2 2
+  sw  5 port 1 <-   6: delay 550..550 us  drops 0
+     pkts in/win 0 0 0 0 0 0 190 264 0 0 214 240 0 0 239 215 0 0 263 191 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  5 port 2 <-  10: delay 550..550 us  drops 0
+     pkts in/win 72 143 144 143 144 143 144 143 144 143 143 144 143 144 143 144 143 143 144 143 144 143 144 143 144 143 143 144 143 144 29 0 0 0 0 144 143 144
+     util out %  1 2 2 2 2 2 17 23 2 2 19 21 2 2 21 19 2 2 23 17 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 2 2 2
+  sw  6 port 0 <-   1: delay 550..1200 us  drops 0
+     pkts in/win 309 309 309 309 310 211 0 261 309 187 0 286 309 163 0 310 309 138 25 376 355 309 309 386 344 310 309 395 335 309 424 548 470 453 452 426 319 309 309
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 1 0 0 1 1 0 2 3 3 3 3 1 1 0 0
+  sw  6 port 0 <- 255: delay 0..0 us  drops 0
+     pkts in/win 62
+     util out %  0
+  sw  6 port 1 <-   5: delay 550..550 us  drops 0
+     pkts in/win 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  6 port 1 <- 255: delay 0..0 us  drops 0
+     pkts in/win 0
+     util out %  0
+  sw  6 port 2 <-   7: delay 550..560 us  drops 4738
+     pkts in/win 204 204 204 204 204 204 204 204 204 204 228 292 291 209 204 204 204 204 204 204 204 204 204 204 266 292 258 204 204 204 204 204 204 204 204 204 204 216 292
+     util out %  25 25 25 25 25 25 25 25 25 25 30 39 32 25 25 25 25 25 25 25 25 25 25 25 36 39 26 25 25 25 25 25 25 25 25 25 25 28 39
+  sw  6 port 2 <- 255: delay 0..0 us  drops 114
+     pkts in/win 204
+     util out %  25
+  sw  6 port 3 <-  11: delay 550..690 us  drops 0
+     pkts in/win 310 309 309 309 309 309 309 310 309 309 309 310 309 308 310 309 310 308 310 309 309 310 309 309 309 309 310 309 309 309 425 453 452 453 452 323 309 310 309
+     util out %  24 24 24 24 24 16 0 20 24 14 0 22 24 13 0 24 24 11 2 24 24 24 24 24 24 24 24 24 24 24 26 27 27 27 27 24 24 24 24
+  sw  6 port 3 <- 255: delay 0..0 us  drops 0
+     pkts in/win 60
+     util out %  4
+  sw  7 port 0 <-   2: delay 550..550 us  drops 0
+     pkts in/win 623 688 687 687 690 689 688 690 690 688 689 688 688 690 1180 3239 3241 3237 3238 3239 3238 3238 3240 3238 3240 3239 3238 3239 3241 1993 688 691 688 689 688 688 689 689 687
+     util out %  35 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39 39
+  sw  7 port 1 <-   6: delay 550..15050 us  drops 0
+     pkts in/win 204 249 291 276 204 204 204 204 204 204 204 204 204 204 204 286 292 238 204 204 204 204 204 204 204 204 204 204 237 291 288 204 204 204 204 204 204 204 204
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  7 port 2 <-   8: delay 550..550 us  drops 0
+     pkts in/win 101 112 112 112 112 109 112 112 112 112 112 111 112 110 112 112 111 104 80 80 80 78 80 80 80 80 80 79 80 79 80 80 79 80 80 80 80 78 80
+     util out %  0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  sw  7 port 3 <-  12: delay 550..560 us  drops 0
+     pkts in/win 218 242 242 243 362 365 364 357 202 203 202 335 1274 1275 1274 1061 243 242 242 279 365 364 365 306 201 203 203 671 1274 1275 1274 738 242 243 241 317 365 365 364
+     util out %  17 19 19 19 29 29 29 28 16 16 16 27 102 102 102 84 19 19 19 22 29 29 29 24 16 16 16 54 102 102 102 58 19 19 19 25 29 29 29
+  sw  8 port 0 <-   3: delay 550..1990 us  drops 0
+     pkts in/win 432 721 422 625 720 508 422 647 721 484 422 671 721 461 422 694 721 437 421 718 712 423 443 720 689 422 466 721 665 423 490 720 642 422 513 721 618 423
+     util out %  1 2 1 1 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 2 1 1 2 1 1
+  sw  8 port 1 <-   7: delay 550..550 us  drops 0
+     pkts in/win 49 79 80 79 80 80 80 80 78 80 80 80 80 80 79 80 79 80 80 79 80 80 80 80 78 80 80 80 80 80 79 80 79 80 80 79 80 80
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  8 port 2 <-   9: delay 550..550 us  drops 0
+     pkts in/win 40 67 67 67 67 67 67 66 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 66 67 67 67 67 67 67 67 67 67 67 67 67 67
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  8 port 3 <-  13: delay 550..550 us  drops 0
+     pkts in/win 79 134 133 134 133 134 134 134 134 134 134 134 134 134 134 134 134 134 133 134 133 134 134 134 134 134 134 134 134 134 134 134 134 134 133 134 133 134
+     util out %  3 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+  sw  9 port 0 <-   4: delay 550..550 us  drops 0
+     pkts in/win 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw  9 port 1 <-   8: delay 550..550 us  drops 0
+     pkts in/win 133 134 133 134 134 134 134 134 134 134 134 134 134 134 134 134 133 134 133 134 134 134 134 134 134 134 134 134 134 134 134 134 133 134 133 134 134 134
+     util out %  5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+  sw  9 port 1 <- 255: delay 0..0 us  drops 0
+     pkts in/win 39
+     util out %  1
+  sw  9 port 2 <-  14: delay 550..550 us  drops 0
+     pkts in/win 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+     util out %  5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+  sw  9 port 2 <- 255: delay 0..0 us  drops 0
+     pkts in/win 0
+     util out %  1
+  sw 10 port 0 <-   5: delay 550..1330 us  drops 0
+     pkts in/win 144 143 144 143 143 179 452 255 143 204 452 229 144 227 453 205 144 251 453 181 143 144 143 144 143 144 143 144 143 143 57 0 0 0 0 101 143 144 143
+     util out %  2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 0 0 0 0 0 1 2 2 2
+  sw 10 port 1 <-  11: delay 550..550 us  drops 0
+     pkts in/win 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 87 143 143 144 143 43 0 0 0
+     util out %  0 0 0 0 0 2 24 8 0 4 24 6 0 6 24 4 0 8 24 2 0 0 0 0 0 0 0 0 0 0 1 2 2 2 2 0 0 0 0
+  sw 11 port 0 <-   6: delay 550..850 us  drops 0
+     pkts in/win 216 309 309 309 310 309 57 106 309 309 33 131 309 309 9 155 309 293 0 179 310 309 309 309 310 309 309 309 309 353 453 453 452 452 395 310 309 309
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 3 3 3 3 2 0 0 0
+  sw 11 port 1 <-  10: delay 550..980 us  drops 0
+     pkts in/win 0 0 0 0 0 0 251 204 0 0 276 179 0 0 300 155 0 15 309 131 0 0 0 0 0 0 0 0 0 44 143 144 143 144 85 0 0 0
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 1 0 0 0
+  sw 11 port 2 <-  12: delay 550..550 us  drops 0
+     pkts in/win 192 715 0 0 0 0 285 601 0 0 0 0 393 488 0 0 0 0 511 385 0 0 0 605 275 0 0 0 0 725 164 0 0 0 0 821 62 0
+     util out %  16 61 0 0 0 0 26 52 0 0 0 0 35 43 0 0 0 0 45 33 0 0 0 54 24 0 0 0 0 64 14 0 0 0 0 73 5 0
+  sw 12 port 0 <-   7: delay 550..2990 us  drops 0
+     pkts in/win 97 243 242 242 301 366 363 366 275 202 202 203 873 1274 1274 543 243 242 242 339 366 365 365 223 202 203 202 1210 1274 1275 1251 242 243 242 255 365 366 364
+     util out %  0 0 0 0 0 1 1 1 0 0 0 0 2 4 4 1 0 0 0 1 1 1 1 0 0 0 0 3 4 4 4 0 0 0 0 1 1 1
+  sw 12 port 1 <-  11: delay 550..1050 us  drops 0
+     pkts in/win 0 873 70 0 0 0 26 908 0 0 0 0 134 796 0 0 0 250 689 0 0 0 0 359 578 0 0 0 0 474 457 0 0 0 0 580 354 0
+     util out %  0 2 0 0 0 0 0 2 0 0 0 0 0 2 0 0 0 0 2 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0
+  sw 12 port 2 <-  13: delay 550..620 us  drops 2266
+     pkts in/win 504 1118 1122 921 510 489 509 725 1156 1016 1166 801 477 484 620 1112 1182 1159 642 490 509 510 822 1158 1143 1185 558 486 501 494 849 1208 1206 1084 496 510 509 510
+     util out %  40 89 89 85 46 45 41 61 93 83 93 75 44 44 53 89 94 92 63 51 43 50 63 92 91 94 66 45 47 47 65 102 93 90 51 50 49 49
+  sw 13 port 0 <-   8: delay 550..1090 us  drops 0
+     pkts in/win 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 66 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 66 67 67 67 67 67 67 67
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw 13 port 0 <- 255: delay 0..0 us  drops 0
+     pkts in/win 6
+     util out %  0
+  sw 13 port 1 <-  12: delay 550..80370 us  drops 0
+     pkts in/win 1158 1169 1062 509 489 509 582 1100 1086 1112 984 478 483 485 543 1061 1100 1138 869 490 509 510 618 1137 1190 1159 770 477 492 640 502 1191 1250 1172 606 496 510 509 501
+     util out %  3 3 3 1 1 1 1 3 3 3 3 1 1 1 1 3 3 3 2 1 1 1 1 3 3 3 2 1 1 2 1 3 4 3 1 1 1 1 1
+  sw 13 port 1 <- 255: delay 0..0 us  drops 0
+     pkts in/win 125
+     util out %  0
+  sw 13 port 2 <-  14: delay 25050..25590 us  drops 0
+     pkts in/win 67 67 67 67 67 67 67 67 67 67 67 67 67 66 67 67 67 67 67 67 67 67 67 67 67 67 67 67 66 67 67 67 67 67 67 67 67 67 67
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw 13 port 2 <- 255: delay 0..0 us  drops 0
+     pkts in/win 5
+     util out %  0
+  sw 14 port 0 <-   9: delay 550..550 us  drops 0
+     pkts in/win 54 67 67 67 67 67 67 66 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67 66 67 67 67 67 67 67 67 67 67 67 67 67 67 67 67
+     util out %  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  sw 14 port 1 <-  13: delay 25050..25050 us  drops 0
+     pkts in/win 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+     util out %  4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+
+== local customers: per-window packets (delta), new destinations, size class
+  Jane Street [10.3.164.0/24]                   sw  2 small udp 3366
+     pkts/win 37 87 88 87 88 88 87 88 88 87 88 88 87 88 88 87 88 88 87 88 88 87 88 88 87 88 88 87 88 88 263 87 88 88 87 88 87
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Dropbox-2 [10.5.178.0/24]                     sw 12 large
+     pkts/win 1 0 0 170 5 0 0 0 12 163 0 0 0 0 175 0 0 0 0 54 121 0 0 0 0 75 100 0 0 0 0 96 79 0 0 0 0 117
+     new dst  1 0 0 1 1 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1
+  Dropbox [10.6.79.0/24]                        sw 11 large
+     pkts/win 118 430 0 0 0 0 182 365 0 0 0 0 248 299 0 0 0 0 314 233 0 0 0 379 168 0 0 0 0 445 102 0 0 0 0 511 36 0
+     new dst  2 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0
+  Backup [10.8.134.0/24]                        sw 12 large
+     pkts/win 510 1117 1122 895 579 564 524 763 1156 878 1167 949 553 560 1016 1113 1182 1160 793 594 418 629 788 1159 1141 1112 730 571 588 599 815 1179 1095 1137 645 628 613 498
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Ping [10.11.81.0/24]                          sw  1 small udp 964
+     pkts/win 19 25 25 25 25 24 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 50 25 25 24 25 25 25 25 75 25 25 25 24 25 25
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Zoom [10.13.43.0/24]                          sw 10 small udp 5595
+     pkts/win 145 143 144 143 144 143 143 144 143 144 143 144 143 144 143 143 144 143 144 143 144 143 143 144 143 144 143 144 143 144 143 143 144 143 144 143 144 143 144
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Netflix [10.17.72.0/24]                       sw  3 large
+     pkts/win 44 423 422 421 423 422 422 423 422 423 422 422 423 422 845 -423 845 423 422 422 423 422 422 423 422 423 422 422 423 422 422 845 423 422 422 423 422 422 423
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Netflix live [10.17.72.200/32]                sw  3 large
+     pkts/win 31 298 257 0 53 298 234 0 77 298 210 0 100 298 187 0 123 299 163 0 147 298 140 0 170 298 117 0 194 298 93 217 298 70 0 240 298 47 0
+     new dst  13 12 12 0 12 12 12 0 12 12 12 0 12 12 0 12 12 12 12 0 12 12 12 0 12 12 12 0 12 12 12 12 12 12 0 12 12 12 0
+  Cam-B [10.19.251.0/24]                        sw  6 large
+     pkts/win 154 153 153 153 153 153 153 153 153 153 153 182 241 189 153 153 153 153 153 153 153 153 153 153 153 220 239 153 153 153 153 153 153 153 153 153 153 153 170 240
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Mapper [10.20.220.0/24]                       sw  4 small lowttl 967 udp 967
+     pkts/win 21 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 25 74 25 25 25 25 25 25
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Login [10.22.59.0/24]                         sw  7 small
+     pkts/win 30 32 32 32 32 32 31 32 32 32 32 32 32 32 31 32 32 32 32 32 32 32 31 32 32 32 32 32 32 32 31 32 32 32 32 32 32 32 31
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Zoom [10.22.154.0/24]                         sw  0 small udp 5595
+     pkts/win 145 143 144 143 144 143 143 144 143 144 143 144 143 144 143 143 144 143 144 143 144 143 144 143 143 144 143 144 143 144 143 143 144 143 144 143 144 143 144
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Sync [10.23.92.0/24]                          sw  1 large
+     pkts/win 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 52 0 10 48 0 0 15 43 0 58 0 0 24 34 0 0
+     new dst  1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 1 0 0 1 1 0 1 0 0 1 1 0 0
+  Vault [10.27.60.0/24]                         sw  3 mid   dup 2617
+     pkts/win 15 134 134 134 134 134 134 134 134 134 133 133 134 134 268 -134 268 134 134 134 134 134 134 134 134 134 134 132 134 134 134 268 134 134 134 134 134 134 134
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Cloudflare users [10.28.6.0/24]               sw  2 small
+     pkts/win 180 446 446 447 446 446 446 447 446 446 446 447 446 446 446 447 446 446 446 447 446 446 446 447 446 446 446 447 446 446 1339 446 446 447 446 446 446
+     new dst  9 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+  Steam [10.28.235.0/24]                        sw  7 large
+     pkts/win 73 80 79 80 80 80 79 80 80 79 80 233 1275 1275 1275 1020 80 80 80 79 80 80 79 80 80 79 80 608 1275 1275 1275 645 80 80 80 79 80 80 79
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Amazon (shoppers) [10.29.156.0/24]            sw  7 large
+     pkts/win 148 162 163 162 163 162 163 153 0 0 0 0 0 0 0 35 163 162 163 162 163 162 163 102 0 0 0 0 0 0 0 86 163 162 163 162 163 162 163
+     new dst  2 1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1
+  Amazon (Prime member) [10.29.156.200/32]      sw  7 small
+     pkts/win 45 47 48 48 48 48 47 48 48 48 48 47 48 48 48 48 48 47 48 48 48 48 47 48 48 48 48 47 48 48 48 48 48 47 48 48 48 48 47
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Dropbox [10.30.171.0/24]                      sw 11 large
+     pkts/win 95 344 0 0 0 0 146 292 0 0 0 0 199 239 0 0 0 0 251 187 0 0 0 304 134 0 0 0 0 356 82 0 0 0 0 409 29 0
+     new dst  2 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0
+  Cam-A [10.31.27.0/24]                         sw  6 large
+     pkts/win 165 164 164 164 164 164 164 164 164 164 164 193 252 211 164 164 164 164 164 164 164 164 164 164 164 231 251 174 164 164 164 164 164 164 164 164 164 164 181 251
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Fortnite [10.31.43.0/24]                      sw  4 small udp 11440
+     pkts/win 237 295 295 295 295 294 295 295 295 295 295 295 294 295 295 295 295 295 294 295 295 295 295 295 295 294 295 295 295 295 884 295 295 295 295 295 294
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Amazon (shoppers) [10.34.207.0/24]            sw  7 large
+     pkts/win 1 0 0 0 120 123 123 123 122 123 123 106 0 0 0 0 0 0 0 36 123 123 122 123 123 123 122 68 0 0 0 0 0 0 0 75 122 123 123
+     new dst  1 0 0 0 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 1 1 1
+  Ledger [10.37.18.0/24]                        sw  9 large
+     pkts/win 41 134 134 134 134 134 134 134 134 133 134 134 134 134 134 134 134 133 134 134 134 134 134 134 134 133 134 134 134 134 134 134 134 133 134 134 134 134 134
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Fortnite [10.42.152.0/24]                     sw  2 small udp 10710
+     pkts/win 113 279 279 279 279 278 279 279 279 279 279 279 279 279 279 279 278 279 279 279 279 279 279 279 279 279 279 278 279 279 837 279 279 279 279 279 278
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Fortnite player [10.42.152.200/32]            sw  2 small udp 1836
+     pkts/win 68 48 48 48 24 71 48 48 48 19 77 47 48 48 15 81 47 48 48 10 86 47 48 48 5 91 48 47 48 144 47 44 0 100 48 47
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1
+  Akamai users [10.44.205.0/24]                 sw  2 mid  
+     pkts/win 4 5 5 6 5 5 6 5 5 6 5 5 6 5 5 6 5 5 6 5 5 6 5 5 6 5 5 6 5 5 16 6 5 5 6 5 5
+     new dst  3 3 2 3 3 2 3 2 3 3 2 3 3 2 3 2 3 2 3 3 2 3 2 3 3 2 3 3 2 3 2 3 3 2 3 2 3
+  Sync [10.45.163.0/24]                         sw  1 large
+     pkts/win 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 49 0 10 44 0 0 14 40 0 54 0 0 22 32 0 0
+     new dst  1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 1 0 0 1 1 0 1 0 0 1 1 0 0
+  Home users [10.46.84.0/24]                    sw  2 small udp 37500
+     pkts/win 37 87 88 87 88 88 87 88 88 87 88 88 87 88 88 1857 2638 2638 2637 2638 2638 2637 2638 2638 2637 2638 2638 2637 2638 2638 293 87 88 88 87 88 87
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Ping's peer [10.53.189.0/24]                  sw  2 small udp 957
+     pkts/win 11 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 25 24 25 25 25 25 25 25 25 25 25 74 25 25 25 25 25 25
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+  Offsite [10.62.116.0/24]                      sw  1 large
+     pkts/win 218 309 309 309 309 309 310 309 309 309 309 310 309 309 309 309 310 309 309 309 309 619 309 309 309 310 309 309 309 928 309 309 309 309 310 309
+     new dst  2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+== source ingress and host-egress counters (cumulative, per reporting switch)
+  Counts have different observation times; do not subtract unaligned endpoints.
+  Host-egress means routed toward a local host, before its final queue/link.
+  No nonzero host-egress counters recorded; check build mode and report coverage.
+  Jane Street [10.3.164.0/24]
+    ingress     sw  2:      3367 packets at t=39160 ms
+  Dropbox-2 [10.5.178.0/24]
+    ingress     sw 12:      1168 packets at t=39160 ms
+  Dropbox [10.6.79.0/24]
+    ingress     sw 11:      3830 packets at t=39470 ms
+  Backup [10.8.134.0/24]
+    ingress     sw 12:     31540 packets at t=39160 ms
+  Ping [10.11.81.0/24]
+    ingress     sw  1:       965 packets at t=39470 ms
+  Zoom [10.13.43.0/24]
+    ingress     sw 10:      5596 packets at t=39780 ms
+  Netflix [10.17.72.0/24]
+    ingress     sw  3:     16516 packets at t=39880 ms
+  Netflix live [10.17.72.200/32]
+    ingress     sw  3:      5851 packets at t=39880 ms
+  Cam-B [10.19.251.0/24]
+    ingress     sw  6:      6531 packets at t=39980 ms
+  Mapper [10.20.220.0/24]
+    ingress     sw  4:       968 packets at t=39570 ms
+  Login [10.22.59.0/24]
+    ingress     sw  7:      1241 packets at t=39670 ms
+  Zoom [10.22.154.0/24]
+    ingress     sw  0:      5596 packets at t=39780 ms
+  Sync [10.23.92.0/24]
+    ingress     sw  1:       291 packets at t=39470 ms
+  Vault [10.27.60.0/24]
+    ingress     sw  3:      5237 packets at t=39880 ms
+  Cloudflare users [10.28.6.0/24]
+    ingress     sw  2:     17137 packets at t=39160 ms
+  Steam [10.28.235.0/24]
+    ingress     sw  7:     12461 packets at t=39670 ms
+  Amazon (shoppers) [10.29.156.0/24]
+    ingress     sw  7:      3775 packets at t=39670 ms
+  Amazon (Prime member) [10.29.156.200/32]
+    ingress     sw  7:      1861 packets at t=39670 ms
+  Dropbox [10.30.171.0/24]
+    ingress     sw 11:      3067 packets at t=39470 ms
+  Cam-A [10.31.27.0/24]
+    ingress     sw  6:      6993 packets at t=39980 ms
+  Fortnite [10.31.43.0/24]
+    ingress     sw  4:     11441 packets at t=39570 ms
+  Amazon (shoppers) [10.34.207.0/24]
+    ingress     sw  7:      2370 packets at t=39670 ms
+  Ledger [10.37.18.0/24]
+    ingress     sw  9:      5129 packets at t=39060 ms
+  Fortnite [10.42.152.0/24]
+    ingress     sw  2:     10711 packets at t=39160 ms
+  Fortnite player [10.42.152.200/32]
+    ingress     sw  2:      1837 packets at t=39160 ms
+  Akamai users [10.44.205.0/24]
+    ingress     sw  2:       206 packets at t=39160 ms
+  Sync [10.45.163.0/24]
+    ingress     sw  1:       271 packets at t=39470 ms
+  Home users [10.46.84.0/24]
+    ingress     sw  2:     40867 packets at t=39160 ms
+  Ping's peer [10.53.189.0/24]
+    ingress     sw  2:       958 packets at t=39160 ms
+  Offsite [10.62.116.0/24]
+    ingress     sw  1:     11967 packets at t=39470 ms
+
+== pairs (last report per switch): source group -> destination, cumulative packets
+  sw  0 group 12 -> Zoom [10.13.43.0/24]                          5164
+  sw  0 group 12 -> Zoom [10.22.154.0/24]                         1
+  sw  1 group  5 -> Ping [10.11.81.0/24]                          1
+  sw  1 group  5 -> Ping's peer [10.53.189.0/24]                  939
+  sw  1 group 11 -> unknown                                       270
+  sw  1 group 11 -> Sync [10.45.163.0/24]                         1
+  sw  1 group 13 -> unknown                                       290
+  sw  1 group 13 -> Sync [10.23.92.0/24]                          1
+  sw  1 group 14 -> unknown                                       11657
+  sw  1 group 14 -> Offsite [10.62.116.0/24]                      1
+  sw  2 group  1 -> unknown                                       3366
+  sw  2 group  1 -> Jane Street [10.3.164.0/24]                   1
+  sw  2 group  8 -> Fortnite [10.31.43.0/24]                      10710
+  sw  2 group  8 -> Fortnite [10.42.152.0/24]                     1
+  sw  2 group  9 -> Fortnite [10.31.43.0/24]                      1836
+  sw  2 group  9 -> Fortnite player [10.42.152.200/32]            1
+  sw  2 group 10 -> unknown                                       205
+  sw  2 group 10 -> Akamai users [10.44.205.0/24]                 1
+  sw  2 group 12 -> unknown                                       40866
+  sw  2 group 12 -> Home users [10.46.84.0/24]                    1
+  sw  2 group 13 -> Ping [10.11.81.0/24]                          957
+  sw  2 group 13 -> Ping's peer [10.53.189.0/24]                  1
+  sw  2 group 15 -> unknown                                       17136
+  sw  2 group 15 -> Cloudflare users [10.28.6.0/24]               1
+  sw  3 group  7 -> unknown                                       16515
+  sw  3 group  7 -> Netflix [10.17.72.0/24]                       1
+  sw  3 group  8 -> unknown                                       5850
+  sw  3 group  8 -> Netflix live [10.17.72.200/32]                1
+  sw  3 group 14 -> unknown                                       5236
+  sw  3 group 14 -> Vault [10.27.60.0/24]                         1
+  sw  4 group  5 -> Fortnite [10.31.43.0/24]                      1
+  sw  4 group  5 -> Fortnite [10.42.152.0/24]                     10851
+  sw  4 group 10 -> unknown                                       917
+  sw  4 group 10 -> Mapper [10.20.220.0/24]                       1
+  sw  6 group  4 -> unknown                                       6741
+  sw  6 group  4 -> Cam-A [10.31.27.0/24]                         1
+  sw  6 group  9 -> unknown                                       6290
+  sw  6 group  9 -> Cam-B [10.19.251.0/24]                        1
+  sw  7 group  0 -> unknown                                       12221
+  sw  7 group  0 -> Steam [10.28.235.0/24]                        1
+  sw  7 group  1 -> unknown                                       3286
+  sw  7 group  1 -> Amazon (shoppers) [10.29.156.0/24]            1
+  sw  7 group  2 -> unknown                                       1717
+  sw  7 group  2 -> Amazon (Prime member) [10.29.156.200/32]      1
+  sw  7 group  6 -> unknown                                       2001
+  sw  7 group  6 -> Amazon (shoppers) [10.34.207.0/24]            1
+  sw  7 group 11 -> unknown                                       1145
+  sw  7 group 11 -> Login [10.22.59.0/24]                         1
+  sw  9 group  7 -> unknown                                       4994
+  sw  9 group  7 -> Ledger [10.37.18.0/24]                        1
+  sw 10 group  6 -> Zoom [10.13.43.0/24]                          1
+  sw 10 group  6 -> Zoom [10.22.154.0/24]                         5451
+  sw 11 group  3 -> unknown                                       5910
+  sw 11 group  3 -> Dropbox [10.6.79.0/24]                        1
+  sw 11 group  3 -> Dropbox [10.30.171.0/24]                      1
+  sw 12 group  2 -> unknown                                       1050
+  sw 12 group  2 -> Dropbox-2 [10.5.178.0/24]                     1
+  sw 12 group  4 -> unknown                                       30428
+  sw 12 group  4 -> Backup [10.8.134.0/24]                        1

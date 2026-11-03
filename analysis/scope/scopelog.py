@@ -147,7 +147,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("log", type=Path)
     ap.add_argument("--customers", type=Path)
-    for f in ("samples", "multipath", "links", "customers-table", "ports", "pairs", "budget", "all", "timeline"):
+    for f in ("samples", "multipath", "links", "customers-table", "ports", "pairs", "budget", "delivery", "all", "timeline"):
         ap.add_argument(f"--{f}", action="store_true")
     a = ap.parse_args()
     L = parse(a.log.read_bytes())
@@ -174,8 +174,9 @@ def main() -> int:
             span = (s[-1] - s[0]) % 256 + 1 if s else 0
             ws = [w for w in L.windows if w["sw"] == sw]
             lt = sorted(lat[sw])
-            # Expected: one window a second from ~1 s to the run's end (40 s).
-            expect = 39
+            # Internal gaps only: staggered timers can produce 39 or 40
+            # windows. The sequence span cannot reveal missing first/last reports.
+            expect = span
             print(f"   sw {sw:>2}: {len(s):>3}/{expect:<3} missing {expect - len(set(s)):>2}  lat {lt[len(lt)//2]:>4}/{lt[-1]:>5}  last t {ws[-1]['t']}")
         first = min((w["t"] for w in L.windows), default=0)
         last = max((w["t"] for w in L.windows), default=0)
@@ -230,6 +231,25 @@ def main() -> int:
             extra += f" lowttl {last['lowttl']}" if last["lowttl"] else ""
             extra += f" udp {last['udp']}" if last["udp"] else ""
             print(f"  {name(idx):<45} sw {sw:>2} {size:<5}{extra}\n     pkts/win {' '.join(map(str, deltas))}\n     new dst  {' '.join(str(c['new']) for _, c in v)}")
+    if a.delivery or every:
+        print("\n== source ingress and host-egress counters (cumulative, per reporting switch)")
+        print("  Counts have different observation times; do not subtract unaligned endpoints.")
+        print("  Host-egress means routed toward a local host, before its final queue/link.")
+        sent, delivered = {}, {}
+        for w in sorted(L.windows, key=lambda w: w["t"]):
+            for c in w["cust"]:
+                sent[(c["idx"], w["sw"])] = (w["t"], c["pkts"])
+            for idx, count in w.get("deliv", {}).items():
+                delivered[(idx, w["sw"])] = (w["t"], count)
+        sources = sorted({idx for idx, _ in sent} | {idx for idx, _ in delivered})
+        if not delivered:
+            print("  No nonzero host-egress counters recorded; check build mode and report coverage.")
+        for idx in sources:
+            print(f"  {name(idx)}")
+            for label, readings in (("ingress", sent), ("host-egress", delivered)):
+                for (source, sw), (t, count) in sorted(readings.items()):
+                    if source == idx:
+                        print(f"    {label:<11} sw {sw:>2}: {count:>9} packets at t={t} ms")
     if a.pairs or every:
         print("\n== pairs (last report per switch): source group -> destination, cumulative packets")
         last = {}
