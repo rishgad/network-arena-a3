@@ -140,6 +140,8 @@ pub struct Scope {
     /// a switch strictly closer to it (only those may be a parent: no loops).
     hops: u8,
     alts: Vec<u16>,
+    /// Hops each entry of `alts` reported.
+    alt_hops: Vec<u8>,
     held: VecDeque<Vec<u8>>,
     customers: Vec<(u32, u8)>,
     prev: Vec<u64>,
@@ -262,7 +264,8 @@ impl Scope {
         let mut p = Vec::with_capacity(body.len() + 1);
         p.push(tag);
         p.extend_from_slice(&body);
-        match self.parent {
+        let dead = |q: &u16| self.port.get(q).is_some_and(|s| s.silent);
+        match self.parent.filter(|q| !dead(q)) {
             Some(port) => {
                 // A congested way out: send a second copy by the quietest
                 // other live port. The logger writes the first to arrive.
@@ -283,7 +286,7 @@ impl Scope {
                 self.send(port, p, out)
             }
             None => {
-                if self.held.len() >= 8 {
+                if self.held.len() >= 16 {
                     self.held.pop_front();
                 }
                 self.held.push_back(p);
@@ -297,6 +300,12 @@ impl Scope {
 
     fn set_parent(&mut self, port: u16, out: &mut Vec<Action>) {
         if self.parent == Some(port) {
+            // Same way up: still send whatever waited for it.
+            if !self.port.get(&port).is_some_and(|s| s.silent) {
+                while let Some(p) = self.held.pop_front() {
+                    self.send(port, p, out);
+                }
+            }
             return;
         }
         self.parent = Some(port);
@@ -473,6 +482,7 @@ impl SwitchProgram for Scope {
             round: 0,
             hops: u8::MAX,
             alts: Vec::new(),
+            alt_hops: Vec::new(),
             held: VecDeque::new(),
             customers,
             prev: Vec::new(),
@@ -511,11 +521,14 @@ impl SwitchProgram for Scope {
                     self.round = round;
                     self.hops = h.saturating_add(1);
                     self.alts.clear();
+                    self.alt_hops.clear();
                     self.alts.push(p);
+                    self.alt_hops.push(h);
                     self.beacon(round, self.hops, Some(p), &mut out);
                 } else if round == self.round && h < self.hops && !self.alts.contains(&p) {
                     // Another way upstream; never from as far as we are.
                     self.alts.push(p);
+                    self.alt_hops.push(h);
                 } else {
                     return out;
                 }
@@ -524,7 +537,10 @@ impl SwitchProgram for Scope {
                 let ok = |q: &u16| {
                     self.port.get(q).is_none_or(|s| !s.silent && s.util_pct < BUSY_PCT && s.last_drops == 0)
                 };
-                let pick = self.alts.iter().copied().find(|q| ok(q)).unwrap_or(self.alts[0]);
+                let pick = (0..self.alts.len())
+                    .filter(|&i| ok(&self.alts[i]))
+                    .min_by_key(|&i| self.alt_hops[i])
+                    .map_or(self.alts[0], |i| self.alts[i]);
                 self.set_parent(pick, &mut out);
             }
             _ => {

@@ -92,20 +92,43 @@ pub fn f1(log: &[u8]) -> bool {
     (if mine { end(6, 1) } else { end(1, 6) }) >= 3
 }
 
+/// SRLG (egg 19): links 0-1 and 10-11 both start an outage within
+/// `TOGETHER_MS`. The claim logger is switch 11, so the 11-10 end is complete.
 pub fn f2(log: &[u8]) -> bool {
     let os = outages(log);
-    let a = link_outages(&os, 0, 1);
-    let b = link_outages(&os, 10, 11);
-    a.iter().any(|(s, _)| b.iter().any(|(t, _)| s.abs_diff(*t) <= TOGETHER_MS))
+    let pick = |pairs: &[(u8, u8)]| -> Vec<Outage> { os.iter().filter(|o| pairs.contains(&(o.sw, o.nbr))).copied().collect() };
+    let a = pick(&[(0, 1), (1, 0)]);
+    let b = pick(&[(11, 10), (10, 11)]);
+    // Together: they went down at the same moment, or (when a report of
+    // the start was lost) came back at the same moment.
+    a.iter().any(|x| {
+        b.iter().any(|y| {
+            x.start.abs_diff(y.start) <= TOGETHER_MS
+                || matches!((x.end, y.end), (Some(e), Some(f)) if e.abs_diff(f) <= TOGETHER_MS)
+        })
+    })
 }
 
+/// Rebooting switch (egg 20): switch 6 (the claim logger) loses switch 5
+/// and gets it back, and another neighbour of 5 (0 or 10) loses it within
+/// `TOGETHER_MS` of the same moment: the switch, not one link, and not for good.
 pub fn f3(log: &[u8]) -> bool {
-    let os: Vec<Outage> = outages(log).into_iter().filter(|o| o.nbr == 5 && [0, 6, 10].contains(&o.sw)).collect();
-    os.iter().any(|o| {
-        let mut who: Vec<u8> = os.iter().filter(|p| p.start.abs_diff(o.start) <= TOGETHER_MS).map(|p| p.sw).collect();
-        who.sort_unstable();
-        who.dedup();
-        who.len() >= 2
+    let os = outages(log);
+    // Every heard record, (switch, neighbour, t), including switch 5's own
+    // ports coming back: what a rebooted switch says first.
+    let mut heard: Vec<(u8, u8, u32)> = Vec::new();
+    for f in frames(log) {
+        if f.tag == TAG_LINK && f.body.len() >= 6 && f.body[3] == 0 {
+            heard.push((f.body[0], f.body[2], (f.body[4] as u32 | (f.body[5] as u32) << 8) * 10));
+        }
+    }
+    os.iter().filter(|o| o.sw == 6 && o.nbr == 5).any(|m| {
+        let Some(end) = m.end else { return false };
+        let down_too = os.iter().any(|o| o.nbr == 5 && (o.sw == 0 || o.sw == 10) && o.start.abs_diff(m.start) <= TOGETHER_MS);
+        let back_too = heard.iter().any(|&(sw, nbr, t)| {
+            t.abs_diff(end) <= TOGETHER_MS && ((nbr == 5 && (sw == 0 || sw == 10)) || (sw == 5 && nbr != 6))
+        });
+        down_too || back_too
     })
 }
 

@@ -647,53 +647,53 @@ log_cap_bytes = 65536
 kind = "fail"
 a = 1
 b = 6
-at_ms = 16719
+at_ms = 5900
 for_ms = 1600
 [[plant]]
 kind = "fail"
 a = 1
 b = 6
-at_ms = 20719
+at_ms = 9900
 for_ms = 1600
 [[plant]]
 kind = "fail"
 a = 1
 b = 6
-at_ms = 24719
+at_ms = 13900
 for_ms = 1600
 [[plant]]
 kind = "fail"
 a = 1
 b = 6
-at_ms = 28719
+at_ms = 17900
 for_ms = 1600
 [[plant]]
 kind = "fail"
 a = 0
 b = 1
-at_ms = 10924
-for_ms = 6864
+at_ms = 21930
+for_ms = 8160
 [[plant]]
 kind = "fail"
 a = 10
 b = 11
-at_ms = 10924
-for_ms = 6864
+at_ms = 21930
+for_ms = 8160
 [[plant]]
 kind = "fail"
 a = 0
 b = 5
-at_ms = 6600
-for_ms = 5522
+at_ms = 17893
+for_ms = 5090
 [[plant]]
 kind = "fail"
 a = 5
 b = 6
-at_ms = 6600
-for_ms = 5522
+at_ms = 17893
+for_ms = 5090
 [[plant]]
 kind = "fail"
 a = 5
 b = 10
-at_ms = 6600
-for_ms = 5522
+at_ms = 17893
+for_ms = 5090

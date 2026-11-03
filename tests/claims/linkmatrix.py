@@ -19,8 +19,15 @@ def fail(a, b, at, dur=None):
     s = f'[[plant]]\nkind = "fail"\na = {a}\nb = {b}\nat_ms = {at}\n'
     return s + (f"for_ms = {dur}\n" if dur else "")
 
-def egg(name, rng):
-    t = rng.randrange(4000, 20000)
+# Truth run 1 times; a claim run moves only the egg under test.
+TRUTH = {"F1": 5900, "F2": 21930, "F3": 30900}
+
+def egg(name, rng, fixed=False):
+    t = TRUTH[name] if fixed else rng.randrange(4000, 20000)
+    if fixed and name == "F2":
+        return fail(0, 1, t, 8160) + fail(10, 11, t, 8160)
+    if fixed and name == "F3":
+        return fail(0, 5, t, 5100) + fail(5, 6, t, 5100) + fail(5, 10, t, 5100)
     if name == "F1":
         return "".join(fail(1, 6, t + k * 4000, 1600) for k in range(4))
     if name == "F2":
@@ -36,12 +43,13 @@ NEAR = {
     "F2": {"only-0-1": lambda r, t: fail(0, 1, t, 7000), "apart": lambda r, t: fail(0, 1, t, 4000) + fail(10, 11, t + 6000, 4000),
            "other-pair": lambda r, t: fail(2, 3, t, 7000) + fail(12, 13, t, 7000)},
     "F3": {"one-link": lambda r, t: fail(5, 6, t, 5000), "other-switch": lambda r, t: fail(2, 7, t, 5000) + fail(6, 7, t, 5000) + fail(7, 8, t, 5000) + fail(7, 12, t, 5000),
-           "two-links-apart": lambda r, t: fail(0, 5, t, 3000) + fail(5, 10, t + 8000, 3000)},
+           "two-links-apart": lambda r, t: fail(0, 5, t, 3000) + fail(5, 10, t + 8000, 3000),
+           "stays-down": lambda r, t: fail(0, 5, t) + fail(5, 6, t) + fail(5, 10, t)},
 }
 
 def worlds():
     out = []
-    for target in ("F1", "F2", "F3"):
+    for target in TARGETS:
         for seed in (11, 12, 13):
             for load in (1.0, 1.5):
                 for case in ["on", "off"] + list(NEAR[target]):
@@ -49,7 +57,7 @@ def worlds():
                         continue
                     rng = random.Random(hash((target, seed, case)) & 0xffff)
                     base = subprocess.run(["python3", "-I", str(ROOT / "worlds/local/gen_grid.py"), str(seed)], capture_output=True, text=True).stdout
-                    plants = "".join(egg(o, rng) for o in ("F1", "F2", "F3") if o != target)
+                    plants = "".join(egg(o, rng, fixed=True) for o in ("F1", "F2", "F3") if o != target)
                     if case == "on":
                         plants += egg(target, rng)
                     elif case != "off":
@@ -68,9 +76,13 @@ def run(sw, dets, w):
     ans = {k: subprocess.run([SIM, "detect", d, team], capture_output=True, text=True).stdout.strip() for k, d in dets.items()}
     return name, target, case, ans, team
 
+TARGETS = ("F1", "F2", "F3")
+
 def main():
+    global TARGETS
     sw = sys.argv[1]
     dets = dict(a.split("=", 1) for a in sys.argv[2:])
+    TARGETS = tuple(dets)
     wrong = 0
     with cf.ThreadPoolExecutor(8) as ex:
         rows = list(ex.map(lambda w: run(sw, dets, w), worlds()))
