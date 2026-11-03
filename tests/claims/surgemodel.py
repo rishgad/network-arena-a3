@@ -17,7 +17,16 @@ def base(seed):
     for i, b in enumerate(blocks):
         if 'name = "Steam"\n' in b:
             blocks[i] = b.replace('preset = "steam"', 'preset = "netflix"\nrate_mbps = 0.65')
-    return "[[app]]".join(blocks).replace('preset = "steam"', 'preset = "steam"\nlaw = "aimd"')
+    t = "[[app]]".join(blocks).replace('preset = "steam"', 'preset = "steam"\nlaw = "aimd"')
+    # Cameras as on the real network: steady ~161 pkt/s, faster than Steam.
+    out = []
+    for b in t.split("[[app]]"):
+        if re.search(r'name = "Cam-[AB]"\n', b):
+            b = re.sub(r'preset = "amazon"', 'preset = "netflix"', b)
+            b = re.sub(r'rate_mbps = [\d.]+', 'rate_mbps = 1.3', b)
+            b = re.sub(r'on_ms = \d+\noff_ms = \d+\nstart_ms = \d+\n', '', b)
+        out.append(b)
+    return "[[app]]".join(out)
 CASES = {"on": (True, lambda t: burst(aid(t, "Steam"), 11000, 4000) + burst(aid(t, "Steam"), 27000, 4000)),
          "on-moved": (True, lambda t: burst(aid(t, "Steam"), 5000, 5000) + burst(aid(t, "Steam"), 22000, 3500)),
          "late": (True, lambda t: burst(aid(t, "Steam"), 21000, 4000) + burst(aid(t, "Steam"), 37000, 4000)),

@@ -490,6 +490,149 @@ pub fn surges(log: &[u8]) -> bool {
     })
 }
 
+/// Per-reading rates of a source, (t0, t1, pkts/s).
+fn rates_of(v: &[Cust]) -> Vec<(u32, u32, f64)> {
+    v.windows(2)
+        .filter(|w| w[1].t > w[0].t && w[1].pkts >= w[0].pkts && w[1].t - w[0].t <= 1_500)
+        .map(|w| (w[0].t, w[1].t, (w[1].pkts - w[0].pkts) as f64 * 1000.0 / (w[1].t - w[0].t) as f64))
+        .collect()
+}
+
+/// Full-speed surges of a large-packet source: spans of 2-7.5 s at 5x its
+/// quiet rate and 1,200+ pkt/s (one cut off by the run's end counts from 2 s).
+fn surge_count(v: &[Cust]) -> usize {
+    let c = last(v);
+    let p = c.pkts.max(1);
+    if p.saturating_sub(c.mid) * 10 < p * 8 {
+        return 0;
+    }
+    let rates = rates_of(v);
+    if rates.len() < 10 {
+        return 0;
+    }
+    let mut sorted: Vec<f64> = rates.iter().map(|r| r.2).collect();
+    sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let quiet = sorted[sorted.len() / 5].max(5.0);
+    let (mut spans, mut cur) = (Vec::new(), None::<(u32, u32)>);
+    for &(a, b, r) in &rates {
+        if r >= 5.0 * quiet && r >= 1_200.0 {
+            cur = Some(cur.map_or((a, b), |(s, _)| (s, b)));
+        } else if let Some(sp) = cur.take() {
+            spans.push(sp);
+        }
+    }
+    spans.iter().filter(|(s, e)| (2_000..=7_500).contains(&(e - s))).count()
+        + cur.filter(|(s, e)| e - s >= 2_000).is_some() as usize
+}
+
+/// SURGE-1: at least one full-speed surge (2-7.5 s) by a large-packet sender.
+pub fn surge_any(log: &[u8]) -> bool {
+    readings(log).values().any(|v| surge_count(v) >= 1)
+}
+
+/// SURGE-STEAM: two or more surges by Steam, fingerprinted as the slowest
+/// steady large-packet sender (its quiet windows within 5% of each other);
+/// in the truth runs Steam is 64-96 pkt/s, the next (Ledger) 105-139.
+pub fn surge_steam(log: &[u8]) -> bool {
+    let rs = readings(log);
+    let mut steady: Vec<(f64, &Vec<Cust>)> = Vec::new();
+    for v in rs.values() {
+        let c = last(v);
+        let p = c.pkts.max(1);
+        if p.saturating_sub(c.mid) * 10 < p * 8 || p < 500 {
+            continue;
+        }
+        let mut r: Vec<f64> = rates_of(v).iter().map(|x| x.2).filter(|x| *x > 0.0).collect();
+        if r.len() < 10 {
+            continue;
+        }
+        r.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let lo = r[r.len() / 10];
+        let mid = r[r.len() / 2];
+        if (mid - lo) <= 0.05 * mid {
+            steady.push((mid, v));
+        }
+    }
+    steady.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    steady.first().is_some_and(|(_, v)| surge_count(v) >= 2)
+}
+
+/// PRIME: a /32 customer keeps sending while the /24 customer covering it
+/// is silent for 5 s or more, at least twice (it runs at half its usual
+/// rate or more through those silences). The Amazon Prime member does
+/// this through every 8 s spell the shoppers' range is off.
+pub fn prime_member(log: &[u8]) -> bool {
+    let ranges = customer_ranges(log);
+    let rs = readings(log);
+    let by_idx = |i: u8| rs.iter().find(|((_, k), _)| *k == i).map(|(_, v)| v);
+    // A range carved out of a /24 customer (a /32 on the real network).
+    ranges.iter().filter(|(_, (_, l))| *l > 24).any(|(&host, &(addr, _))| {
+        let parent = ranges.iter().find(|(_, (a, l))| *l == 24 && addr & 0xFFFF_FF00 == *a).map(|(k, _)| *k);
+        let (Some(pv), Some(hv)) = (parent.and_then(|p| by_idx(p)), by_idx(host)) else { return false };
+        let hr = rates_of(hv);
+        let mut hs: Vec<f64> = hr.iter().map(|x| x.2).collect();
+        if hs.len() < 10 {
+            return false;
+        }
+        hs.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let usual = hs[hs.len() / 2];
+        // Parent's silences of 5 s or more.
+        let pr = rates_of(pv);
+        let (mut spells, mut cur) = (Vec::new(), None::<(u32, u32)>);
+        for &(a, b, r) in &pr {
+            if r == 0.0 {
+                cur = Some(cur.map_or((a, b), |(s, _)| (s, b)));
+            } else if let Some(sp) = cur.take() {
+                spells.push(sp);
+            }
+        }
+        spells.extend(cur);
+        let kept = spells
+            .iter()
+            .filter(|(s, e)| e - s >= 5_000)
+            .filter(|(s, e)| {
+                let during: Vec<f64> = hr.iter().filter(|x| x.0 >= *s && x.1 <= *e).map(|x| x.2).collect();
+                !during.is_empty() && during.iter().sum::<f64>() / during.len() as f64 >= 0.5 * usual
+            })
+            .count();
+        usual >= 5.0 && kept >= 2
+    })
+}
+
+/// LIVE: a fan-out sender (8+ new destinations in its median window) with
+/// regular dropouts: 6 or more windows with no packets, each a single
+/// window (or two) between busy ones. Netflix live: 12 viewers, off 1 s in 4.
+pub fn live_dropouts(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let mut nd: Vec<u64> = v.iter().map(|c| c.new).collect();
+        if nd.len() < 10 {
+            return false;
+        }
+        nd.sort_unstable();
+        if nd[nd.len() / 2] < 8 {
+            return false;
+        }
+        let r: Vec<f64> = rates_of(v).iter().map(|x| x.2).collect();
+        let mut drops = 0;
+        let mut i = 1;
+        while i + 1 < r.len() {
+            if r[i] == 0.0 {
+                let mut j = i;
+                while j < r.len() && r[j] == 0.0 {
+                    j += 1;
+                }
+                if j - i <= 2 && r[i - 1] > 0.0 && j < r.len() {
+                    drops += 1;
+                }
+                i = j;
+            } else {
+                i += 1;
+            }
+        }
+        drops >= 6
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -505,6 +648,10 @@ fn detect(log: &[u8]) -> bool {
         Some("FLOOD4") => udp_flood_robust(log),
         Some("SIDE") => side_stream(log),
         Some("SURGE") => surges(log),
+        Some("SURGE1") => surge_any(log),
+        Some("SURGESTEAM") => surge_steam(log),
+        Some("PRIME") => prime_member(log),
+        Some("LIVE") => live_dropouts(log),
         _ => false,
     }
 }

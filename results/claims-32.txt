@@ -1,0 +1,50 @@
+both-on-s121-l1.0          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+both-on-s121-l1.5          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+both-on-s122-l1.0          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+both-on-s122-l1.5          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+prime-synced-s121-l1.0     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+prime-synced-s121-l1.5     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+prime-synced-s122-l1.0     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+prime-synced-s122-l1.5     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+no-prime-s121-l1.0         -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 982 prefix 10.17.138.200/30 overlaps app 122 prefix 10.17.138.0/24" }
+  WRONG PRIME,LIVE
+no-prime-s121-l1.5         -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 982 prefix 10.17.138.200/30 overlaps app 122 prefix 10.17.138.0/24" }
+  WRONG PRIME,LIVE
+no-prime-s122-l1.0         -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 982 prefix 10.12.194.200/30 overlaps app 122 prefix 10.12.194.0/24" }
+  WRONG PRIME,LIVE
+no-prime-s122-l1.5         -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 982 prefix 10.12.194.200/30 overlaps app 122 prefix 10.12.194.0/24" }
+  WRONG PRIME,LIVE
+live-steady-s121-l1.0      -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+live-steady-s121-l1.5      -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+live-steady-s122-l1.0      -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+live-steady-s122-l1.5      -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+live-one-gap-s121-l1.0     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+live-one-gap-s121-l1.5     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+live-one-gap-s122-l1.0     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+live-one-gap-s122-l1.5     -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+no-live-s121-l1.0          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+no-live-s121-l1.5          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.27.194.200/30 overlaps app 134 prefix 10.27.194.0/24" }
+  WRONG PRIME,LIVE
+no-live-s122-l1.0          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+no-live-s122-l1.5          -1B err=Error: Custom { kind: InvalidData, error: "invalid world: app 980 prefix 10.15.8.200/30 overlaps app 134 prefix 10.15.8.0/24" }
+  WRONG PRIME,LIVE
+
+0/24 right
