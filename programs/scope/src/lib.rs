@@ -606,6 +606,8 @@ impl SwitchProgram for Scope {
                 rec[11] = ev.ip_ttl;
                 if novel {
                     self.samples.push_front(rec);
+                } else if option_env!("SCOPE_SAMPLES_NOVEL").is_some() {
+                    // Claim mode: only first sightings of a pair.
                 } else if self.samples.len() < 4 {
                     self.samples.push_back(rec);
                 }
@@ -743,7 +745,7 @@ impl SwitchProgram for Scope {
                 self.window(now, &c1, &mut out);
             }
             self.bump_epoch(&mut out);
-            for _ in 0..2 {
+            for _ in 0..if option_env!("SCOPE_SAMPLES_NOVEL").is_some() { 1 } else { 2 } {
                 let Some(rec) = self.samples.pop_front() else { break };
                 let mut b = vec![self.me as u8, 0, 0];
                 b[1..3].copy_from_slice(&Self::now10(now).to_le_bytes());

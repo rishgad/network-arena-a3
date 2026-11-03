@@ -650,6 +650,7 @@ log_cap_bytes = 65536
 [[plant]]
 kind = "side_flow"
 app = 118
+to = 142
 rate_pps = 2000
 size_bytes = 100
 start_ms = 15000

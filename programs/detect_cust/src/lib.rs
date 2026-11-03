@@ -215,6 +215,83 @@ pub fn lag(log: &[u8]) -> bool {
     })
 }
 
+/// Customer index -> (prefix address, length), from the logger's header.
+fn customer_ranges(log: &[u8]) -> HashMap<u8, (u32, u8)> {
+    let mut out = HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_CUSTOMERS || f.body.is_empty() {
+            continue;
+        }
+        let mut k = f.body[0];
+        let mut r = Reader::new(&f.body[1..]);
+        while let (Some(a), Some(l)) = (r.u32(), r.u8()) {
+            k += 1;
+            out.insert(k, (a, l));
+        }
+    }
+    out
+}
+
+/// Every sampled packet: (t ms, src, dst).
+fn samples(log: &[u8]) -> Vec<(u32, u32, u32)> {
+    frames(log)
+        .into_iter()
+        .filter(|f| f.tag == TAG_SAMPLE && f.body.len() >= 11)
+        .map(|f| {
+            let b = f.body;
+            let t = (b[1] as u32 | (b[2] as u32) << 8) * 10;
+            let src = u32::from_le_bytes([b[3], b[4], b[5], b[6]]);
+            let dst = u32::from_le_bytes([b[7], b[8], b[9], b[10]]);
+            (t, src, dst)
+        })
+        .collect()
+}
+
+/// The longest stretch at 10x a source's usual rate, as (start, end) ms.
+fn flood_stretch(v: &[Cust]) -> Option<(u32, u32)> {
+    let rates: Vec<(u32, u32, f64)> = v
+        .windows(2)
+        .filter(|w| w[1].t > w[0].t && w[1].pkts >= w[0].pkts)
+        .map(|w| (w[0].t, w[1].t, (w[1].pkts - w[0].pkts) as f64 * 1000.0 / (w[1].t - w[0].t) as f64))
+        .collect();
+    if rates.len() < 10 {
+        return None;
+    }
+    let mut sorted: Vec<f64> = rates.iter().map(|r| r.2).collect();
+    sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let usual = sorted[sorted.len() / 2].max(5.0);
+    let (mut best, mut start) = (None::<(u32, u32)>, None::<u32>);
+    for &(a, b, r) in &rates {
+        if r >= 10.0 * usual {
+            let s = *start.get_or_insert(a);
+            if best.is_none_or(|(x, y)| b - s > y - x) {
+                best = Some((s, b));
+            }
+        } else {
+            start = None;
+        }
+    }
+    best.filter(|(a, b)| b - a >= 8_000)
+}
+
+/// Flood, v2 (a DDoS): a sender's flood (10x its usual rate, 8 s or more)
+/// goes somewhere it does not usually send: a packet sampled during the
+/// flood has a destination /24 none of its samples outside the flood has.
+/// A customer that just surges toward its own peer is not this egg.
+pub fn flood_elsewhere(log: &[u8]) -> bool {
+    let ranges = customer_ranges(log);
+    let smp = samples(log);
+    readings(log).iter().any(|(&(_, idx), v)| {
+        let Some((a, b)) = flood_stretch(v) else { return false };
+        let Some(&(addr, plen)) = ranges.get(&idx) else { return false };
+        let mask = if plen == 0 { 0 } else { u32::MAX << (32 - plen as u32) };
+        let mine: Vec<&(u32, u32, u32)> = smp.iter().filter(|s| s.1 & mask == addr).collect();
+        // Samples queue a little, so the flood's own can trail its end.
+        let usual: Vec<u32> = mine.iter().filter(|s| s.0 < a || s.0 > b + 5_000).map(|s| s.2 >> 8).collect();
+        mine.iter().any(|s| s.0 >= a && s.0 <= b + 5_000 && !usual.contains(&(s.2 >> 8)))
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -223,6 +300,7 @@ fn detect(log: &[u8]) -> bool {
         Some("SHUFFLE") => shuffle(log),
         Some("LAG") => lag(log),
         Some("SHUFFLE2") => shuffle_reorder(log),
+        Some("FLOOD2") => flood_elsewhere(log),
         _ => false,
     }
 }

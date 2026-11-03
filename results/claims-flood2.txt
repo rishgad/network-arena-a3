@@ -1,0 +1,22 @@
+FLOOD-on-s31-l1.0           16034B FLOOD=true  ok
+FLOOD-on-s31-l1.5           16177B FLOOD=true  ok
+FLOOD-on-s32-l1.0           16034B FLOOD=true  ok
+FLOOD-on-s32-l1.5           16177B FLOOD=true  ok
+FLOOD-off-s31-l1.0          15947B FLOOD=false  ok
+FLOOD-off-s31-l1.5          16078B FLOOD=false  ok
+FLOOD-off-s32-l1.0          15947B FLOOD=false  ok
+FLOOD-off-s32-l1.5          16078B FLOOD=false  ok
+FLOOD-own-peer-s31-l1.0     16015B FLOOD=false  ok
+FLOOD-own-peer-s31-l1.5     16158B FLOOD=false  ok
+FLOOD-own-peer-s32-l1.0     16015B FLOOD=false  ok
+FLOOD-own-peer-s32-l1.5     16158B FLOOD=false  ok
+FLOOD-short-s31-l1.0        15947B FLOOD=false  ok
+FLOOD-short-s31-l1.5        16078B FLOOD=false  ok
+FLOOD-short-s32-l1.0        15947B FLOOD=false  ok
+FLOOD-short-s32-l1.5        16078B FLOOD=false  ok
+FLOOD-small-s31-l1.0        15947B FLOOD=false  ok
+FLOOD-small-s31-l1.5        16078B FLOOD=false  ok
+FLOOD-small-s32-l1.0        15947B FLOOD=false  ok
+FLOOD-small-s32-l1.5        16078B FLOOD=false  ok
+
+20/20 right
