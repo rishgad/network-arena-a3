@@ -1,0 +1,10 @@
+===== truth1
+  Home users               udp-mix shifts at [15, 16, 17, 18, 19, 20, 21, 22, 23, 24] (usual 0.00)
+===== truth2
+  Home users               udp-mix shifts at [15, 16, 17, 18, 19, 20, 21, 22, 23, 24] (usual 0.00)
+  samples Home users               {('Fastly', 6, 200): 2, ('Fastly', 17, 64): 21}
+  samples Netflix                  {("Netflix's peer", 6, 1000): 37, ("Netflix's peer", 6, 200): 1}
+===== truth3
+  Home users               udp-mix shifts at [15, 16, 17, 18, 19, 20, 21, 22, 23, 24] (usual 0.00)
+  samples Home users               {('Fastly', 6, 200): 3, ('Fastly', 17, 64): 18}
+  samples Netflix                  {("Netflix's peer", 6, 1000): 36, ("Netflix's peer", 6, 200): 2}

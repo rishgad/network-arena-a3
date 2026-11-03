@@ -1,0 +1,22 @@
+on-s91-l1.0         14887B said true   want true  ok
+on-s91-l1.5         15046B said true   want true  ok
+on-s92-l1.0         14892B said true   want true  ok
+on-s92-l1.5         15263B said true   want true  ok
+on-other-s91-l1.0   14873B said true   want true  ok
+on-other-s91-l1.5   15036B said true   want true  ok
+on-other-s92-l1.0   14878B said true   want true  ok
+on-other-s92-l1.5   15252B said true   want true  ok
+off-s91-l1.0        14857B said false  want false  ok
+off-s91-l1.5        15000B said false  want false  ok
+off-s92-l1.0        14862B said false  want false  ok
+off-s92-l1.5        15216B said false  want false  ok
+burst-s91-l1.0      14903B said false  want false  ok
+burst-s91-l1.5      15048B said false  want false  ok
+burst-s92-l1.0      14908B said false  want false  ok
+burst-s92-l1.5      15265B said false  want false  ok
+heavy-s91-l1.0      14943B said false  want false  ok
+heavy-s91-l1.5      15087B said false  want false  ok
+heavy-s92-l1.0      14948B said false  want false  ok
+heavy-s92-l1.5      15302B said false  want false  ok
+
+20/20 right

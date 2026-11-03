@@ -408,6 +408,21 @@ pub fn udp_flood_robust(log: &[u8]) -> bool {
     })
 }
 
+/// Side stream: a large-packet sender (80%+ of its packets 640 B or more)
+/// also carries a steady trickle of small packets (< 256 B): 0.5% to 15%
+/// of its packets, 50 or more, still arriving in at least half its
+/// windows. Truth runs: Netflix 1.52% (200 B TCP to its peer, ~5 pkt/s,
+/// all run); every other large sender has exactly one small packet.
+pub fn side_stream(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let c = last(v);
+        let p = c.pkts.max(1);
+        let large = p.saturating_sub(c.mid);
+        let steady = v.windows(2).filter(|w| w[1].small > w[0].small).count() * 2 >= v.len().saturating_sub(1);
+        large * 10 >= p * 8 && c.small >= 50 && c.small * 200 >= p && c.small * 100 <= p * 15 && steady
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -421,6 +436,7 @@ fn detect(log: &[u8]) -> bool {
         Some("FLOOD3") => udp_flood(log),
         Some("PAUSE2") => pair_pause(log),
         Some("FLOOD4") => udp_flood_robust(log),
+        Some("SIDE") => side_stream(log),
         _ => false,
     }
 }
