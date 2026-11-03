@@ -44,7 +44,10 @@ NEAR = {
            "other-pair": lambda r, t: fail(2, 3, t, 7000) + fail(12, 13, t, 7000)},
     "F3": {"one-link": lambda r, t: fail(5, 6, t, 5000), "other-switch": lambda r, t: fail(2, 7, t, 5000) + fail(6, 7, t, 5000) + fail(7, 8, t, 5000) + fail(7, 12, t, 5000),
            "two-links-apart": lambda r, t: fail(0, 5, t, 3000) + fail(5, 10, t + 8000, 3000),
-           "stays-down": lambda r, t: fail(0, 5, t) + fail(5, 6, t) + fail(5, 10, t)},
+           "stays-down": lambda r, t: fail(0, 5, t) + fail(5, 6, t) + fail(5, 10, t),
+           "quick-reboot": lambda r, t: fail(0, 5, t, 600) + fail(5, 6, t, 600) + fail(5, 10, t, 600),
+           "reboot-1500": lambda r, t: fail(0, 5, t, 1500) + fail(5, 6, t, 1500) + fail(5, 10, t, 1500),
+           "short-one-link": lambda r, t: fail(5, 6, t, 600)},
 }
 
 def worlds():

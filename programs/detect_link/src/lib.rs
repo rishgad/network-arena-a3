@@ -31,6 +31,11 @@ pub struct Outage {
 
 /// Every outage of at least `MIN_MS`, per reporting end.
 pub fn outages(log: &[u8]) -> Vec<Outage> {
+    outages_min(log, MIN_MS)
+}
+
+/// Every outage of at least `min_ms`, per reporting end.
+pub fn outages_min(log: &[u8], min_ms: u32) -> Vec<Outage> {
     let mut open: Vec<Outage> = Vec::new();
     let mut done = Vec::new();
     for f in frames(log) {
@@ -54,7 +59,7 @@ pub fn outages(log: &[u8]) -> Vec<Outage> {
         }
     }
     done.extend(open);
-    done.retain(|o| o.end.unwrap_or(RUN_END_MS).saturating_sub(o.start) >= MIN_MS);
+    done.retain(|o| o.end.unwrap_or(RUN_END_MS).saturating_sub(o.start) >= min_ms);
     done.sort_by_key(|o| o.start);
     done
 }
@@ -270,6 +275,42 @@ pub fn reboot_overlap(log: &[u8]) -> bool {
     })
 }
 
+/// Rebooting switch v3, any switch, short reboots too: the links between
+/// switch X and at least all-but-one of its neighbours (2 or more) go
+/// silent in outages of 300 ms or more that overlap, start within
+/// `TOGETHER_MS` and all end. Either end of a link may report it (X's own
+/// report, or the neighbour's). Congestion silences one direction of one
+/// link at a time, so it cannot make this.
+pub fn reboot_short(log: &[u8]) -> bool {
+    let os: Vec<Outage> = outages_min(log, 300).into_iter().filter(|o| o.end.is_some()).collect();
+    (0u8..15).any(|x| {
+        // Outages of X's links, labelled by the neighbour on the other end.
+        let mine: Vec<(u8, u32, u32)> = os
+            .iter()
+            .filter_map(|o| {
+                if o.nbr == x {
+                    Some((o.sw, o.start, o.end.unwrap()))
+                } else if o.sw == x {
+                    Some((o.nbr, o.start, o.end.unwrap()))
+                } else {
+                    None
+                }
+            })
+            .collect();
+        let need = DEGREE[x as usize].saturating_sub(1).max(2);
+        mine.iter().any(|&(_, ms, me)| {
+            let mut who: Vec<u8> = mine
+                .iter()
+                .filter(|&&(_, s, e)| s < me && ms < e && s.abs_diff(ms) <= TOGETHER_MS)
+                .map(|&(n, _, _)| n)
+                .collect();
+            who.sort_unstable();
+            who.dedup();
+            who.len() >= need
+        })
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -280,6 +321,7 @@ fn detect(log: &[u8]) -> bool {
         Some("Q") => shallow_queue(log),
         Some("FLAP") => any_flap(log),
         Some("R2") => reboot_overlap(log),
+        Some("R3") => reboot_short(log),
         _ => false,
     }
 }
