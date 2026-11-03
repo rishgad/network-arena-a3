@@ -19,6 +19,10 @@ pub const TAG_LINK: u8 = 2;
 pub const TAG_PAIRS: u8 = 3;
 /// The logging switch saw a gap in a switch's report sequence numbers.
 pub const TAG_LOST: u8 = 4;
+/// Minimum one-way keepalive delay per port since the last such record:
+/// `[sw u8][t_10ms u16][n u8] n x [nbr u8][dmin_10us varint]` (0 = no
+/// sample). The time keeps two equal readings from looking like one copy.
+pub const TAG_DELAY: u8 = 5;
 /// The customer ranges the switches were told at init, in their index order.
 pub const TAG_CUSTOMERS: u8 = 0xA4;
 

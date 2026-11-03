@@ -1,0 +1,659 @@
+[world]
+name = "grid-proxy-s22"
+seed = 22
+version = 1
+family = "harness"
+
+[params]
+link_capacity_mbps = 10
+link_latency_us = 500
+queue_capacity_bytes = 40000
+warmup_ms = 3000
+duration_ms = 40000
+delivery_floor_pct = 0.0
+packet_size_bytes = 1000
+control_delay_us = 2000
+
+[[switch]]
+id = 0
+
+[[switch]]
+id = 1
+
+[[switch]]
+id = 2
+
+[[switch]]
+id = 3
+
+[[switch]]
+id = 4
+
+[[switch]]
+id = 5
+
+[[switch]]
+id = 6
+
+[[switch]]
+id = 7
+
+[[switch]]
+id = 8
+
+[[switch]]
+id = 9
+
+[[switch]]
+id = 10
+
+[[switch]]
+id = 11
+
+[[switch]]
+id = 12
+
+[[switch]]
+id = 13
+
+[[switch]]
+id = 14
+
+[[link]]
+a = 0
+b = 1
+
+[[link]]
+a = 1
+b = 2
+
+[[link]]
+a = 2
+b = 3
+
+[[link]]
+a = 3
+b = 4
+
+[[link]]
+a = 5
+b = 6
+
+[[link]]
+a = 6
+b = 7
+
+[[link]]
+a = 7
+b = 8
+
+[[link]]
+a = 8
+b = 9
+
+[[link]]
+a = 10
+b = 11
+
+[[link]]
+a = 11
+b = 12
+
+[[link]]
+a = 12
+b = 13
+
+[[link]]
+a = 13
+b = 14
+
+[[link]]
+a = 0
+b = 5
+
+[[link]]
+a = 1
+b = 6
+
+[[link]]
+a = 2
+b = 7
+
+[[link]]
+a = 3
+b = 8
+
+[[link]]
+a = 4
+b = 9
+
+[[link]]
+a = 5
+b = 10
+
+[[link]]
+a = 6
+b = 11
+
+[[link]]
+a = 7
+b = 12
+
+[[link]]
+a = 8
+b = 13
+
+[[link]]
+a = 9
+b = 14
+
+[[app]]
+id = 100
+switch = 0
+prefix = "10.2.228.0/24"
+hosts = [64]
+name = "Zoom"
+preset = "fortnite"
+peer = 101
+rate_mbps = 0.37
+size_bytes = 200
+
+[[app]]
+id = 101
+switch = 3
+prefix = "10.8.176.0/24"
+hosts = [204]
+name = "Zoom's peer"
+
+[[app]]
+id = 102
+switch = 10
+prefix = "10.18.25.0/24"
+hosts = [61]
+name = "Zoom"
+preset = "fortnite"
+peer = 103
+rate_mbps = 0.39
+size_bytes = 200
+
+[[app]]
+id = 103
+switch = 1
+prefix = "10.39.91.0/24"
+hosts = [240]
+name = "Zoom's peer"
+
+[[app]]
+id = 104
+switch = 1
+prefix = "10.47.220.0/24"
+hosts = [177]
+name = "Offsite"
+preset = "netflix"
+peer = 105
+rate_mbps = 2.08
+law = "aimd"
+
+[[app]]
+id = 105
+switch = 9
+prefix = "10.4.10.0/24"
+hosts = [152]
+name = "Offsite's peer"
+
+[[app]]
+id = 106
+switch = 1
+prefix = "10.27.97.0/24"
+hosts = [81]
+name = "Ping"
+preset = "ping"
+peer = 107
+rate_mbps = 0.01
+size_bytes = 60
+
+[[app]]
+id = 107
+switch = 5
+prefix = "10.8.31.0/24"
+hosts = [180]
+name = "Ping's peer"
+
+[[app]]
+id = 108
+switch = 1
+prefix = "10.22.132.0/24"
+hosts = [158]
+name = "Sync"
+preset = "amazon"
+peer = 109
+rate_mbps = 0.75
+on_ms = 2000
+off_ms = 3000
+start_ms = 20000
+
+[[app]]
+id = 109
+switch = 6
+prefix = "10.26.159.0/24"
+hosts = [232]
+name = "Sync's peer"
+
+[[app]]
+id = 110
+switch = 1
+prefix = "10.62.72.0/24"
+hosts = [224]
+name = "Sync"
+preset = "amazon"
+peer = 111
+rate_mbps = 0.76
+on_ms = 2000
+off_ms = 3000
+start_ms = 20000
+
+[[app]]
+id = 111
+switch = 13
+prefix = "10.18.94.0/24"
+hosts = [112]
+name = "Sync's peer"
+
+[[app]]
+id = 112
+switch = 2
+prefix = "10.35.16.0/24"
+hosts = [89]
+name = "Akamai users"
+preset = "jane_street"
+peer = 113
+rate_mbps = 0.02
+size_bytes = 200
+
+[[app]]
+id = 113
+switch = 0
+prefix = "10.17.145.0/24"
+hosts = [134]
+name = "Akamai users's peer"
+
+[[app]]
+id = 114
+switch = 2
+prefix = "10.43.94.0/24"
+hosts = [103]
+name = "Cloudflare users"
+preset = "jane_street"
+peer = 115
+rate_mbps = 0.29
+size_bytes = 100
+
+[[app]]
+id = 115
+switch = 7
+prefix = "10.24.203.0/24"
+hosts = [151]
+name = "Cloudflare users's peer"
+
+[[app]]
+id = 116
+switch = 2
+prefix = "10.37.221.0/24"
+hosts = [78]
+name = "Fortnite"
+preset = "fortnite"
+peer = 117
+rate_mbps = 0.37
+size_bytes = 200
+
+[[app]]
+id = 117
+switch = 0
+prefix = "10.58.218.0/24"
+hosts = [24]
+name = "Fortnite's peer"
+
+[[app]]
+id = 118
+switch = 2
+prefix = "10.23.50.0/24"
+hosts = [115]
+name = "Home users"
+preset = "jane_street"
+peer = 119
+rate_mbps = 0.12
+size_bytes = 200
+
+[[app]]
+id = 119
+switch = 1
+prefix = "10.26.29.0/24"
+hosts = [239]
+name = "Home users's peer"
+
+[[app]]
+id = 120
+switch = 2
+prefix = "10.16.205.0/24"
+hosts = [52, 133, 245]
+name = "Jane Street"
+preset = "jane_street"
+peer = 121
+rate_mbps = 0.11
+size_bytes = 200
+
+[[app]]
+id = 121
+switch = 14
+prefix = "10.30.99.0/24"
+hosts = [45]
+name = "Jane Street's peer"
+
+[[app]]
+id = 122
+switch = 3
+prefix = "10.25.178.0/24"
+hosts = [141]
+name = "Netflix"
+preset = "netflix"
+peer = 123
+rate_mbps = 2.53
+law = "aimd"
+
+[[app]]
+id = 123
+switch = 0
+prefix = "10.59.182.0/24"
+hosts = [163]
+name = "Netflix's peer"
+
+[[app]]
+id = 124
+switch = 3
+prefix = "10.3.32.0/24"
+hosts = [115]
+name = "Vault"
+preset = "netflix"
+peer = 125
+rate_mbps = 0.45
+size_bytes = 500
+
+[[app]]
+id = 125
+switch = 4
+prefix = "10.51.103.0/24"
+hosts = [169]
+name = "Vault's peer"
+
+[[app]]
+id = 126
+switch = 4
+prefix = "10.4.99.0/24"
+hosts = [27]
+name = "Fortnite"
+preset = "fortnite"
+peer = 127
+rate_mbps = 0.34
+size_bytes = 200
+
+[[app]]
+id = 127
+switch = 12
+prefix = "10.53.75.0/24"
+hosts = [237]
+name = "Fortnite's peer"
+
+[[app]]
+id = 128
+switch = 4
+prefix = "10.3.61.0/24"
+hosts = [119]
+name = "Mapper"
+preset = "ping"
+peer = 129
+rate_mbps = 0.01
+size_bytes = 60
+
+[[app]]
+id = 129
+switch = 10
+prefix = "10.34.69.0/24"
+hosts = [151]
+name = "Mapper's peer"
+
+[[app]]
+id = 130
+switch = 6
+prefix = "10.48.242.0/24"
+hosts = [177]
+name = "Cam-A"
+preset = "amazon"
+peer = 131
+rate_mbps = 1.24
+on_ms = 200
+off_ms = 700
+start_ms = 0
+
+[[app]]
+id = 131
+switch = 4
+prefix = "10.5.181.0/24"
+hosts = [246]
+name = "Cam-A's peer"
+
+[[app]]
+id = 132
+switch = 6
+prefix = "10.53.132.0/24"
+hosts = [30]
+name = "Cam-B"
+preset = "amazon"
+peer = 133
+rate_mbps = 1.09
+on_ms = 200
+off_ms = 700
+start_ms = 0
+
+[[app]]
+id = 133
+switch = 13
+prefix = "10.2.95.0/24"
+hosts = [130]
+name = "Cam-B's peer"
+
+[[app]]
+id = 134
+switch = 7
+prefix = "10.5.174.0/24"
+hosts = [164]
+name = "Amazon (shoppers)"
+preset = "amazon"
+peer = 135
+rate_mbps = 0.92
+on_ms = 8000
+off_ms = 8000
+start_ms = 0
+
+[[app]]
+id = 135
+switch = 5
+prefix = "10.41.222.0/24"
+hosts = [181]
+name = "Amazon (shoppers)'s peer"
+
+[[app]]
+id = 136
+switch = 7
+prefix = "10.3.39.0/24"
+hosts = [47]
+name = "Amazon (shoppers)"
+preset = "amazon"
+peer = 137
+rate_mbps = 1.09
+on_ms = 8000
+off_ms = 8000
+start_ms = 4000
+
+[[app]]
+id = 137
+switch = 4
+prefix = "10.23.60.0/24"
+hosts = [57]
+name = "Amazon (shoppers)'s peer"
+
+[[app]]
+id = 138
+switch = 7
+prefix = "10.32.34.0/24"
+hosts = [67]
+name = "Login"
+preset = "jane_street"
+peer = 139
+rate_mbps = 0.02
+size_bytes = 100
+
+[[app]]
+id = 139
+switch = 9
+prefix = "10.18.49.0/24"
+hosts = [150]
+name = "Login's peer"
+
+[[app]]
+id = 140
+switch = 7
+prefix = "10.14.206.0/24"
+hosts = [160]
+name = "Steam"
+preset = "netflix"
+rate_mbps = 3.0
+peer = 141
+
+[[app]]
+id = 141
+switch = 8
+prefix = "10.48.92.0/24"
+hosts = [11]
+name = "Steam's peer"
+
+[[app]]
+id = 142
+switch = 9
+prefix = "10.54.16.0/24"
+hosts = [98]
+name = "Ledger"
+preset = "netflix"
+peer = 143
+rate_mbps = 0.80
+
+[[app]]
+id = 143
+switch = 3
+prefix = "10.49.250.0/24"
+hosts = [164]
+name = "Ledger's peer"
+
+[[app]]
+id = 144
+switch = 11
+prefix = "10.49.214.0/24"
+hosts = [14]
+name = "Dropbox"
+preset = "amazon"
+peer = 145
+rate_mbps = 2.48
+on_ms = 1000
+off_ms = 5000
+start_ms = 500
+
+[[app]]
+id = 145
+switch = 6
+prefix = "10.16.118.0/24"
+hosts = [30]
+name = "Dropbox's peer"
+
+[[app]]
+id = 146
+switch = 11
+prefix = "10.5.80.0/24"
+hosts = [238]
+name = "Dropbox"
+preset = "amazon"
+peer = 147
+rate_mbps = 2.34
+on_ms = 1000
+off_ms = 5000
+start_ms = 500
+
+[[app]]
+id = 147
+switch = 4
+prefix = "10.62.163.0/24"
+hosts = [16]
+name = "Dropbox's peer"
+
+[[app]]
+id = 148
+switch = 12
+prefix = "10.11.143.0/24"
+hosts = [129]
+name = "Backup"
+preset = "netflix"
+rate_mbps = 3.0
+peer = 149
+
+[[app]]
+id = 149
+switch = 0
+prefix = "10.3.249.0/24"
+hosts = [181]
+name = "Backup's peer"
+
+[[app]]
+id = 150
+switch = 12
+prefix = "10.50.2.0/24"
+hosts = [72]
+name = "Dropbox-2"
+preset = "amazon"
+peer = 151
+rate_mbps = 1.04
+on_ms = 1000
+off_ms = 5000
+start_ms = 2500
+
+[[app]]
+id = 151
+switch = 0
+prefix = "10.52.231.0/24"
+hosts = [218]
+name = "Dropbox-2's peer"
+
+[workload]
+kind = "mixed"
+size_bytes = 1000
+
+[observe]
+punt_events_per_s = 80
+punt_backlog = 64
+export_bytes_per_s = 16000
+export_burst_bytes = 8000
+
+[harness]
+keepalive_ms = 100
+log_cap_bytes = 65536
+
+
+[[plant]]
+kind = "link_delay"
+a = 13
+b = 14
+a_to_b_us = 25000
+b_to_a_us = 25000
+[[plant]]
+kind = "link_delay"
+a = 6
+b = 11
+a_to_b_us = 550
+b_to_a_us = 860

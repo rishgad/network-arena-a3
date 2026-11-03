@@ -1,0 +1,26 @@
+on-1-2-s21-l1.0           1809B said true  want true  ok
+on-1-2-s21-l1.5           1809B said true  want true  ok
+on-1-2-s22-l1.0           1809B said true  want true  ok
+on-1-2-s22-l1.5           1809B said true  want true  ok
+on-7-8-s21-l1.0           1801B said true  want true  ok
+on-7-8-s21-l1.5           1801B said true  want true  ok
+on-7-8-s22-l1.0           1794B said true  want true  ok
+on-7-8-s22-l1.5           1793B said true  want true  ok
+on-weaker-s21-l1.0        1800B said true  want true  ok
+on-weaker-s21-l1.5        1800B said true  want true  ok
+on-weaker-s22-l1.0        1801B said true  want true  ok
+on-weaker-s22-l1.5        1800B said true  want true  ok
+off-s21-l1.0              1793B said false want false  ok
+off-s21-l1.5              1793B said false want false  ok
+off-s22-l1.0              1794B said false want false  ok
+off-s22-l1.5              1793B said false want false  ok
+both-slow-s21-l1.0        1809B said false want false  ok
+both-slow-s21-l1.5        1809B said false want false  ok
+both-slow-s22-l1.0        1809B said false want false  ok
+both-slow-s22-l1.5        1809B said false want false  ok
+slight-s21-l1.0           1801B said false want false  ok
+slight-s21-l1.5           1801B said false want false  ok
+slight-s22-l1.0           1801B said false want false  ok
+slight-s22-l1.5           1801B said false want false  ok
+
+24/24 right

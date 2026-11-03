@@ -142,11 +142,74 @@ pub fn f3(log: &[u8]) -> bool {
     })
 }
 
+/// One-way slow link (egg 14), any link: its lowest one-way keepalive
+/// delay is at least 5 ms one way and at least 4x the other way. The low
+/// end ignores queueing (congestion raises the high end, not the floor).
+pub fn slow_one_way(log: &[u8]) -> bool {
+    // (sw, nbr) -> every per-record floor of the delay nbr -> sw, in us.
+    let mut lo: std::collections::HashMap<(u8, u8), Vec<u32>> = std::collections::HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_DELAY || f.body.len() < 4 {
+            continue;
+        }
+        let mut r = Reader::new(&f.body[4..]);
+        let sw = f.body[0];
+        for _ in 0..f.body[3] {
+            let (Some(nbr), Some(d)) = (r.u8(), r.var()) else { break };
+            if d > 0 {
+                lo.entry((sw, nbr)).or_default().push(d as u32 * 10);
+            }
+        }
+    }
+    // A planted delay is the same in every record; a full queue wobbles.
+    // The floor is reached again and again (3+ records within 3% of it).
+    let steady = |v: &Vec<u32>| {
+        let mn = *v.iter().min().unwrap();
+        v.iter().filter(|&&x| (x - mn) * 100 <= mn * 3).count() >= 3
+    };
+    lo.iter().any(|(&(a, b), slow)| {
+        let floor = *slow.iter().min().unwrap();
+        floor >= 5_000
+            && steady(slow)
+            && lo.get(&(b, a)).is_some_and(|other| *other.iter().min().unwrap() * 4 <= floor)
+    })
+}
+
+/// Rebooting switch (egg 20), any switch: at least two of a switch's
+/// neighbours lose it within `TOGETHER_MS` (or get it back within it), and
+/// it comes back.
+pub fn any_reboot(log: &[u8]) -> bool {
+    let os = outages(log);
+    let back = heard(log);
+    (0u8..15).any(|x| {
+        let lost: Vec<&Outage> = os.iter().filter(|o| o.nbr == x).collect();
+        lost.iter().any(|m| {
+            let Some(end) = m.end else { return false };
+            let mut who: Vec<u8> = vec![m.sw];
+            for o in &lost {
+                if o.start.abs_diff(m.start) <= TOGETHER_MS {
+                    who.push(o.sw);
+                }
+            }
+            for &(sw, nbr, t) in &back {
+                if nbr == x && t.abs_diff(end) <= TOGETHER_MS {
+                    who.push(sw);
+                }
+            }
+            who.sort_unstable();
+            who.dedup();
+            who.len() >= 2
+        })
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
         Some("F2") => f2(log),
         Some("F3") => f3(log),
+        Some("E14") => slow_one_way(log),
+        Some("R") => any_reboot(log),
         _ => false,
     }
 }

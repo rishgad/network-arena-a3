@@ -122,6 +122,8 @@ struct PortState {
     cap_bps: u64,
     /// Share of capacity the harness used out of this port last window.
     util_pct: u64,
+    /// Lowest keepalive delay since the last TAG_DELAY record (0 = none).
+    pmin: u64,
 }
 
 pub struct Scope {
@@ -562,6 +564,7 @@ impl SwitchProgram for Scope {
                     let d = ev.arrived_ns.saturating_sub(k.sent_ns);
                     st.dmin = if st.dmin == 0 { d } else { st.dmin.min(d) };
                     st.dmax = st.dmax.max(d);
+                    st.pmin = if st.pmin == 0 { d } else { st.pmin.min(d) };
                 }
             }
         }
@@ -640,6 +643,21 @@ impl SwitchProgram for Scope {
         if self.tick > 0 && self.tick % WINDOW_TICKS == (self.me as u64 * 7) % WINDOW_TICKS {
             if self.prev.is_empty() {
                 self.prev = vec![0; c1.len()];
+            }
+            // Claim mode with delays (`SCOPE_DELAY=1`): every 5 windows.
+            if option_env!("SCOPE_DELAY").is_some() && (self.tick / WINDOW_TICKS) % 5 == 0 {
+                let mut b = vec![self.me as u8, 0, 0, 0];
+                b[1..3].copy_from_slice(&Self::now10(now).to_le_bytes());
+                for p in self.ports.clone() {
+                    let st = self.port.entry(p).or_default();
+                    if let Some(n) = st.nbr {
+                        b.push(n as u8);
+                        put_varint(&mut b, st.pmin / 10_000);
+                        b[3] += 1;
+                    }
+                    st.pmin = 0;
+                }
+                self.emit(now, TAG_DELAY, b, &mut out);
             }
             if LINKS_ONLY {
                 // Still measure utilisation for routing; write nothing.
