@@ -29,7 +29,7 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 | 13 | claim-FLAP | **won 18** | any link, both ends silent overlapping, ≥3 recovered |
 | 14 | claim-R2 | miss | any switch, all-but-one nbrs, overlapping ≥1 s, recovered |
 | — | claim-R3 | NOT SENT | fires on "2 of 3 links" near miss — rejected |
-| 15 | claim-R4 | pending (user confirmed) | every link of a 3+-link switch down together (≥300 ms), back; ≤1 link known only by its recovery |
+| 15 | claim-R4 | **won 20** | every link of a 3+-link switch down together (≥300 ms), back; ≤1 link known only by its recovery |
 
 **Lesson from the wins:** each winner was (a) generic or tied to a measured
 fingerprint, and (b) explicitly rejected the most plausible near miss
