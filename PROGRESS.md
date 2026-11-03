@@ -57,3 +57,14 @@ no near-miss label was changed.
 Human reviews the theory against the logs before spending claim 30.
 No submission has been made or assumed. Preserve every historical file
 under submissions/ and do not overwrite any of them.
+
+
+## Instructor clarification: normal customer patterns
+
+User shared Ed discussion #53. Checked the egg-free practice world and
+preset/law code: shopping bursts, AIMD rate changes, and round-robin hosts
+can be normal. This does not rule out customer-pattern eggs; nor does the
+thread guarantee identical hidden configurations. See
+analysis/scope/BASELINE_NOTES.md. The current DDoS candidate relies on the
+joint protocol/rate/distribution/concentration change, not burstiness alone.
+No additional official attempt or WASM change.
