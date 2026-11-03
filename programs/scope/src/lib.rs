@@ -103,7 +103,8 @@ const C1_SMALL: usize = 576; // size < 256
 const C1_MID: usize = 640; // size < 640
 const C1_KA: usize = 704; // [port & 7]
 const C1_OUT: usize = 712; // bytes the harness sends out of switch port [p & 7]
-const C1_SIZE: u32 = 720;
+const C1_DELIV: usize = 720; // [720 + src] packets handed to a local host here
+const C1_SIZE: u32 = 784;
 /// A port whose way out ran above this share of its capacity last window
 /// is busy: reports queue behind customers there and may never leave.
 const BUSY_PCT: u64 = 85;
@@ -209,9 +210,12 @@ fn program(sample_mask: u64) -> TinyProgram {
         .label("sw").konst(8, 3).and(6, 3, 8)
         .label("havep")
         .shl(11, 6, 6).loadm(12, M_SRC).add(13, 12, 11).counter(C1, 13, 14)
-        // Bytes out of each switch port (harness_egress is port + 1, 0 none).
+        // Bytes out of each switch port (harness_egress is port + 1, 0 none);
+        // a packet leaving by a host port (100+) is delivered here.
         .load(20, F::HarnessEgress).konst(21, 0).eq(22, 20, 21).bif(22, "end")
-        .konst(23, 101).lt(24, 20, 23).bifnot(24, "end")
+        .konst(23, 101).lt(24, 20, 23).bif(24, "swout")
+        .konst(25, C1_DELIV as u64).add(26, 12, 25).counter(C1, 26, 14).jmp("end")
+        .label("swout")
         .konst(25, 1).sub(26, 20, 25).konst(25, 7).and(26, 26, 25)
         .konst(25, C1_OUT as u64).add(26, 26, 25).load(27, F::Size).counter(C1, 26, 27)
         .jmp("end")
@@ -445,6 +449,15 @@ impl Scope {
             if option_env!("SCOPE_MULTI_NBRS").is_some() {
                 b.push(nbr_of(ps[0]));
                 b.push(nbr_of(ps[1]));
+            }
+        }
+        // `SCOPE_DELIVERED`: packets handed to local hosts, cumulative, by source.
+        if option_env!("SCOPE_DELIVERED").is_some() {
+            let got: Vec<usize> = (0..64).filter(|s| at(c1, C1_DELIV + s) > 0).collect();
+            b.push(got.len() as u8);
+            for s in got {
+                b.push(s as u8);
+                put_varint(&mut b, at(c1, C1_DELIV + s));
             }
         }
         b.truncate(250); // DESIGN.md sizes the worst case well below this
@@ -753,7 +766,7 @@ impl SwitchProgram for Scope {
                 self.emit(now, TAG_SAMPLE, b, &mut out);
             }
             let w = self.tick / WINDOW_TICKS;
-            if !LINKS_ONLY && option_env!("SCOPE_CUST_ONLY").is_none() && w % PAIR_EVERY == (self.me as u64) % PAIR_EVERY && !c2.is_empty() {
+            if !LINKS_ONLY && option_env!("SCOPE_CUST_ONLY").is_none() && option_env!("SCOPE_NO_PAIRS").is_none() && w % PAIR_EVERY == (self.me as u64) % PAIR_EVERY && !c2.is_empty() {
                 self.pairs(now, &c2, &mut out);
             }
         }

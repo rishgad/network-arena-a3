@@ -100,6 +100,10 @@ def parse(data: bytes) -> Log:
                     c["udp"] = r.var() if c["flags"] & CF_UDP else 0
                     w["cust"].append(c)
                 w["multi"] = [r.u8() for _ in range(r.u8())] if r.i < len(body) else []
+                w["deliv"] = {}
+                if r.i < len(body):
+                    for _ in range(r.u8()):
+                        k = r.u8(); w["deliv"][k] = r.var()
                 L.windows.append(w)
             elif tag == TAG_LINK:
                 L.links.append(dict(arrive=arrive, sw=r.u8(), port=r.u8(), nbr=r.u8(), silent=r.u8(), t=r.u16() * 10, off=i))
