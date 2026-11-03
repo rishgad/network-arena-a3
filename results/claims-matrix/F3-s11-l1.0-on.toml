@@ -683,17 +683,17 @@ for_ms = 8160
 kind = "fail"
 a = 0
 b = 5
-at_ms = 18383
-for_ms = 4036
+at_ms = 17764
+for_ms = 3671
 [[plant]]
 kind = "fail"
 a = 5
 b = 6
-at_ms = 18383
-for_ms = 4036
+at_ms = 17764
+for_ms = 3671
 [[plant]]
 kind = "fail"
 a = 5
 b = 10
-at_ms = 18383
-for_ms = 4036
+at_ms = 17764
+for_ms = 3671

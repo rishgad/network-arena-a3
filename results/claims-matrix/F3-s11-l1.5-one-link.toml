@@ -683,5 +683,5 @@ for_ms = 8160
 kind = "fail"
 a = 5
 b = 6
-at_ms = 6490
+at_ms = 4001
 for_ms = 5000

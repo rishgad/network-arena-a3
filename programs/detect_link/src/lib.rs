@@ -198,10 +198,13 @@ pub fn any_reboot(log: &[u8]) -> bool {
             }
             who.sort_unstable();
             who.dedup();
-            who.len() >= 2
+            who.len() >= DEGREE[x as usize].saturating_sub(1).max(2)
         })
     })
 }
+
+/// Links per switch on the published map (SUBMITTING.md): a 3x5 grid.
+const DEGREE: [usize; 15] = [2, 3, 3, 3, 2, 3, 4, 4, 4, 3, 2, 3, 3, 3, 2];
 
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {

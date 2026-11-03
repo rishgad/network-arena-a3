@@ -344,16 +344,19 @@ impl Scope {
         let mut b = vec![self.me as u8, self.wseq, 0, 0];
         b[2..4].copy_from_slice(&Self::now10(now).to_le_bytes());
         self.wseq = self.wseq.wrapping_add(1);
-        b.push(self.ports.len() as u8);
+        // Customers-only claim mode (`SCOPE_CUST_ONLY`): no port section.
+        let cust_only = option_env!("SCOPE_CUST_ONLY").is_some();
+        b.push(if cust_only { 0 } else { self.ports.len() as u8 });
+        let mut pb: Vec<u8> = Vec::new();
         for &p in &self.ports.clone() {
             let pidx = (p & 3) as usize;
             let st = self.port.entry(p).or_default();
-            b.push(p as u8);
-            b.push(st.nbr.map_or(255, |n| n as u8));
-            b.push(at(c1, C1_KA + (p & 7) as usize) as u8);
-            put_varint(&mut b, if st.dmax == 0 { 0 } else { st.dmin / 10_000 });
-            put_varint(&mut b, st.dmax / 10_000);
-            put_varint(&mut b, st.drops);
+            pb.push(p as u8);
+            pb.push(st.nbr.map_or(255, |n| n as u8));
+            pb.push(at(c1, C1_KA + (p & 7) as usize) as u8);
+            put_varint(&mut pb, if st.dmax == 0 { 0 } else { st.dmin / 10_000 });
+            put_varint(&mut pb, st.dmax / 10_000);
+            put_varint(&mut pb, st.drops);
             // Packets in on this port this window, and how many sources sent them.
             let (mut pk, mut n) = (0u64, 0u8);
             for src in 0..64 {
@@ -364,17 +367,20 @@ impl Scope {
                     n = n.saturating_add(1);
                 }
             }
-            put_varint(&mut b, pk);
-            b.push(n);
+            put_varint(&mut pb, pk);
+            pb.push(n);
             let out_i = C1_OUT + (p & 7) as usize;
             let sent = at(c1, out_i).saturating_sub(at(&self.prev, out_i));
             let win_s_bits = st.cap_bps.max(1) * WINDOW_TICKS * TICK_NS / 1_000_000_000;
             st.util_pct = (sent * 8 * 100 / win_s_bits.max(1)).min(255);
-            b.push(st.util_pct as u8);
+            pb.push(st.util_pct as u8);
             st.dmin = u64::MAX;
             st.dmax = 0;
             st.last_drops = st.drops;
             st.drops = 0;
+        }
+        if !cust_only {
+            b.extend_from_slice(&pb);
         }
         // Local customers: anything that entered from a host port.
         let base = C1_PKTS + LOCAL * 64;
@@ -673,7 +679,7 @@ impl SwitchProgram for Scope {
             }
             self.bump_epoch(&mut out);
             let w = self.tick / WINDOW_TICKS;
-            if !LINKS_ONLY && w % PAIR_EVERY == (self.me as u64) % PAIR_EVERY && !c2.is_empty() {
+            if !LINKS_ONLY && option_env!("SCOPE_CUST_ONLY").is_none() && w % PAIR_EVERY == (self.me as u64) % PAIR_EVERY && !c2.is_empty() {
                 self.pairs(now, &c2, &mut out);
             }
         }
