@@ -7,9 +7,9 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 
 ## Score and budgets
 
-- Eggs won (6, 56 pts): 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
-  slow link · 18 flapping link · 19 SRLG.
-- Claims used: 15 of 30; user confirms #15 R4 is pending. Truth runs used: 2 of 3.
+- Eggs won (7, 72 pts): 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
+  slow link · 18 flapping link · 19 SRLG · **20 rebooting switch (claim 15, R4)**.
+- Claims used: 15 of 30 (#15 R4 WON egg 20). Truth runs used: 2 of 3.
 - Known to exist (another team won it): 20 · Failure · The rebooting switch.
 
 | # | Claim dir | Result | Rule |
