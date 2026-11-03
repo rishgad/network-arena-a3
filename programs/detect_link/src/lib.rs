@@ -441,6 +441,28 @@ pub fn slow_both_ways(log: &[u8]) -> bool {
     })
 }
 
+/// Lossy wire: a link loses some keepalives in both directions in many
+/// windows without going down: 6+ windows with 5-9 of the 10 keepalives,
+/// each way. Truth runs: 11-12 (idle, no queue drops) 9-19 such windows
+/// each way. A flap has partial windows only at its edges (~3); a shallow
+/// queue or a capacity cut starves one direction only.
+pub fn lossy_wire(log: &[u8]) -> bool {
+    let mut part: std::collections::HashMap<(u8, u8), u32> = std::collections::HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_KA || f.body.len() < 4 {
+            continue;
+        }
+        let mut r = Reader::new(&f.body[4..]);
+        for _ in 0..f.body[3] {
+            let (Some(nbr), Some(n)) = (r.u8(), r.u8()) else { break };
+            if nbr != 255 && (5..=9).contains(&n) {
+                *part.entry((f.body[0], nbr)).or_default() += 1;
+            }
+        }
+    }
+    LINKS.iter().any(|&(a, b)| part.get(&(a, b)).copied().unwrap_or(0) >= 6 && part.get(&(b, a)).copied().unwrap_or(0) >= 6)
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -456,6 +478,7 @@ fn detect(log: &[u8]) -> bool {
         Some("Q2") => shallow_queue2(log),
         Some("CAP") => capacity_steps(log),
         Some("SLOW2") => slow_both_ways(log),
+        Some("LOSS") => lossy_wire(log),
         _ => false,
     }
 }

@@ -735,6 +735,23 @@ impl SwitchProgram for Scope {
                 }
                 self.emit(now, TAG_DELAY, b, &mut out);
             }
+            // `SCOPE_KA`: ports that got some but not all keepalives this window.
+            if option_env!("SCOPE_KA").is_some() && !self.prev.is_empty() {
+                let mut b = vec![self.me as u8, 0, 0, 0];
+                b[1..3].copy_from_slice(&Self::now10(now).to_le_bytes());
+                for p in self.ports.clone() {
+                    let i = C1_KA + (p & 7) as usize;
+                    let got = at(&c1, i).saturating_sub(at(&self.prev, i));
+                    if (1..=9).contains(&got) {
+                        b.push(self.port.get(&p).and_then(|s| s.nbr).map_or(255, |n| n as u8));
+                        b.push(got as u8);
+                        b[3] += 1;
+                    }
+                }
+                if b[3] > 0 {
+                    self.emit(now, TAG_KA, b, &mut out);
+                }
+            }
             if LINKS_ONLY {
                 // Still measure utilisation for routing; write nothing.
                 let mut sink = Vec::new();

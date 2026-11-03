@@ -1,0 +1,26 @@
+on-3pct-s111-l1.0       920B said true   want true  ok
+on-3pct-s111-l1.5       990B said true   want true  ok
+on-3pct-s112-l1.0       894B said true   want true  ok
+on-3pct-s112-l1.5       928B said true   want true  ok
+on-6pct-s111-l1.0      1010B said true   want true  ok
+on-6pct-s111-l1.5      1080B said true   want true  ok
+on-6pct-s112-l1.0      1024B said true   want true  ok
+on-6pct-s112-l1.5      1058B said true   want true  ok
+on-other-s111-l1.0      986B said true   want true  ok
+on-other-s111-l1.5     1036B said true   want true  ok
+on-other-s112-l1.0      924B said true   want true  ok
+on-other-s112-l1.5      936B said true   want true  ok
+brief-s111-l1.0         756B said false  want false  ok
+brief-s111-l1.5         826B said false  want false  ok
+brief-s112-l1.0         754B said false  want false  ok
+brief-s112-l1.5         788B said false  want false  ok
+off-s111-l1.0           736B said false  want false  ok
+off-s111-l1.5           806B said false  want false  ok
+off-s112-l1.0           714B said false  want false  ok
+off-s112-l1.5           748B said false  want false  ok
+queue-s111-l1.0         736B said false  want false  ok
+queue-s111-l1.5         806B said false  want false  ok
+queue-s112-l1.0         714B said false  want false  ok
+queue-s112-l1.5         748B said false  want false  ok
+
+24/24 right
