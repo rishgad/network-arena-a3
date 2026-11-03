@@ -633,6 +633,30 @@ pub fn live_dropouts(log: &[u8]) -> bool {
     })
 }
 
+/// Cloudflare DDoS (egg 11, named on another team's card): a sender of
+/// small TCP packets (80%+ under 256 B, at most 20% UDP) hammering many
+/// servers: a typical rate of 200+ pkt/s with 6+ new destinations in most
+/// windows (80%+). Truth runs: Cloudflare users, 100 B TCP at 350-525
+/// pkt/s to 8 Cloudflare hosts all run; its twin Akamai users runs 4-6.
+pub fn cdn_ddos(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let c = last(v);
+        let p = c.pkts.max(1);
+        if c.small * 10 < p * 8 || c.udp * 10 > p * 2 {
+            return false;
+        }
+        let r: Vec<f64> = rates_of(v).iter().map(|x| x.2).collect();
+        if r.len() < 10 {
+            return false;
+        }
+        let mut sorted = r.clone();
+        sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let typical = sorted[sorted.len() / 2];
+        let spread = v.iter().filter(|c| c.new >= 6).count();
+        typical >= 200.0 && spread * 10 >= v.len() * 8
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -652,6 +676,7 @@ fn detect(log: &[u8]) -> bool {
         Some("SURGESTEAM") => surge_steam(log),
         Some("PRIME") => prime_member(log),
         Some("LIVE") => live_dropouts(log),
+        Some("CFDDOS") => cdn_ddos(log),
         _ => false,
     }
 }

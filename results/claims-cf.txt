@@ -1,0 +1,26 @@
+on-s131-l1.0        14635B said true   want true  ok
+on-s131-l1.5        14778B said true   want true  ok
+on-s132-l1.0        14639B said true   want true  ok
+on-s132-l1.5        14751B said true   want true  ok
+browse-s131-l1.0    14560B said false  want false  ok
+browse-s131-l1.5    14670B said false  want false  ok
+browse-s132-l1.0    14564B said false  want false  ok
+browse-s132-l1.5    14664B said false  want false  ok
+udp-s131-l1.0       14713B said false  want false  ok
+udp-s131-l1.5       14847B said false  want false  ok
+udp-s132-l1.0       14717B said false  want false  ok
+udp-s132-l1.5       14841B said false  want false  ok
+one-host-s131-l1.0  14635B said false  want false  ok
+one-host-s131-l1.5  14778B said false  want false  ok
+one-host-s132-l1.0  14639B said false  want false  ok
+one-host-s132-l1.5  14751B said false  want false  ok
+burst-s131-l1.0     14590B said false  want false  ok
+burst-s131-l1.5     14676B said false  want false  ok
+burst-s132-l1.0     14594B said false  want false  ok
+burst-s132-l1.5     14670B said false  want false  ok
+off-s131-l1.0       14560B said false  want false  ok
+off-s131-l1.5       14670B said false  want false  ok
+off-s132-l1.0       14564B said false  want false  ok
+off-s132-l1.5       14664B said false  want false  ok
+
+24/24 right

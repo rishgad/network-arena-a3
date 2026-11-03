@@ -35,3 +35,11 @@ logger took.
 Lessons: win = generic or fingerprinted rule + explicit rejection of the
 nearest near miss + confirmation on the real truth logs. See HANDOFF.md and
 KNOWLEDGE.md for the full record.
+
+## Late lead (from another team's card: egg 11 "Cloudflare DDoS", egg 17 "The hung server")
+`submissions/claim-CFDDOS/`: Cloudflare users send 100 B TCP at 350-525
+pkt/s to 8 Cloudflare hosts all run (its twin Akamai users: 4-6 pkt/s).
+Rule: small TCP sender, typical 200+ pkt/s, 6+ new destinations in 80%+ of
+windows. Only Cloudflare users match, in all three truth runs; matrix 24/24.
+"The hung server": no switch controller stalled (report sequence vs time),
+no client collapsed, no reply stream dipped; not visible in our logs.
