@@ -1,0 +1,26 @@
+on-s81-l1.0             14754B said true   want true  ok
+on-s81-l1.5             14883B said true   want true  ok
+on-s82-l1.0             14755B said true   want true  ok
+on-s82-l1.5             14874B said true   want true  ok
+on-mid-s81-l1.0         14754B said true   want true  ok
+on-mid-s81-l1.5         14883B said true   want true  ok
+on-mid-s82-l1.0         14755B said true   want true  ok
+on-mid-s82-l1.5         14874B said true   want true  ok
+pair-short-s81-l1.0     14754B said false  want false  ok
+pair-short-s81-l1.5     14883B said false  want false  ok
+pair-short-s82-l1.0     14755B said false  want false  ok
+pair-short-s82-l1.5     14874B said false  want false  ok
+one-sync-s81-l1.0       14754B said false  want false  ok
+one-sync-s81-l1.5       14883B said false  want false  ok
+one-sync-s82-l1.0       14755B said false  want false  ok
+one-sync-s82-l1.5       14874B said false  want false  ok
+other-cust-s81-l1.0     14754B said false  want false  ok
+other-cust-s81-l1.5     14876B said false  want false  ok
+other-cust-s82-l1.0     14755B said false  want false  ok
+other-cust-s82-l1.5     14869B said false  want false  ok
+off-s81-l1.0            14754B said false  want false  ok
+off-s81-l1.5            14883B said false  want false  ok
+off-s82-l1.0            14755B said false  want false  ok
+off-s82-l1.5            14874B said false  want false  ok
+
+24/24 right

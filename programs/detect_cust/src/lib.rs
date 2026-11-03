@@ -332,6 +332,36 @@ pub fn udp_flood(log: &[u8]) -> bool {
     })
 }
 
+/// The longest silence (no new packets) between a source's first reading
+/// and a later resumption of 100+ packets, as (start, end) ms.
+fn longest_silence(v: &[Cust]) -> Option<(u32, u32)> {
+    let mut best: Option<(u32, u32)> = None;
+    for (i, a) in v.iter().enumerate() {
+        // The silence runs from `a` to the first later reading with more packets.
+        let Some(b) = v[i + 1..].iter().find(|c| c.pkts > a.pkts) else { break };
+        let resumed = v.last().map_or(0, |l| l.pkts.saturating_sub(a.pkts));
+        if resumed >= 100 && best.is_none_or(|(x, y)| b.t - a.t > y - x) {
+            best = Some((a.t, b.t));
+        }
+    }
+    best
+}
+
+/// Long pause (Sync): two ranges at the same switch both stop for 12 s or
+/// more, together (starts and ends within 2 s), then both carry on. No
+/// other customer in the truth runs is ever silent that long (Amazon's off
+/// spells are 8 s, Dropbox's ~5 s); a single customer pausing is not this.
+pub fn pair_pause(log: &[u8]) -> bool {
+    let rs = readings(log);
+    let gaps: Vec<((u8, u8), (u32, u32))> = rs
+        .iter()
+        .filter_map(|(&k, v)| longest_silence(v).filter(|(a, b)| b - a >= 12_000).map(|g| (k, g)))
+        .collect();
+    gaps.iter().any(|&((sw, i), (a, b))| {
+        gaps.iter().any(|&((sw2, j), (c, d))| sw2 == sw && j != i && a.abs_diff(c) <= 2_000 && b.abs_diff(d) <= 2_000)
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -343,6 +373,7 @@ fn detect(log: &[u8]) -> bool {
         Some("FLOOD2") => flood_elsewhere(log),
         Some("LADDER") => ladder(log),
         Some("FLOOD3") => udp_flood(log),
+        Some("PAUSE2") => pair_pause(log),
         _ => false,
     }
 }
