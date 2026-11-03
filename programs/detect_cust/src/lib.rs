@@ -308,6 +308,23 @@ pub fn ladder(log: &[u8]) -> bool {
     })
 }
 
+/// Flood v3 (a UDP DDoS from a TCP customer): a sender runs at 10x its
+/// usual rate for 8 s or more, the flood is at least 80% UDP, and before
+/// it the sender was at most 20% UDP. Truth runs: Home users, normally
+/// 200 B TCP to Fastly, send ~30x in 64 B UDP from many hosts 16.7-30 s.
+/// A flash crowd (a TCP surge) is not this.
+pub fn udp_flood(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let Some((a, b)) = flood_stretch(v) else { return false };
+        let at = |t: u32| v.iter().filter(|c| c.t <= t).max_by_key(|c| c.t).copied();
+        let (Some(s0), Some(s1)) = (at(a), at(b)) else { return false };
+        let first = v[0];
+        let (dp, du) = (s1.pkts.saturating_sub(s0.pkts), s1.udp.saturating_sub(s0.udp));
+        let (bp, bu) = (s0.pkts.saturating_sub(first.pkts), s0.udp.saturating_sub(first.udp));
+        dp > 0 && du * 10 >= dp * 8 && bp >= 50 && bu * 10 <= bp * 2
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -318,6 +335,7 @@ fn detect(log: &[u8]) -> bool {
         Some("SHUFFLE2") => shuffle_reorder(log),
         Some("FLOOD2") => flood_elsewhere(log),
         Some("LADDER") => ladder(log),
+        Some("FLOOD3") => udp_flood(log),
         _ => false,
     }
 }
