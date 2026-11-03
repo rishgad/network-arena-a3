@@ -47,7 +47,8 @@ NEAR = {
            "stays-down": lambda r, t: fail(0, 5, t) + fail(5, 6, t) + fail(5, 10, t),
            "quick-reboot": lambda r, t: fail(0, 5, t, 600) + fail(5, 6, t, 600) + fail(5, 10, t, 600),
            "reboot-1500": lambda r, t: fail(0, 5, t, 1500) + fail(5, 6, t, 1500) + fail(5, 10, t, 1500),
-           "short-one-link": lambda r, t: fail(5, 6, t, 600)},
+           "short-one-link": lambda r, t: fail(5, 6, t, 600),
+           "two-of-three": lambda r, t: fail(0, 5, t, 4000) + fail(5, 6, t, 4000)},
 }
 
 def worlds():

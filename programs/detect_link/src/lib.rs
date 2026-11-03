@@ -311,6 +311,35 @@ pub fn reboot_short(log: &[u8]) -> bool {
     })
 }
 
+/// Rebooting switch v4: **every** link of some switch X goes down at once
+/// and comes back. One outage on X's links (300 ms or more, either end
+/// reporting) is the reference; each neighbour's link counts if either
+/// end reports an outage starting within `TOGETHER_MS` of it that
+/// overlaps it, or either end reports it heard again within `TOGETHER_MS`
+/// of the reference's end (a lost "silent" report is common; its "heard"
+/// still arrives). A switch losing only some of its links is not a reboot.
+pub fn reboot_all_links(log: &[u8]) -> bool {
+    let os: Vec<Outage> = outages_min(log, 300).into_iter().filter(|o| o.end.is_some()).collect();
+    let back = heard(log);
+    (0u8..15).any(|x| {
+        let nbrs: Vec<u8> = LINKS.iter().filter_map(|&(a, b)| if a == x { Some(b) } else if b == x { Some(a) } else { None }).collect();
+        // A two-link corner switch is too easy to fake by coincidence.
+        if nbrs.len() < 3 {
+            return false;
+        }
+        let on = |o: &Outage, n: u8| (o.sw == x && o.nbr == n) || (o.sw == n && o.nbr == x);
+        os.iter().filter(|o| nbrs.iter().any(|&n| on(o, n))).any(|m| {
+            let (ms, me) = (m.start, m.end.unwrap());
+            let down = |n: u8| os.iter().any(|o| on(o, n) && o.start < me && ms < o.end.unwrap() && o.start.abs_diff(ms) <= TOGETHER_MS);
+            let back_too = |n: u8| back.iter().any(|&(sw, nb, t)| ((sw == x && nb == n) || (sw == n && nb == x)) && t.abs_diff(me) <= TOGETHER_MS);
+            // Every link down together; at most one known only by its recovery.
+            let seen_down = nbrs.iter().filter(|&&n| down(n)).count();
+            let only_back = nbrs.iter().filter(|&&n| !down(n) && back_too(n)).count();
+            seen_down + only_back == nbrs.len() && only_back <= 1
+        })
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -322,6 +351,7 @@ fn detect(log: &[u8]) -> bool {
         Some("FLAP") => any_flap(log),
         Some("R2") => reboot_overlap(log),
         Some("R3") => reboot_short(log),
+        Some("R4") => reboot_all_links(log),
         _ => false,
     }
 }
