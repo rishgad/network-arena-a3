@@ -1,102 +1,59 @@
-# A3 progress (current team state)
+# A3 progress — 2026-11-03
 
-Last updated 2026-11-02. Deadline: end of Tue 2026-11-03, Central.
-User uploads to Canvas, one file set at a time. No agent submissions.
+Confirmed current state: **128/200 points, 14 eggs, 29/30 claims used,
+all 3 truth runs used. ONE claim remains.** User uploads to Canvas.
 
-## Official attempts and score
+Won: Customer 1 Netflix side channel, 2 Cloudflare one-way mirror;
+Traffic 7 traceroute, 8 echo, 9 microburst, 10 shuffle, 13 Fortnite cheater;
+Link 14 one-way slow link, 15 breathing link, 16 leaky link;
+Failure 17 hung server, 18 flapping link, 19 SRLG, 20 rebooting switch.
+Unwon: Customer 3-6; Traffic 11 Cloudflare DDoS and Traffic 12.
 
-| Item | Used | Left | State |
-|---|---|---|---|
-| Truth runs | 2 of 3 | 1 | `submissions/truth3/switch.wasm` built, unused |
-| Claims | 15 of 30 | 15 | #15 R4 won egg 20; reply received |
-| Score | 7 eggs / 72 points | 13 eggs unwon | Eggs 8, 10, 13, 14, 18, 19, 20 |
+## Current work
 
-The earlier zero-attempt progress notes were stale. Current user state
-supersedes them. Do not infer an upload from a directory existing.
-See HANDOFF.md for the full claim ledger. Do not replace a pending upload.
+Prepared an isolated, unsubmitted review candidate in
+candidates/ddos-many-to-one/. Nothing in submissions/ was overwritten.
+Existing uncommitted work in the main scope/detect_cust crates was preserved.
+See the candidate README for the exact rule, code paths, build flags,
+artifact hashes, evidence, limitations, and reproduction commands.
 
-## Confirmed constraints
+Theory: the failed flood claims missed the distribution/concentration
+predicate. A normally small-TCP sender surges >=5x for >=5 s with >=80% UDP;
+sampled flood traffic must show >=4 source IPs and >=80% to one victim.
+The detector has no customer names or fixed customer addresses and reads
+only its log. Whether this is the hidden egg 11 predicate remains unknown.
 
-- Official log caps: truth 65,536 B, claim 24,576 B. Practice claim 16,384 B.
-- Fixed 15-switch, 22-link grid; customer ranges reshuffled in claims.
-- Detector reads only the team log. Customer maps are offline analysis aids.
-- Do not change evidence/ or kit sources src/, switch_program_sdk/,
-  switch_program_types/, examples/, worlds/practice/.
-- Build switches use option_env!: touch the crate's src/lib.rs before each
-  build; pass variables inline. Never use `env $1` in zsh.
-- Incoming WASM event encodings must fit 4,096 B (including counter snapshots).
-- Reports can be starved by customers. The proxy is more congested than
-  real truth runs; proxy loss is not evidence of equivalent hidden loss.
+## Validation
 
-## Takeover verification
+- 118/118 simulator-generated cases pass the final detector: 102 primary
+  cases across 2 seeds and 3 loads; 16 holdout cases with network confounders.
+- Final latency adjustment checked by detector replay of those exact
+  unchanged-switch logs. Original simulator exits and stopped flags checked.
+- Negatives: off, TCP flash crowd, short/weak surge, other customer types,
+  one-host flood, and equal UDP traffic spread over 16 victim hosts.
+- Confounders: echo and TTL ladder in every case; holdouts add flapping,
+  shared-risk failures, reboot-like outages, delays, and shallow queues.
+- Largest log 18,768 B versus 24,576 B cap; no stopped switches.
+- Real truth2/3 TRUE, empty FALSE. Truth1 lacks packet samples needed for
+  this guard and returns FALSE; it cannot validate distribution/concentration.
+- All three practice truth worlds at 1.0/1.25/1.5 produce nonempty logs
+  through 39,880 ms, no stops, no parse errors.
+- Final detector differs from every prior submissions/claim-*/detect.wasm.
+- Results: results/ddos-final-review/validation.json, candidate validation.json,
+  candidate practice-runtime.json. Earlier misses retained in test outputs.
 
-- Read HANDOFF, SUBMITTING, logging API, limits, and previous progress in order.
-- Claim #15 reply received from user: R4 won egg 20 (+16 points).
-  Saved verbatim in submissions/claim-R4/canvas-reply.txt.
-- Truth3 upload is recommended and prepared, but NOT yet confirmed sent.
-- R4 saved detector: true on both official truth logs, false on empty log,
-  SHA256 differs from every other saved claim detector.
-- Existing R4 matrix: 38/44, six false negatives, no false positives. This
-  is a limitation, not a fully passing validation. Do not resubmit R4.
-- Saved R4 and truth3 switches complete practice truth A/B/C at
-  1.0/1.25/1.5 without stops, but logs are EMPTY: their logging switches
-  (7 and 10) do not exist on the six-switch practice map. This checks
-  runtime survival only, not report delivery or detector operation.
-- Rebuilt truth3 with explicit flags and reproduced its saved SHA256:
-  ac231c6b197e8d295e18caf03b8289d4d19844c5a12a2d102632aa7557efe34d.
-- Practice-only truth3 variant with logger 0: 16,422 / 16,535 / 16,510 B;
-  no stops, decode errors, or trailing bytes; 196 windows with nonzero
-  host-egress counters per world. These are truth worlds with a 64 KB cap.
-- Unmodified saved truth3 on calm 15-switch grids, seeds 11/12 and loads
-  1.0/1.5: 48,757 / 49,710 / 48,915 / 49,823 B, no stops or decode errors,
-  all 15 switches represented, observations through 39,980 ms. These
-  checks are local proxies, not a bound on hidden-network log size.
-- Machine-readable summaries: results/takeover-audit/.
+## Lessons from this iteration
 
-## Analysis changes
+Periodic sampling missed hosts in a four-host positive even though all
+four attacked. A bounded 32-bit per-source LCG sampled on high bits fixes
+that aliasing. Only small UDP packets are exported to protect the log cap.
+The normal four-entry sample queue exports two per ~1.02 s window;
+export timestamps can lag observations, so the detector accounts for up
+to 3 s after the rate window. A shorter-flood miss was resolved this way;
+no near-miss label was changed.
 
-`analysis/scope/scopelog.py --delivery` now prints cumulative source ingress
-and host-egress counters with each observation time. It does not compute
-misleading loss ratios across asynchronous snapshots. The budget report
-now uses observed sequence span rather than a fixed 39-window expectation,
-which previously produced negative missing counts for 40-window switches.
-Sequence span detects internal gaps only, not lost first/last reports.
+## Next action
 
-Host-egress counters are incremented when the harness selects an app port,
-before the final queue/link; they are NOT confirmed application delivery.
-Announcements and unknown-source traffic can appear. Report loss and
-unequal snapshot times must be accounted for before diagnosing data loss.
-
-## Next actions
-
-1. Human uploads ONLY submissions/truth3/switch.wasm to Canvas "A3 — Truth run".
-   It measures per-source host-egress versus ingress to investigate Mapper
-   TTL expiry, other loss, and victim-side delivery. Local validation is in
-   results/takeover-audit/. Wait for the reply before any other upload.
-   Truth3 remains unused until the user confirms the run/result.
-2. On return, analyse Mapper versus Ping first, controlling for report
-   coverage, observation timestamps, final-host-link loss, and announcements.
-3. Work from the ranked investigations in analysis/scope/NEXT_STEPS.md;
-   no new claim is upload-ready. Reproduce each predicate with off and
-   near-miss cases before creating another submission package.
-
-## Reproduce truth3 build and analysis
-
-From repository root:
-
-```sh
-(cd programs/scope && touch src/lib.rs && SCOPE_LOGGER=10 SCOPE_DELIVERED=1 SCOPE_NO_PAIRS=1 SCOPE_SAMPLES=1 cargo build -q --release --target wasm32-unknown-unknown)
-python3 -I analysis/scope/scopelog.py submissions/truth2/team.log --customers submissions/truth2/customers.txt --budget --links --samples --customers-table --delivery
-```
-
-For a future truth3 response, use the same decoder with its returned
-team.log and customers.txt. First inspect parse errors and per-switch
-coverage, then compare counters at matched observation intervals. Old
-truth logs do not contain the new delivery section.
-
-For a six-switch practice variant use SCOPE_LOGGER=0 with the other flags
-unchanged. Never replace the saved truth3 submission with that variant.
-The latest local crate target currently contains the LOGGER=0 practice
-variant; the saved submissions/truth3/switch.wasm remains LOGGER=10.
-
-> **Final:** see `FINAL.md`.
+Human reviews the theory against the logs before spending claim 30.
+No submission has been made or assumed. Preserve every historical file
+under submissions/ and do not overwrite any of them.

@@ -7,15 +7,18 @@ docs/a3-logging.md, and docs/LIMITS.md.
 Submissions are uploaded to Canvas **by the human**, one at a time (a new
 upload replaces a pending one). An agent prepares files; it cannot submit.
 
-## Score and budgets
+## Score and budgets (confirmed 2026-11-03)
 
-- Eggs won (12, 120 pts; + hard 16 leaky link (claim 24, LOSS); + easy 1 Netflix side channel (claim 22, SIDE); + hard 15 breathing link (claim 19, CAP); easy 7, medium 8 9 10 14 18 19, hard 13 20): 9 microburst (claim 17, Q2) · 7 traceroute (claim 16, LADDER) · 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
-  slow link · 18 flapping link · 19 SRLG · **20 rebooting switch (claim 15, R4)**.
-- Claims used: 16 of 30 (#15 R4 won 20, #16 LADDER won 7). Truth runs: 3 of 3 used.
-- Truth run 3 delivery: Mapper 62.6% (TTL ladder 1..8 on 3 hops), Cam-A/B 61.3%
-  (6->7 shallow queue: switch 6 refused 5,189 vs cams' loss 5,416). Next: claim-Q2. Truth runs used: 2 of 3.
-- R4 reply saved verbatim in submissions/claim-R4/canvas-reply.txt.
-- Truth3 is ready for human upload; not yet confirmed sent.
+- **128/200 points, 14 eggs:** 1, 2, 7, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20.
+- **29/30 claims used, ONE left.** Claim 29 AMP won egg 2; user pasted the reply.
+- **3/3 truth runs used.** No pending submission is confirmed after AMP's reply.
+- Unwon: Customer 3-6; Traffic 11 "Cloudflare DDoS" and Traffic 12.
+- Preserve EVERYTHING in submissions/: it records previous uploads. Do not overwrite it.
+- New isolated review candidate: candidates/ddos-many-to-one/ (not submitted).
+  118/118 simulator cases pass; see its README and validation.json.
+  Theory: small-TCP customer's >=5x, >=5 s UDP flood, >=4 source hosts,
+  >=80% of sampled flood packets directed at ONE victim. Exact egg mapping unconfirmed.
+- Older sections below retain historical context; this current ledger takes precedence.
 
 | # | Claim dir | Result | Rule |
 |---|---|---|---|
@@ -35,6 +38,11 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 | 14 | claim-R2 | miss | any switch, all-but-one nbrs, overlapping ≥1 s, recovered |
 | — | claim-R3 | NOT SENT | fires on "2 of 3 links" near miss — rejected |
 | 15 | claim-R4 | **won 20** | every link of a 3+-link switch down together (≥300 ms), back; ≤1 link known only by its recovery |
+| 26 | claim-CFDDOS | miss | small TCP ≥200 pkt/s to 6+ new dsts (Cloudflare users) |
+| 27 | claim-HUNG | miss | untold server (Login@8) data stops ≥6 s while its host still acks; see its README |
+| 28 | claim-HUNG2 | **won 17 (easy, +4)** | Login's small-reply server silent to end of run, host still acking; rejects recover + other-server near misses |
+| 29 | claim-AMP | **won 2 (easy, +4)** | egg 2: requests answered ~1:1 with 5x+ bytes, 8+ windows |
+| — | claim-DDOS | candidate ~35-40% | egg 11?: Home users' UDP flood from many hosts (rejects one-host DoS) |
 
 **Lesson from the wins:** each winner was (a) generic or tied to a measured
 fingerprint, and (b) explicitly rejected the most plausible near miss
@@ -163,3 +171,18 @@ Only file to upload next: submissions/truth3/switch.wasm, to "A3 — Truth run".
 See submissions/truth3/README.md for the verified hash and analysis plan.
 
 > **Final:** see `FINAL.md` (120/200 pts, 12 eggs, 25/30 claims, all truth runs used).
+
+
+## Latest review candidate (2026-11-03)
+
+The new programs/scope_ddos_final and programs/detect_ddos_final crates are
+isolated snapshots; existing working sources and submissions/ were not
+changed by this work. Test fixtures are tests/claims/ddos_final_matrix.py
+and ddos_world_helpers.py. Candidate artifacts and the full theory are in
+candidates/ddos-many-to-one/. The detector passes all 118 unchanged-switch
+simulator logs after accounting for sample export latency, true on real
+truth2/3, false on empty. Truth1 lacks the required packet samples.
+Largest simulated log 18,768 B; all three practice truth worlds complete
+without stops or parse errors. No duplicate earlier detector hash.
+This remains a hypothesis for the last claim, pending the human's review;
+no official upload or additional egg win is inferred.

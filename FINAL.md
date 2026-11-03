@@ -1,6 +1,10 @@
 # A3 final status (2026-11-03)
 
-**120 / 200 points (80% of 150) · 12 eggs · 25 of 30 claims used · 3 of 3 truth runs used.**
+**128 / 200 points (85% of 150) · 14 eggs · 29 of 30 claims used · 3 of 3 truth runs used.**
+
+Late wins: claim 28 HUNG2 won 17 (The hung server, easy); claim 29 AMP won
+2 (Cloudflare one-way mirror, easy). Misses: 26 CFDDOS, 27 HUNG. Unsent
+candidate: claim-DDOS (~35-40%, egg 11?). See HANDOFF.md ledger.
 
 | Egg | Category | Level | Claim | Rule (detector) |
 |---|---|---|---|---|
@@ -43,3 +47,14 @@ Rule: small TCP sender, typical 200+ pkt/s, 6+ new destinations in 80%+ of
 windows. Only Cloudflare users match, in all three truth runs; matrix 24/24.
 "The hung server": no switch controller stalled (report sequence vs time),
 no client collapsed, no reply stream dipped; not visible in our logs.
+
+
+## New unsubmitted review candidate (2026-11-03)
+
+State remains 128 points / 14 eggs / 29 claims used. No claim 30 uploaded.
+See candidates/ddos-many-to-one/README.md: distributed, concentrated UDP
+flood from an otherwise small-TCP customer; 118/118 simulated cases pass,
+true on real truth2/3, empty false, largest log 18,768 B. Truth1 lacks the
+required samples. This may be egg 11 but is not confirmed by a Canvas card.
+Existing submissions/ files are preserved. Review the theory before using
+the final claim. Earlier FINAL sections describe prior stages of the work.

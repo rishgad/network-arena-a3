@@ -1,0 +1,961 @@
+{
+  "method": "Detector replay of unchanged-switch end-to-end simulator logs; original simulation exits and stopped flags checked.",
+  "switch_sha256": "5adbde9f626b7bfc63ea1540fdc907a449295bc71ce603c48d99b041ea7b8bb5",
+  "detect_sha256": "03f732666d3a20f4da12162336dccb0e5ab489454c4cf707d5fb5c7b960ec915",
+  "passed": 118,
+  "total": 118,
+  "max_bytes": 18768,
+  "checks": {
+    "empty": "false",
+    "truth1": "false",
+    "truth2": "true",
+    "truth3": "true"
+  },
+  "identical_prior_detectors": [],
+  "rows": [
+    {
+      "log": "results/claims-ddos-final-v2/on-s91-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17334,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/weaker-s91-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17289,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/long-s91-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17391,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/atstart-s91-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17427,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/four-hosts-s91-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17352,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/eight-hosts-s91-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17352,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/moved-source-s91-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18017,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/off-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17219,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/flashcrowd-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17270,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/short-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17267,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/small-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17266,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/steamsurge-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17280,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/other-udp-flood-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17713,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/login-udp-flood-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17660,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17334,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-real-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17270,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/many-victims-s91-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17398,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/on-s91-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17438,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/weaker-s91-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17342,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/long-s91-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17505,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/atstart-s91-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17484,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/four-hosts-s91-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17410,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/eight-hosts-s91-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17410,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/moved-source-s91-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18053,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/off-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17272,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/flashcrowd-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17353,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/short-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17344,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/small-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17329,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/steamsurge-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17338,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/other-udp-flood-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17767,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/login-udp-flood-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17720,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17438,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-real-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17323,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/many-victims-s91-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17479,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/on-s91-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17628,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/weaker-s91-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17552,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/long-s91-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17685,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/atstart-s91-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17699,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/four-hosts-s91-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17624,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/eight-hosts-s91-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17624,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/moved-source-s91-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18308,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/off-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17482,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/flashcrowd-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17542,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/short-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17530,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/small-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17558,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/steamsurge-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17543,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/other-udp-flood-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 18000,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/login-udp-flood-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17934,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17628,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-real-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17533,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/many-victims-s91-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17694,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/on-s92-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17377,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/weaker-s92-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17332,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/long-s92-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17434,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/atstart-s92-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17470,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/four-hosts-s92-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17395,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/eight-hosts-s92-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17395,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/moved-source-s92-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18060,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/off-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17262,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/flashcrowd-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17313,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/short-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17310,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/small-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17309,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/steamsurge-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17324,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/other-udp-flood-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17778,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/login-udp-flood-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17703,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17377,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-real-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17313,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/many-victims-s92-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17441,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/on-s92-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17392,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/weaker-s92-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17315,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/long-s92-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17478,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/atstart-s92-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17457,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/four-hosts-s92-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17383,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/eight-hosts-s92-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17383,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/moved-source-s92-l1.25.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18026,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/off-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17245,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/flashcrowd-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17326,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/short-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17317,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/small-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17302,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/steamsurge-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17311,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/other-udp-flood-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17740,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/login-udp-flood-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17693,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17392,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-real-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17296,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/many-victims-s92-l1.25.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17433,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/on-s92-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 15766,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/weaker-s92-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 15709,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/long-s92-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 15725,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/atstart-s92-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 15762,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/four-hosts-s92-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 15769,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/eight-hosts-s92-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 15769,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/moved-source-s92-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 16250,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/off-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15639,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/flashcrowd-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15699,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/short-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15687,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/small-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15653,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/steamsurge-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15546,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/other-udp-flood-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15532,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/login-udp-flood-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15888,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15766,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/one-host-real-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15570,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-v2/many-victims-s92-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 15832,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/on-s93-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17838,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/weaker-s93-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17793,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/eight-hosts-s93-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 17856,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/moved-source-s93-l1.0.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18518,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/off-s93-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17723,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/one-host-s93-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17838,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/many-victims-s93-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17902,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/flashcrowd-s93-l1.0.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17774,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/on-s93-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18122,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/weaker-s93-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18046,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/eight-hosts-s93-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18137,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/moved-source-s93-l1.5.team",
+      "expected": true,
+      "answer": "true",
+      "exit": 0,
+      "bytes": 18768,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/off-s93-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 17976,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/one-host-s93-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 18122,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/many-victims-s93-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 18188,
+      "passed": true
+    },
+    {
+      "log": "results/claims-ddos-final-network/flashcrowd-s93-l1.5.team",
+      "expected": false,
+      "answer": "false",
+      "exit": 0,
+      "bytes": 18036,
+      "passed": true
+    }
+  ]
+}
