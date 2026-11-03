@@ -20,7 +20,11 @@ def base(seed):
     return "[[app]]".join(blocks).replace('preset = "steam"', 'preset = "steam"\nlaw = "aimd"')
 CASES = {"on": (True, lambda t: burst(aid(t, "Steam"), 11000, 4000) + burst(aid(t, "Steam"), 27000, 4000)),
          "on-moved": (True, lambda t: burst(aid(t, "Steam"), 5000, 5000) + burst(aid(t, "Steam"), 22000, 3500)),
+         "late": (True, lambda t: burst(aid(t, "Steam"), 21000, 4000) + burst(aid(t, "Steam"), 37000, 4000)),
+         "len3-5": (True, lambda t: burst(aid(t, "Steam"), 9000, 3000) + burst(aid(t, "Steam"), 25000, 5000)),
          "one": (False, lambda t: burst(aid(t, "Steam"), 11000, 4000)),
+         "half-speed": (False, lambda t: burst(aid(t, "Steam"), 11000, 4000, 500) + burst(aid(t, "Steam"), 27000, 4000, 500)),
+         "long-hog": (False, lambda t: burst(aid(t, "Steam"), 8000, 20000)),
          "brief": (False, lambda t: burst(aid(t, "Steam"), 11000, 1500) + burst(aid(t, "Steam"), 27000, 1500)),
          "small-udp": (False, lambda t: burst(aid(t, "Home users"), 11000, 4000, 2000, 64, "udp") + burst(aid(t, "Home users"), 27000, 4000, 2000, 64, "udp")),
          "off": (False, lambda t: "")}
@@ -33,7 +37,7 @@ def run(item):
     w = "true" if want else "false"
     if r.returncode: return p.stem, -1, "ERR " + (r.stderr or r.stdout)[-160:], w
     return p.stem, team.stat().st_size, subprocess.run([SIM, "detect", sys.argv[2], team], capture_output=True, text=True).stdout.strip(), w
-items = [(c, s, l) for c in CASES.items() for s in (101, 102) for l in (1.0, 1.5)]
+items = [(c, s, l) for c in CASES.items() for s in (101, 102) for l in (1.0, 1.5, 2.0)]
 with cf.ThreadPoolExecutor(8) as ex: rows = list(ex.map(run, items))
 bad = sum(r[2] != r[3] for r in rows)
 for r in rows: print(f"{r[0]:<20} {r[1]:>6}B said {r[2]:<6} want {r[3]}  {'ok' if r[2] == r[3] else 'WRONG'}")

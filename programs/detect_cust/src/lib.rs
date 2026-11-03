@@ -440,8 +440,9 @@ pub fn side_stream(log: &[u8]) -> bool {
 }
 
 /// Repeated surges (Steam): a large-packet sender (80%+ at 640 B or more)
-/// that at least twice jumps to 8x its quiet (20th-percentile) rate and
-/// to near link speed (900+ pkt/s), for 3-7 s each time, then drops back.
+/// that at least twice jumps to 5x its quiet (20th-percentile) rate and
+/// to link speed (1,200+ pkt/s; the truth runs pin at 1,275 at every load), for 3-7.5 s each time (a surge cut off
+/// by the end of the run counts from 2 s).
 /// Truth runs: Steam ~63-94 pkt/s with two 4 s surges at ~1,250 pkt/s.
 /// A single surge, an always-fast sender, or a small-packet flood is not this.
 pub fn surges(log: &[u8]) -> bool {
@@ -462,24 +463,20 @@ pub fn surges(log: &[u8]) -> bool {
         let mut sorted: Vec<f64> = rates.iter().map(|r| r.2).collect();
         sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let quiet = sorted[sorted.len() / 5].max(5.0);
-        let (mut n, mut start, mut prev_hi) = (0, None::<u32>, false);
+        // A surge: consecutive readings at 5x quiet and near link speed.
+        let mut spans: Vec<(u32, u32)> = Vec::new();
+        let mut cur: Option<(u32, u32)> = None;
         for &(a, b, r) in &rates {
-            let hi = r >= 8.0 * quiet && r >= 900.0;
-            if hi && !prev_hi {
-                start = Some(a);
+            if r >= 5.0 * quiet && r >= 1_200.0 {
+                cur = Some(cur.map_or((a, b), |(s, _)| (s, b)));
+            } else if let Some(sp) = cur.take() {
+                spans.push(sp);
             }
-            if !hi && prev_hi {
-                if let Some(s) = start {
-                    let len = a - s;
-                    if (3_000..=7_000).contains(&len) {
-                        n += 1;
-                    }
-                }
-            }
-            let _ = b;
-            prev_hi = hi;
         }
-        n >= 2
+        let open = cur; // a surge still running when the run ends
+        let done = spans.iter().filter(|(s, e)| (2_000..=7_500).contains(&(e - s))).count();
+        let cut = open.filter(|(s, e)| e - s >= 2_000).is_some() as usize;
+        done + cut >= 2
     })
 }
 
