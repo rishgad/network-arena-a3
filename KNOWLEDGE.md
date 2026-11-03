@@ -79,20 +79,22 @@ Cloudflare (+users), Akamai (+users), Home users, Sync, Dropbox, Dropbox-2.
 
 Won: 8 echo (Traffic), 10 shuffle (Traffic), 13 Fortnite cheater (Traffic,
 hard), 14 one-way slow link (Link), 18 flapping link (Failure), 19 SRLG
-(Failure) = 56 pts: egg 13 is worth 16, the other five 8 each.
-Another team's card also showed 20 · Failure · The rebooting switch.
+(Failure), 20 rebooting switch (Failure) = 72 pts: eggs 13 and 20 are worth
+16 each, the other five 8 each. Claim 15 R4 won egg 20; user pasted reply.
 Categories seen: Failure, Link, Traffic (no Customer egg won yet; the
 practice set had a Customer egg — "the long pause").
 
-Candidates not won, with what failed and the best current theory:
-- **Rebooting switch (20)**: = switch 5 event. Misses: F3 (switch 5, ≥1 s,
-  2 nbrs), R2 (any, all-but-one, ≥1 s). R3 rejected (fires on 2-of-3 links).
-  R4 pending (every link of a 3+-link switch, ≥300 ms, back). Open theories:
-  reboot is short; near misses "2 of 3 links", "stays down", "another switch".
+Confirmed reboot update and remaining candidates:
+- **Rebooting switch (20): WON by R4, claim 15.** Earlier F3/R2 missed;
+  R3 rejected (fires on 2-of-3). Winning rule requires every link of a
+  3+-link switch, ≥300 ms, recovered; at most one recovery-only link.
+  This validates the submitted detector on the server's ten cases, not a
+  unique inference about the server's internal reboot implementation.
 - **Mapper TTL**: Mapper ≡ Ping except TTL → near-miss pair by design.
   Miss with "≥50% TTL<8". Theory: egg is packets *expiring* (TTL too small
   for the path); near miss TTL 8 that still arrives. Truth run 3's
-  delivered-per-source counters answer this.
+  host-egress counters help test this. They precede the final host link;
+  compare matched observation times and account for report loss.
 - **Flood (Home users → Fastly)**: misses with generic 10×/8 s and with
   "to an unusual /24". Theories: defined by the victim (Fastly receives),
   many hosts, or rate/duration bands; or Home users' surge is normal.

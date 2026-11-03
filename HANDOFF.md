@@ -1,7 +1,9 @@
 # A3 handoff — state as of 2026-11-02 ~21:00 CT
 
 Deadline: end of Tue 2026-11-03 (Central). Repo: github.com/rishgad/network-arena-a3.
-Read this file, then `SUBMITTING.md`, `docs/a3-logging.md`, `docs/LIMITS.md`.
+Read HANDOFF.md, then KNOWLEDGE.md, then the files in results/decoded/, before doing anything.
+Then read analysis/evidence/SCHEMA.md, PROGRESS.md, SUBMITTING.md,
+docs/a3-logging.md, and docs/LIMITS.md.
 Submissions are uploaded to Canvas **by the human**, one at a time (a new
 upload replaces a pending one). An agent prepares files; it cannot submit.
 
@@ -10,7 +12,8 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 - Eggs won (7, 72 pts): 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
   slow link · 18 flapping link · 19 SRLG · **20 rebooting switch (claim 15, R4)**.
 - Claims used: 15 of 30 (#15 R4 WON egg 20). Truth runs used: 2 of 3.
-- Known to exist (another team won it): 20 · Failure · The rebooting switch.
+- R4 reply saved verbatim in submissions/claim-R4/canvas-reply.txt.
+- Truth3 is ready for human upload; not yet confirmed sent.
 
 | # | Claim dir | Result | Rule |
 |---|---|---|---|
@@ -112,18 +115,18 @@ detect.wasm differs from every earlier claim's, matrix with near misses.
 
 ## Next steps (ranked)
 
-1. If R4 misses, the rebooting switch probably isn't "all links silent"; use
-   truth run 3 or think about what else a reboot changes (queue flush,
-   counters, a short outage, harness not rerouting).
-2. Truth run 3 (`submissions/truth3/switch.wasm`): measures delivery per
-   source — tests Mapper TTL expiry, black holes, wire loss on customer data.
+1. R4 WON egg 20 (+16 points); do not spend more claims on reboot variants.
+2. Human uploads truth run 3 (`submissions/truth3/switch.wasm`) to
+   "A3 — Truth run". This adds per-source host-egress counters to compare
+   with ingress for Mapper/Ping TTL-expiry and loss hypotheses. Counts
+   precede the final host link and do not prove application delivery.
 3. Re-examine misses with near-miss thinking: flood (maybe defined by the
    victim, multiple sources), TTL (constant TTL 8 vs a traceroute ladder),
    shallow queue (maybe normal config, or defined per link).
 4. Unclaimed anomalies above — decide which are normal behaviour.
 
 
-## Takeover audit (2026-11-02; R4 still pending)
+## Takeover audit (2026-11-02; before R4 reply, historical)
 
 PROGRESS.md has been refreshed; its former zero-attempt ledger was stale.
 No new upload or reply is inferred. Six eggs / 56 points remain confirmed.
@@ -148,3 +151,11 @@ No new upload or reply is inferred. Six eggs / 56 points remain confirmed.
   decision plan. No new claim is recommended for upload yet.
 - Latest programs/scope/target build is the logger-0 practice variant;
   submissions/truth3/switch.wasm is unchanged and still logger 10.
+
+
+## Confirmed R4 win and next upload
+
+User pasted claim 15 reply: egg 20 won. Total is 7 eggs / 72 points;
+15 claims remain. Truth3 remains the last unused truth run until confirmed.
+Only file to upload next: submissions/truth3/switch.wasm, to "A3 — Truth run".
+See submissions/truth3/README.md for the verified hash and analysis plan.

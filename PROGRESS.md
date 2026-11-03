@@ -8,8 +8,8 @@ User uploads to Canvas, one file set at a time. No agent submissions.
 | Item | Used | Left | State |
 |---|---|---|---|
 | Truth runs | 2 of 3 | 1 | `submissions/truth3/switch.wasm` built, unused |
-| Claims | 15 of 30 | 15 | User confirms #15 R4 is pending; no reply yet |
-| Score | 6 eggs / 56 points | 14 eggs unwon | Eggs 8, 10, 13, 14, 18, 19 |
+| Claims | 15 of 30 | 15 | #15 R4 won egg 20; reply received |
+| Score | 7 eggs / 72 points | 13 eggs unwon | Eggs 8, 10, 13, 14, 18, 19, 20 |
 
 The earlier zero-attempt progress notes were stale. Current user state
 supersedes them. Do not infer an upload from a directory existing.
@@ -31,7 +31,9 @@ See HANDOFF.md for the full claim ledger. Do not replace a pending upload.
 ## Takeover verification
 
 - Read HANDOFF, SUBMITTING, logging API, limits, and previous progress in order.
-- No official reply or new submission received during takeover.
+- Claim #15 reply received from user: R4 won egg 20 (+16 points).
+  Saved verbatim in submissions/claim-R4/canvas-reply.txt.
+- Truth3 upload is recommended and prepared, but NOT yet confirmed sent.
 - R4 saved detector: true on both official truth logs, false on empty log,
   SHA256 differs from every other saved claim detector.
 - Existing R4 matrix: 38/44, six false negatives, no false positives. This
@@ -67,13 +69,16 @@ unequal snapshot times must be accounted for before diagnosing data loss.
 
 ## Next actions
 
-1. Wait for the user's claim #15 R4 reply. Keep 56 points until confirmed.
-2. Work from the ranked investigations in analysis/scope/NEXT_STEPS.md;
+1. Human uploads ONLY submissions/truth3/switch.wasm to Canvas "A3 — Truth run".
+   It measures per-source host-egress versus ingress to investigate Mapper
+   TTL expiry, other loss, and victim-side delivery. Local validation is in
+   results/takeover-audit/. Wait for the reply before any other upload.
+   Truth3 remains unused until the user confirms the run/result.
+2. On return, analyse Mapper versus Ping first, controlling for report
+   coverage, observation timestamps, final-host-link loss, and announcements.
+3. Work from the ranked investigations in analysis/scope/NEXT_STEPS.md;
    no new claim is upload-ready. Reproduce each predicate with off and
    near-miss cases before creating another submission package.
-3. Hold truth3 for now. After R4, consider spending it to measure
-   source-ingress versus host-egress deficits and where they occur.
-   It will not directly establish a reboot or a TTL ladder.
 
 ## Reproduce truth3 build and analysis
 

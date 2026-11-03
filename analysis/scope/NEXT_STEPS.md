@@ -1,25 +1,16 @@
-# Next investigations (R4 pending)
+# Next investigations (R4 won; truth3 ready)
 
 2026-11-02. These are ranked investigations, NOT validated claims or upload
 recommendations. No new claim package has been created. Official state:
-15/30 claims used, #15 R4 pending; 2/3 truth runs used; 6 eggs / 56 points.
+15/30 claims used, #15 R4 won egg 20; 2/3 truth runs used; 7 eggs / 72 points.
 
-## R4 decision gate
+## R4 confirmed
 
-Wait for the user's Canvas reply. If it wins, record the exact egg and
-points from the reply. If it misses, do not simply change a time threshold.
-Current R4 excludes degree-2 corner switches and accepts at most one link
-known only by recovery. Either can cause missed positives, but weakening
-these guards may admit coincident failures or congestion. The existing
-matrix has six missed positives and no false positives (38/44). Separate
-instrumentation loss from predicate errors before any replacement.
-
-A genuine reboot may differ from incident links going down together.
-Inspect local switch failure behavior read-only; measure controller/state
-continuity, keepalive sequences, restart signatures, and recovery where
-observable. Any new instrumentation must fit budgets. Current truth3 is
-not a dedicated reboot instrument. Neither a miss nor the supplied logs
-proves the hidden mechanism.
+Claim 15 won egg 20 (+16 points); the user pasted the reply. See
+submissions/claim-R4/canvas-reply.txt. No further reboot variants needed.
+The previous 38/44 proxy score reflected six local missed positives; the
+Canvas result is the authority for the hidden claim. Do not infer a unique
+internal reboot mechanism from a successful observable predicate.
 
 ## Ranked candidates
 
@@ -97,7 +88,8 @@ without a measured distinction and credible off/near-miss worlds.
 
 ## Last truth-run decision
 
-Hold it until R4's reply. The unchanged saved artifact is reproducible:
+R4 has won and the user instructed truth3 next. Recommend the human upload
+the following unchanged, locally validated artifact; upload is not yet confirmed:
 
 ```
 submissions/truth3/switch.wasm
