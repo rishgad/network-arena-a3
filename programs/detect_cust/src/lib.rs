@@ -439,6 +439,50 @@ pub fn side_stream(log: &[u8]) -> bool {
     })
 }
 
+/// Repeated surges (Steam): a large-packet sender (80%+ at 640 B or more)
+/// that at least twice jumps to 8x its quiet (20th-percentile) rate and
+/// to near link speed (900+ pkt/s), for 3-7 s each time, then drops back.
+/// Truth runs: Steam ~63-94 pkt/s with two 4 s surges at ~1,250 pkt/s.
+/// A single surge, an always-fast sender, or a small-packet flood is not this.
+pub fn surges(log: &[u8]) -> bool {
+    readings(log).values().any(|v| {
+        let c = last(v);
+        let p = c.pkts.max(1);
+        if p.saturating_sub(c.mid) * 10 < p * 8 {
+            return false;
+        }
+        let rates: Vec<(u32, u32, f64)> = v
+            .windows(2)
+            .filter(|w| w[1].t > w[0].t && w[1].pkts >= w[0].pkts && w[1].t - w[0].t <= 1_500)
+            .map(|w| (w[0].t, w[1].t, (w[1].pkts - w[0].pkts) as f64 * 1000.0 / (w[1].t - w[0].t) as f64))
+            .collect();
+        if rates.len() < 10 {
+            return false;
+        }
+        let mut sorted: Vec<f64> = rates.iter().map(|r| r.2).collect();
+        sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let quiet = sorted[sorted.len() / 5].max(5.0);
+        let (mut n, mut start, mut prev_hi) = (0, None::<u32>, false);
+        for &(a, b, r) in &rates {
+            let hi = r >= 8.0 * quiet && r >= 900.0;
+            if hi && !prev_hi {
+                start = Some(a);
+            }
+            if !hi && prev_hi {
+                if let Some(s) = start {
+                    let len = a - s;
+                    if (3_000..=7_000).contains(&len) {
+                        n += 1;
+                    }
+                }
+            }
+            let _ = b;
+            prev_hi = hi;
+        }
+        n >= 2
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("DUP") => dup(log),
@@ -453,6 +497,7 @@ fn detect(log: &[u8]) -> bool {
         Some("PAUSE2") => pair_pause(log),
         Some("FLOOD4") => udp_flood_robust(log),
         Some("SIDE") => side_stream(log),
+        Some("SURGE") => surges(log),
         _ => false,
     }
 }
