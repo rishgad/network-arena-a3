@@ -9,9 +9,11 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
 
 ## Score and budgets
 
-- Eggs won (7, 72 pts): 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
+- Eggs won (8, 72 pts + egg 7): 7 traceroute (claim 16, LADDER) · 8 echo · 10 shuffle · 13 Fortnite cheater · 14 one-way
   slow link · 18 flapping link · 19 SRLG · **20 rebooting switch (claim 15, R4)**.
-- Claims used: 15 of 30 (#15 R4 WON egg 20). Truth runs used: 2 of 3.
+- Claims used: 16 of 30 (#15 R4 won 20, #16 LADDER won 7). Truth runs: 3 of 3 used.
+- Truth run 3 delivery: Mapper 62.6% (TTL ladder 1..8 on 3 hops), Cam-A/B 61.3%
+  (6->7 shallow queue: switch 6 refused 5,189 vs cams' loss 5,416). Next: claim-Q2. Truth runs used: 2 of 3.
 - R4 reply saved verbatim in submissions/claim-R4/canvas-reply.txt.
 - Truth3 is ready for human upload; not yet confirmed sent.
 
