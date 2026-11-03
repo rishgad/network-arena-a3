@@ -1,0 +1,78 @@
+F1-s11-l1.0-on                       356B  F1=true  F2=false  F3=true   WRONG F2
+F1-s11-l1.0-off                      296B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.0-once                     266B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.0-other-link               506B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.0-stays-down               236B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.0-short-flaps              326B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s11-l1.5-on                       316B  F1=true  F2=false  F3=true   WRONG F2
+F1-s11-l1.5-off                      256B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.5-once                     276B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.5-other-link               406B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.5-stays-down               216B  F1=false  F2=false  F3=true   WRONG F2
+F1-s11-l1.5-short-flaps              286B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s12-l1.0-on                       386B  F1=false  F2=false  F3=false   WRONG F1,F2,F3
+F1-s12-l1.0-off                      366B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s12-l1.5-on                       356B  F1=false  F2=false  F3=false   WRONG F1,F2,F3
+F1-s12-l1.5-off                      326B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s12-l1.5-once                     366B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s12-l1.5-other-link               436B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s12-l1.5-stays-down               356B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s12-l1.5-short-flaps              346B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s13-l1.0-on                       796B  F1=true  F2=true  F3=false   WRONG F3
+F1-s13-l1.0-off                      746B  F1=false  F2=true  F3=true   ok
+F1-s13-l1.5-on                       426B  F1=true  F2=true  F3=false   WRONG F3
+F1-s13-l1.5-off                      486B  F1=false  F2=true  F3=true   ok
+F1-s13-l1.5-once                     396B  F1=false  F2=false  F3=false   WRONG F2,F3
+F1-s13-l1.5-other-link               506B  F1=false  F2=true  F3=false   WRONG F3
+F1-s13-l1.5-stays-down               366B  F1=false  F2=false  F3=true   WRONG F2
+F1-s13-l1.5-short-flaps              426B  F1=false  F2=true  F3=true   ok
+F2-s11-l1.0-on                       306B  F1=true  F2=false  F3=false   WRONG F2,F3
+F2-s11-l1.0-off                      306B  F1=true  F2=false  F3=true   ok
+F2-s11-l1.0-only-0-1                 296B  F1=true  F2=false  F3=false   WRONG F3
+F2-s11-l1.0-apart                    316B  F1=false  F2=false  F3=true   WRONG F1
+F2-s11-l1.0-other-pair               306B  F1=false  F2=false  F3=true   WRONG F1
+F2-s11-l1.5-on                       276B  F1=true  F2=false  F3=false   WRONG F2,F3
+F2-s11-l1.5-off                      286B  F1=true  F2=false  F3=true   ok
+F2-s11-l1.5-only-0-1                 266B  F1=false  F2=false  F3=false   WRONG F1,F3
+F2-s11-l1.5-apart                    326B  F1=true  F2=false  F3=true   ok
+F2-s11-l1.5-other-pair               326B  F1=true  F2=false  F3=false   WRONG F3
+F2-s12-l1.0-on                       356B  F1=false  F2=false  F3=false   WRONG F1,F2,F3
+F2-s12-l1.0-off                      406B  F1=false  F2=false  F3=false   WRONG F1,F3
+F2-s12-l1.5-on                       366B  F1=false  F2=false  F3=false   WRONG F1,F2,F3
+F2-s12-l1.5-off                      346B  F1=false  F2=false  F3=false   WRONG F1,F3
+F2-s12-l1.5-only-0-1                 346B  F1=false  F2=false  F3=false   WRONG F1,F3
+F2-s12-l1.5-apart                    366B  F1=false  F2=false  F3=false   WRONG F1,F3
+F2-s12-l1.5-other-pair               326B  F1=false  F2=false  F3=false   WRONG F1,F3
+F2-s13-l1.0-on                       726B  F1=true  F2=true  F3=true   ok
+F2-s13-l1.0-off                      396B  F1=true  F2=false  F3=true   ok
+F2-s13-l1.5-on                       466B  F1=true  F2=true  F3=true   ok
+F2-s13-l1.5-off                      416B  F1=true  F2=false  F3=true   ok
+F2-s13-l1.5-only-0-1                 446B  F1=true  F2=false  F3=true   ok
+F2-s13-l1.5-apart                    506B  F1=true  F2=false  F3=true   ok
+F2-s13-l1.5-other-pair               516B  F1=true  F2=false  F3=true   ok
+F3-s11-l1.0-on                       316B  F1=true  F2=false  F3=true   WRONG F2
+F3-s11-l1.0-off                      296B  F1=true  F2=true  F3=false   ok
+F3-s11-l1.0-one-link                 286B  F1=true  F2=false  F3=false   WRONG F2
+F3-s11-l1.0-other-switch             446B  F1=true  F2=true  F3=false   ok
+F3-s11-l1.0-two-links-apart          276B  F1=false  F2=false  F3=false   WRONG F1,F2
+F3-s11-l1.5-on                       316B  F1=true  F2=false  F3=true   WRONG F2
+F3-s11-l1.5-off                      266B  F1=true  F2=true  F3=false   ok
+F3-s11-l1.5-one-link                 346B  F1=true  F2=false  F3=false   WRONG F2
+F3-s11-l1.5-other-switch             416B  F1=true  F2=true  F3=false   ok
+F3-s11-l1.5-two-links-apart          266B  F1=true  F2=false  F3=false   WRONG F2
+F3-s12-l1.0-on                       416B  F1=false  F2=false  F3=false   WRONG F1,F2,F3
+F3-s12-l1.0-off                      316B  F1=false  F2=false  F3=false   WRONG F1,F2
+F3-s12-l1.5-on                       406B  F1=false  F2=false  F3=false   WRONG F1,F2,F3
+F3-s12-l1.5-off                      376B  F1=false  F2=false  F3=false   WRONG F1,F2
+F3-s12-l1.5-one-link                 406B  F1=false  F2=false  F3=false   WRONG F1,F2
+F3-s12-l1.5-other-switch             496B  F1=false  F2=false  F3=false   WRONG F1,F2
+F3-s12-l1.5-two-links-apart          366B  F1=false  F2=false  F3=false   WRONG F1,F2
+F3-s13-l1.0-on                       586B  F1=true  F2=true  F3=true   ok
+F3-s13-l1.0-off                      686B  F1=true  F2=true  F3=false   ok
+F3-s13-l1.5-on                       426B  F1=true  F2=true  F3=true   ok
+F3-s13-l1.5-off                      426B  F1=true  F2=true  F3=false   ok
+F3-s13-l1.5-one-link                 486B  F1=true  F2=true  F3=false   ok
+F3-s13-l1.5-other-switch             546B  F1=true  F2=false  F3=false   WRONG F2
+F3-s13-l1.5-two-links-apart          516B  F1=true  F2=true  F3=false   ok
+
+23/76 worlds fully right

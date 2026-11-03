@@ -51,6 +51,10 @@ const fn parse_u32(s: &str) -> u32 {
     v
 }
 
+/// Claim mode: write link events only (`SCOPE_LINKS_ONLY=1`), for the
+/// claims' 24 KB cap.
+const LINKS_ONLY: bool = option_env!("SCOPE_LINKS_ONLY").is_some();
+
 pub const PROTO_REPORT: u8 = 93;
 pub const PROTO_BEACON: u8 = 94;
 const REPORT_IP: u32 = 0xe000_0007;
@@ -609,10 +613,21 @@ impl SwitchProgram for Scope {
             if self.prev.is_empty() {
                 self.prev = vec![0; c1.len()];
             }
-            self.window(now, &c1, &mut out);
+            if LINKS_ONLY {
+                // Still measure utilisation for routing; write nothing.
+                let mut sink = Vec::new();
+                let parent = self.parent.take();
+                let logger = std::mem::replace(&mut self.logger, false);
+                self.window(now, &c1, &mut sink);
+                self.parent = parent;
+                self.logger = logger;
+                self.held.clear();
+            } else {
+                self.window(now, &c1, &mut out);
+            }
             self.bump_epoch(&mut out);
             let w = self.tick / WINDOW_TICKS;
-            if w % PAIR_EVERY == (self.me as u64) % PAIR_EVERY && !c2.is_empty() {
+            if !LINKS_ONLY && w % PAIR_EVERY == (self.me as u64) % PAIR_EVERY && !c2.is_empty() {
                 self.pairs(now, &c2, &mut out);
             }
         }
