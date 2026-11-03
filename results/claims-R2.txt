@@ -1,0 +1,30 @@
+F3-s11-l1.0-on                       436B  F3=true   ok
+F3-s11-l1.0-off                      366B  F3=false   ok
+F3-s11-l1.0-one-link                 406B  F3=false   ok
+F3-s11-l1.0-other-switch             536B  F3=false   WRONG F3
+F3-s11-l1.0-two-links-apart          446B  F3=false   ok
+F3-s11-l1.0-stays-down               396B  F3=false   ok
+F3-s11-l1.5-on                       416B  F3=true   ok
+F3-s11-l1.5-off                      346B  F3=false   ok
+F3-s11-l1.5-one-link                 386B  F3=false   ok
+F3-s11-l1.5-other-switch             456B  F3=false   WRONG F3
+F3-s11-l1.5-two-links-apart          406B  F3=false   ok
+F3-s11-l1.5-stays-down               426B  F3=false   ok
+F3-s12-l1.0-on                       696B  F3=false   WRONG F3
+F3-s12-l1.0-off                      666B  F3=false   ok
+F3-s12-l1.5-on                       526B  F3=false   WRONG F3
+F3-s12-l1.5-off                      556B  F3=false   ok
+F3-s12-l1.5-one-link                 546B  F3=false   ok
+F3-s12-l1.5-other-switch             636B  F3=false   WRONG F3
+F3-s12-l1.5-two-links-apart          496B  F3=false   ok
+F3-s12-l1.5-stays-down               506B  F3=false   ok
+F3-s13-l1.0-on                       686B  F3=true   ok
+F3-s13-l1.0-off                      556B  F3=false   ok
+F3-s13-l1.5-on                       586B  F3=true   ok
+F3-s13-l1.5-off                      456B  F3=false   ok
+F3-s13-l1.5-one-link                 476B  F3=false   ok
+F3-s13-l1.5-other-switch             616B  F3=false   WRONG F3
+F3-s13-l1.5-two-links-apart          646B  F3=false   ok
+F3-s13-l1.5-stays-down               536B  F3=false   ok
+
+22/28 worlds fully right

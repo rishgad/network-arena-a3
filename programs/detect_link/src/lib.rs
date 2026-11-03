@@ -248,6 +248,28 @@ const LINKS: [(u8, u8); 22] = [
     (6, 7), (6, 11), (7, 8), (7, 12), (8, 9), (8, 13), (9, 14), (10, 11), (11, 12), (12, 13), (13, 14),
 ];
 
+/// Rebooting switch v2, any switch: its neighbours lose it in outages of
+/// `MIN_MS` or more that all overlap one another and all end (it came
+/// back), from at least all-but-one of its neighbours (and at least two).
+pub fn reboot_overlap(log: &[u8]) -> bool {
+    let os = outages(log);
+    (0u8..15).any(|x| {
+        let lost: Vec<&Outage> = os.iter().filter(|o| o.nbr == x && o.end.is_some()).collect();
+        let need = DEGREE[x as usize].saturating_sub(1).max(2);
+        lost.iter().any(|m| {
+            let (ms, me) = (m.start, m.end.unwrap());
+            let mut who: Vec<u8> = lost
+                .iter()
+                .filter(|o| o.start < me && ms < o.end.unwrap() && o.start.abs_diff(ms) <= TOGETHER_MS)
+                .map(|o| o.sw)
+                .collect();
+            who.sort_unstable();
+            who.dedup();
+            who.len() >= need
+        })
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -257,6 +279,7 @@ fn detect(log: &[u8]) -> bool {
         Some("R") => any_reboot(log),
         Some("Q") => shallow_queue(log),
         Some("FLAP") => any_flap(log),
+        Some("R2") => reboot_overlap(log),
         _ => false,
     }
 }
