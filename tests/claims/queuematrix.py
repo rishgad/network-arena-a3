@@ -7,7 +7,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SIM = ROOT / "target/release/competitive_net_sim"
 WORK = ROOT / "results/claims-queue"; WORK.mkdir(parents=True, exist_ok=True)
 q = lambda s, t, n: f"\n[[harness.queue]]\nswitch = {s}\ntoward = {t}\npackets = {n}\n"
-CASES = {"on-6-7": (True, q(6, 7, 1)), "on-1-2": (True, q(1, 2, 1)), "off": (False, ""), "deep": (False, q(6, 7, 30))}
+CASES = {"on-6-7": (True, q(6, 7, 1)), "on-1-2": (True, q(1, 2, 1)), "off": (False, ""), "deep": (False, q(6, 7, 30)),
+         "congested-only": (False, ""), }
 def run(item):
     (name, (want, extra)), seed, load = item
     base = subprocess.run(["python3", "-I", str(ROOT / "worlds/local/gen_grid.py"), str(seed)], capture_output=True, text=True).stdout

@@ -340,6 +340,38 @@ pub fn reboot_all_links(log: &[u8]) -> bool {
     })
 }
 
+/// Shallow queue v2: a port that drops while quiet and never while busy:
+/// 10+ windows with 5+ drops at <= 50% utilisation, and at most 10% of its
+/// drop windows above 50%. (Truth runs: 6->7 39/0; the congested 12->13 also has
+/// 13-15 quiet-drop windows but 7-11 busy ones — v1 fired on it.)
+pub fn shallow_queue2(log: &[u8]) -> bool {
+    let mut quiet: std::collections::HashMap<(u8, u8), u32> = std::collections::HashMap::new();
+    let mut busy: std::collections::HashMap<(u8, u8), u32> = std::collections::HashMap::new();
+    for f in frames(log) {
+        if f.tag != TAG_DROPS || f.body.len() < 4 {
+            continue;
+        }
+        let mut r = Reader::new(&f.body[4..]);
+        for _ in 0..f.body[3] {
+            let (Some(nbr), Some(d), Some(u)) = (r.u8(), r.var(), r.u8()) else { break };
+            if nbr == 255 {
+                continue;
+            }
+            let k = (f.body[0], nbr);
+            if u > 50 && d > 0 {
+                *busy.entry(k).or_default() += 1;
+            } else if d >= 5 {
+                *quiet.entry(k).or_default() += 1;
+            }
+        }
+    }
+    // Busy drop windows at most 10% of all its drop windows (12->13: 28-44%).
+    quiet.iter().any(|(k, &n)| {
+        let b = busy.get(k).copied().unwrap_or(0);
+        n >= 10 && b * 10 <= n + b
+    })
+}
+
 fn detect(log: &[u8]) -> bool {
     match option_env!("DETECT_EGG") {
         Some("F1") => f1(log),
@@ -352,6 +384,7 @@ fn detect(log: &[u8]) -> bool {
         Some("R2") => reboot_overlap(log),
         Some("R3") => reboot_short(log),
         Some("R4") => reboot_all_links(log),
+        Some("Q2") => shallow_queue2(log),
         _ => false,
     }
 }
