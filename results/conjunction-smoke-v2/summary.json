@@ -1,0 +1,81 @@
+{
+  "passed": 6,
+  "total": 6,
+  "max_bytes": 17645,
+  "switch_sha256": "5adbde9f626b7bfc63ea1540fdc907a449295bc71ce603c48d99b041ea7b8bb5",
+  "detect_sha256": "353bdc1ce94839d74cf4529c35fc110b608c39becf054a82e7613c4bc301acf9",
+  "rows": [
+    {
+      "case": "all-on",
+      "seed": 94,
+      "load": 1.0,
+      "expected": true,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17627,
+      "detect_exit": 0,
+      "answer": "true",
+      "passed": true
+    },
+    {
+      "case": "ddos-off",
+      "seed": 94,
+      "load": 1.0,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17512,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    },
+    {
+      "case": "steam-off",
+      "seed": 94,
+      "load": 1.0,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17627,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    },
+    {
+      "case": "live-steady",
+      "seed": 94,
+      "load": 1.0,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17627,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    },
+    {
+      "case": "ddos-four-hosts",
+      "seed": 94,
+      "load": 1.0,
+      "expected": true,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17645,
+      "detect_exit": 0,
+      "answer": "true",
+      "passed": true
+    },
+    {
+      "case": "steam-other",
+      "seed": 94,
+      "load": 1.0,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17636,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    }
+  ]
+}

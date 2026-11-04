@@ -68,3 +68,45 @@ thread guarantee identical hidden configurations. See
 analysis/scope/BASELINE_NOTES.md. The current DDoS candidate relies on the
 joint protocol/rate/distribution/concentration change, not burstiness alone.
 No additional official attempt or WASM change.
+
+
+## Comprehensive remaining-egg audit and final conjunction (latest)
+
+Audited our truth1/2/3, both supplied TLV logs, and both richer other-team
+decodes. Reproducible offline tool: analysis/scope/remaining_audit.py.
+Summary: analysis/scope/REMAINING_EGGS_REVIEW.md. Raw other-team evidence
+and the detailed derived audit JSON remain local, not published.
+
+Newly checked: Cloudflare request samples form eight one-to-one pairs; the
+Home-users UDP flood instead has 141/189 sampled source hosts converging
+on one destination. Corrected Netflix live to 2 s on / 2 s off, Steam
+bursts to 12-16 and 28-32 s. Dropbox pair has synchronized 1 s / 6 s
+bursts, with Dropbox-2 staggered by 2 s. Akamai destination churn is real
+but does not establish the practice scanner predicate. Old PRIME/LIVE
+fixture was 0/24 because of invalid overlapping prefixes.
+
+Prepared candidates/final-conjunction/ for human review, outside submissions/.
+Handout Section 2 keeps other eggs on during a target's tests; SUBMITTING.md
+explicitly permits combined rules. Final detector requires all three:
+concentrated distributed UDP flood AND Steam double surge AND large-TCP
+video fan-out with repeated dropouts. A conjunction can match any one
+of those eggs, provided the other guards remain true. No mapping is proven.
+
+Final pair passes 162/162 local cases: 132 primary, 16 network holdouts,
+8 moved/renumbered/video-type holdouts, 6 flood-delivery holdouts. Max log
+18,230 B. Final detector replayed on every log, true on real truth2/3,
+false empty, unique against 38 earlier detectors. Truth1 lacks samples.
+
+Earlier logger-2 combination missed two late Steam positives under network
+failures because reports stopped before the second surge. Logger 7 writes
+Steam locally and fixes both without relaxing the rule. Practice has no
+switch 7: final artifact finishes without stops but writes empty logs;
+nonempty logger-2 checks use byte-identical instrumentation source, and
+full-grid cases verify the actual logger-7 pair.
+
+Isolated crates: programs/scope_final_conjunction, programs/detect_final_conjunction.
+Matrix: tests/claims/conjunction_matrix.py. Final checks:
+results/conjunction-final-review/validation.json. Failed earlier results
+are retained. Existing sources, evidence/, submissions/, and the standalone
+DDoS candidate are preserved. State remains 128 points / 29 claims used;
+no official upload has happened. Human reviews the theory before claim 30.

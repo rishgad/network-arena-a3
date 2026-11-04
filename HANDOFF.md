@@ -18,6 +18,16 @@ upload replaces a pending one). An agent prepares files; it cannot submit.
   118/118 simulator cases pass; see its README and validation.json.
   Theory: small-TCP customer's >=5x, >=5 s UDP flood, >=4 source hosts,
   >=80% of sampled flood packets directed at ONE victim. Exact egg mapping unconfirmed.
+- New final-claim review candidate: candidates/final-conjunction/ (NOT submitted).
+  AND of concentrated distributed UDP flood, Steam double surge, and large-TCP
+  video fan-out dropouts. Handout Section 2 keeps all other eggs on, so a
+  conjunction may match any of these eggs; exact mapping remains unconfirmed.
+  Logger 7 fixes the late Steam report-loss failure. Final pair: 162/162 local
+  cases, max 18,230 B, truth2/3 true, empty false; detector unique. Practice
+  logger-7 artifact has no stops but empty logs (map lacks switch 7); nonempty
+  logger-2 instrument checks and full-grid logger-7 tests are retained.
+  Read analysis/scope/REMAINING_EGGS_REVIEW.md and candidate README.
+  Standalone DDoS candidate remains preserved as a simpler alternative.
 - Older sections below retain historical context; this current ledger takes precedence.
 
 | # | Claim dir | Result | Rule |

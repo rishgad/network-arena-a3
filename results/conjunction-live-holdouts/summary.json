@@ -1,0 +1,105 @@
+{
+  "passed": 8,
+  "total": 8,
+  "max_bytes": 18007,
+  "switch_sha256": "de622aca4aa56142399b785da90f0e0258f52641b0fd547195b1cece52e20a35",
+  "detect_sha256": "f969bb6fd667cd4dcb763b43fa97ae0f9b4b928905031c48a149069f19868c85",
+  "rows": [
+    {
+      "case": "live-moved",
+      "seed": 97,
+      "load": 1.0,
+      "expected": true,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17619,
+      "detect_exit": 0,
+      "answer": "true",
+      "passed": true
+    },
+    {
+      "case": "live-renumbered",
+      "seed": 97,
+      "load": 1.0,
+      "expected": true,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17626,
+      "detect_exit": 0,
+      "answer": "true",
+      "passed": true
+    },
+    {
+      "case": "live-small-packets",
+      "seed": 97,
+      "load": 1.0,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17788,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    },
+    {
+      "case": "live-udp",
+      "seed": 97,
+      "load": 1.0,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17705,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    },
+    {
+      "case": "live-moved",
+      "seed": 97,
+      "load": 1.5,
+      "expected": true,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17826,
+      "detect_exit": 0,
+      "answer": "true",
+      "passed": true
+    },
+    {
+      "case": "live-renumbered",
+      "seed": 97,
+      "load": 1.5,
+      "expected": true,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17833,
+      "detect_exit": 0,
+      "answer": "true",
+      "passed": true
+    },
+    {
+      "case": "live-small-packets",
+      "seed": 97,
+      "load": 1.5,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 18007,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    },
+    {
+      "case": "live-udp",
+      "seed": 97,
+      "load": 1.5,
+      "expected": false,
+      "stopped": false,
+      "simulation_exit": 0,
+      "bytes": 17912,
+      "detect_exit": 0,
+      "answer": "false",
+      "passed": true
+    }
+  ]
+}
